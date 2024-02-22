@@ -1,0 +1,31 @@
+.root {
+  padding-top: rem(60px);
+  padding-bottom: rem(40px);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+}
+
+.title {
+  color: var(--mantine-color-bright);
+  font-size: rem(32px);
+  letter-spacing: rem(-0.5px);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: rem(24px);
+  }
+}
+
+.description {
+  margin-top: var(--mantine-spacing-md);
+  max-width: rem(600px);
+  font-size: var(--mantine-font-size-lg);
+  color: var(--mantine-color-dimmed);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    margin-top: var(--mantine-spacing-xs);
+    font-size: var(--mantine-font-size-sm);
+  }
+}
+
+.links {
+  margin-top: var(--mantine-spacing-lg);
+}

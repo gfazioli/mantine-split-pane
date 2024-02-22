@@ -1,0 +1,75 @@
+import { InstallScript } from './components/InstallScript/InstallScript';
+import * as demos from './demos';
+
+## Installation
+
+<InstallScript packages="@gfazioli/mantine-split-pane" />
+
+After installation import package styles at the root of your application:
+
+```tsx
+import '@gfazioli/mantine-split-pane/styles.css';
+```
+
+## Usage
+
+The main component for creating a Split pane is `Split`, which accepts two or more children, `Split.Pane`.
+Below a very basic example with the main props:
+
+<Demo data={demos.configurator} />
+
+> To allow maximum flexibility in the layout, the various panels do not add padding or margins, so these aspects need to be managed manually.
+
+## Pane
+
+The `Split.Pane` component is a child component of `Split` and allows setting some props for panel management.
+
+<Demo data={demos.pane} />
+
+As you can see, it is possible to set the `color` and `hoverColor` props directly from the `Split.Pane` component.
+
+> Obviously, you cannot set the `minWidth` and `maxWidth` from the `Split` component, as these props are specific to each individual `Split.Pane`.
+
+
+```tsx
+<Split color="red">
+  <Split.Pane hoverColor="blue">
+    <h1>Pane 1</h1>
+  </Split.Pane>
+  <Split.Pane>
+    <h1>Pane 2</h1>
+  </Split.Pane>
+</Split>
+```
+
+
+
+## Multiple Panes
+
+You can add as many panes as you want, and you can also set the `minWidth` and `maxWidth` props for each pane.
+
+<Demo data={demos.multiple} />
+
+## Initial sizes
+
+You can set the initial size of the panes using the `initialWidth` and `initialHeight` props.
+Obviously, the `initialWidth` will be used for vertical panes, and the `initialHeight` for horizontal panes.
+
+## Min and Max sizes
+
+You can set the minimum and maximum size of the panes using the `minWidth` and `maxWidth` props.
+Obviously, the `minWidth` and `maxWidth` will be used for vertical panes, and the `minHeight` and `maxHeight` for horizontal panes.
+
+<Demo data={demos.initials} />
+
+## Nested Split
+
+Of course, you can also nest `Split` components to create more complex layouts.
+
+<Demo data={demos.nested} />
+
+## Nested Split with different props
+
+Now you can appreciate the flexibility of the `Split` component, which allows you to create complex layouts with different props for each `Split` component.
+
+<Demo data={demos.nestedprops} />

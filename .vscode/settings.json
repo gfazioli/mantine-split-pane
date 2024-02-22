@@ -1,0 +1,4 @@
+{
+    "prettier.prettierPath": "",
+    "prettier.configPath": "./.prettierrc.cjs"
+}

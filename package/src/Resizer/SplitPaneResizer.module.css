@@ -1,0 +1,81 @@
+.resizer {
+  --resizer-size-xs: rem(6px);
+  --resizer-size-sm: rem(9px);
+  --resizer-size-md: rem(12px);
+  --resizer-size-lg: rem(15px);
+  --resizer-size-xl: rem(18px);
+  --resizer-size: var(--resizer-size-xs);
+
+  @mixin where-light {
+    --resizer-color: var(--mantine-color-gray-3);
+  }
+
+  @mixin where-dark {
+    --resizer-color: var(--mantine-color-dark-4);
+  }
+
+  @mixin where-light {
+    --resizer-hover-color: var(--mantine-color-yellow-4);
+  }
+
+  @mixin where-dark {
+    --resizer-hover-color: var(--mantine-color-yellow-3);
+  }
+
+  background: var(--resizer-color);
+  
+  /* opacity: 0.2; */
+  z-index: 2;
+  box-sizing: border-box;
+  background-clip: padding-box;
+
+  &:hover {
+
+    transition: all .5s ease;
+    background: var(--resizer-hover-color);
+  }
+
+  &[data-mode="vertical"] {
+    width: var(--resizer-size);
+    /* margin: 0 -5px; */
+    border-left: 1px solid rgba(255, 255, 255, 0);
+    border-right: 1px solid rgba(255, 255, 255, 0);
+    cursor: col-resize;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+  
+    &:hover {
+      border-left: 1px solid var(--resizer-hover-color);
+      border-right: 1px solid var(--resizer-hover-color);
+    }
+  }
+
+  &[data-mode="horizontal"] {
+    height: var(--resizer-size);
+    /* margin: -5px 0; */
+    border-top: 1px solid rgba(255, 255, 255, 0);
+    border-bottom: 1px solid rgba(255, 255, 255, 0);
+    cursor: row-resize;
+    width: 100%;
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    &:hover {
+      border-top: 1px solid var(--resizer-hover-color);
+      border-bottom: 1px solid var(--resizer-hover-color);
+    }
+  }
+}
+
+.resizer.disabled {
+  cursor: not-allowed;
+}
+
+.resizer.disabled:hover {
+  border-color: transparent;
+}

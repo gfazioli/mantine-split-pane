@@ -1,0 +1,55 @@
+.root {
+  & code {
+    font-family: var(--mantine-font-family-monospace);
+    line-height: var(--mantine-line-height);
+    padding: rem(2px) calc(var(--mantine-spacing-xs) / 2);
+    border-radius: var(--mantine-radius-sm);
+    font-size: var(--mantine-font-size-xs);
+    margin: 0;
+
+    @mixin light {
+      background-color: var(--mantine-color-gray-1);
+      color: var(--mantine-color-black);
+    }
+
+    @mixin dark {
+      background-color: var(--mantine-color-dark-5);
+      color: var(--mantine-color-white);
+    }
+  }
+}
+
+.searchIcon {
+  width: rem(22px);
+  height: rem(22px);
+
+  @mixin light {
+    color: var(--mantine-color-gray-4);
+  }
+
+  @mixin dark {
+    color: var(--mantine-color-dark-3);
+  }
+}
+
+.title {
+  margin-bottom: var(--mantine-spacing-lg);
+
+  @mixin light {
+    color: var(--mantine-color-black);
+  }
+
+  @mixin dark {
+    color: var(--mantine-color-white);
+  }
+}
+
+.section {
+  & + & {
+    margin-top: rem(50px);
+  }
+}
+
+.search {
+  margin-bottom: var(--mantine-spacing-xl);
+}
