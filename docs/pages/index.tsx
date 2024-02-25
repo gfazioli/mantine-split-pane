@@ -13,7 +13,7 @@ export default function HomePage() {
       <DocsTabs
         docgen={docgen}
         componentsProps={['Split', 'SplitPane']}
-        componentsStyles={['Split', 'SplitPane']}
+        componentsStyles={['Split', 'SplitPane', 'SplitPaneResizer']}
         stylesApiData={STYLES_API_DATA}
       >
         <Docs />

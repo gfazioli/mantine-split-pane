@@ -1,5 +1,5 @@
 import { Split } from '@gfazioli/mantine-split-pane';
-import { Button, Stack } from '@mantine/core';
+import { Button, Group, Paper, Stack } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 import { useState } from 'react';
 
@@ -7,44 +7,58 @@ function Wrapper(props: any) {
   const [mode, setMode] = useState<'horizontal' | 'vertical'>('vertical');
 
   return (
-    <Split mode={mode}>
-      <Split.Pane initialWidth={100} initialHeight={300} maxWidth={300}>
-        <h1>Pane 1</h1>
-      </Split.Pane>
+    <Stack>
+      <Split orientation={mode}>
+        <Split.Pane initialWidth={200} initialHeight={300} maxWidth={300} maxHeight={350}>
+          <Paper withBorder w="100%" mih="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
 
-      <Split.Pane>
-        <Stack>
-          <h1>Pane 2</h1>
-          <Button onClick={() => setMode((c) => (c === 'horizontal' ? 'vertical' : 'horizontal'))}>
-            Change mode
-          </Button>
-        </Stack>
-      </Split.Pane>
-    </Split>
+        <Split.Pane>
+          <Paper withBorder w="100%" mih="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+      <Group>
+        <Button onClick={() => setMode((c) => (c === 'horizontal' ? 'vertical' : 'horizontal'))}>
+          Change mode
+        </Button>
+      </Group>
+    </Stack>
   );
 }
 
 const code = `
 import { Split } from '@gfazioli/mantine-split-pane';
+import { Button, Group, Paper, Stack } from '@mantine/core';
+import { useState } from 'react';
 
 function Demo() {
   const [mode, setMode] = useState<'horizontal' | 'vertical'>('vertical');
 
   return (
-    <Split mode={mode}>
-      <Split.Pane initialWidth={100} initialHeight={300} maxWidth={300}>
-        <h1>Pane 1</h1>
-      </Split.Pane>
+    <Stack>
+      <Split orientation={mode}>
+        <Split.Pane initialWidth={200} initialHeight={300} maxWidth={300} maxHeight={350}>
+          <Paper withBorder w="100%" mih="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
 
-      <Split.Pane>
-        <Stack>
-          <h1>Pane 2</h1>
-          <Button onClick={() => setMode((c) => (c === 'horizontal' ? 'vertical' : 'horizontal'))}>
-            Change mode
-          </Button>
-        </Stack>
-      </Split.Pane>
-    </Split>
+        <Split.Pane>
+          <Paper withBorder w="100%" mih="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+      <Group>
+        <Button onClick={() => setMode((c) => (c === 'horizontal' ? 'vertical' : 'horizontal'))}>
+          Change mode
+        </Button>
+      </Group>
+    </Stack>
   );
 }
 `;

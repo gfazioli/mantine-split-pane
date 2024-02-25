@@ -1,10 +1,6 @@
 .root {
-  display: var(--split-fluid, flex);
-  &[data-mode="horizontal"] {
+  display: var(--split-inline, 'flex');
+  &[data-orientation="horizontal"] {
     flex-direction: column;
   }
 }
-
-
-
-

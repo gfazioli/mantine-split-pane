@@ -4,14 +4,13 @@ import type { StylesApiData } from '../components/styles-api.types';
 export const SplitStylesApi: StylesApiData<SplitFactory> = {
   selectors: {
     root: 'Root element',
-    resizer: 'Inner element',
   },
 
   vars: {
     root: {
-      '--split-fluid': 'Controls animation `perspective`',
+      '--split-inline': 'Make main split container inline`',
     },
   },
 
-  modifiers: [{ modifier: 'data-mode', selector: 'root', value: 'horizontal | vertical' }],
+  modifiers: [{ modifier: 'data-orientation', selector: 'root', value: 'horizontal | vertical' }],
 };

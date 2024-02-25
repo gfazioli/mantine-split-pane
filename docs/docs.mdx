@@ -18,7 +18,7 @@ Below a very basic example with the main props:
 
 <Demo data={demos.configurator} />
 
-> To allow maximum flexibility in the layout, the various panels do not add padding or margins, so these aspects need to be managed manually.
+> By setting properties on the main component `Split`, these will be applied to all child `Split.Pane` components. However, you can also set specific properties for each `Split.Pane` component, as shown below.
 
 ## Pane
 
@@ -26,14 +26,22 @@ The `Split.Pane` component is a child component of `Split` and allows setting so
 
 <Demo data={demos.pane} />
 
-As you can see, it is possible to set the `color` and `hoverColor` props directly from the `Split.Pane` component.
 
-> Obviously, you cannot set the `minWidth` and `maxWidth` from the `Split` component, as these props are specific to each individual `Split.Pane`.
+## Multiple Panes
 
+You can add as many panes as you want, and you can also set the `minWidth` and `maxWidth` props for each pane alogn with other props.
+
+<Demo data={demos.multiple} />
+
+> **Note well** 
+> 
+> Obviously, you **cannot** set the `minWidth` and `maxWidth` from the `Split` component, as these props are specific to each individual `Split.Pane`. As well as you **cannot** set the `orientation` of the `Split.Pane` component, as this is specific to the `Split` component.
+
+The below code **won't work**:
 
 ```tsx
-<Split color="red">
-  <Split.Pane hoverColor="blue">
+<Split>
+  <Split.Pane orientation="vertical">
     <h1>Pane 1</h1>
   </Split.Pane>
   <Split.Pane>
@@ -42,25 +50,42 @@ As you can see, it is possible to set the `color` and `hoverColor` props directl
 </Split>
 ```
 
+The below code **won't work**:
 
+```tsx
+<Split maxWidth={300}>
+  <Split.Pane>
+    <h1>Pane 1</h1>
+  </Split.Pane>
+  <Split.Pane>
+    <h1>Pane 2</h1>
+  </Split.Pane>
+</Split>
+```
 
-## Multiple Panes
+## Inline
 
-You can add as many panes as you want, and you can also set the `minWidth` and `maxWidth` props for each pane.
+By default, each `Split` is displayed using `flex`, but in case you want to display the panels inline, you can use the `inline` prop.
 
-<Demo data={demos.multiple} />
+<Demo data={demos.inline} />
 
-## Initial sizes
+## Initial and mix/max sizes
 
-You can set the initial size of the panes using the `initialWidth` and `initialHeight` props.
+As mentioned above, you can set the initial size of the panes using the `initialWidth` and `initialHeight` props.
 Obviously, the `initialWidth` will be used for vertical panes, and the `initialHeight` for horizontal panes.
 
-## Min and Max sizes
+### Min and Max sizes
 
 You can set the minimum and maximum size of the panes using the `minWidth` and `maxWidth` props.
 Obviously, the `minWidth` and `maxWidth` will be used for vertical panes, and the `minHeight` and `maxHeight` for horizontal panes.
 
 <Demo data={demos.initials} />
+
+## Pane grow
+
+The `grow` property is only accessible for `Split.Pane` and enables the panel size to expand and occupy the available space. It is especially handy for establishing a dynamic layout or, as illustrated below, for crafting a layout with two centered panels.
+
+<Demo data={demos.grow} />
 
 ## Nested Split
 
@@ -73,3 +98,17 @@ Of course, you can also nest `Split` components to create more complex layouts.
 Now you can appreciate the flexibility of the `Split` component, which allows you to create complex layouts with different props for each `Split` component.
 
 <Demo data={demos.nestedprops} />
+
+## Events
+
+The Split.Pane component emits some events that you can use to manage the layout of your application.
+You may want to use the `onResizeStart`, `onResize`, and `onResizeEnd` events to manage the layout of your application.
+
+<Demo data={demos.events} />
+
+## Store the layout
+
+You can store the layout of the panes and restore it later using the browser `localStorage` or any other storage system.
+Try to change the layout and refresh the page to see the layout restored.
+
+<Demo data={demos.store} />

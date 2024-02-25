@@ -2,35 +2,36 @@ import {
   Box,
   BoxProps,
   Factory,
-  MantineColor,
-  MantineSize,
   StylesApiProps,
+  createVarsResolver,
   factory,
   useProps,
   useStyles,
 } from '@mantine/core';
 import React from 'react';
-import { SplitPaneResizer } from '../Resizer/SplitPaneResizer';
+import {
+  SplitPaneResizer,
+  SplitPaneResizerBaseProps,
+  SplitPaneResizerVariant,
+} from '../Resizer/SplitPaneResizer';
 import { useSplitContext } from '../Split.context';
 import classes from './SplitPane.module.css';
 
-export type SplitPaneStylesNames = 'pane';
+export type SplitPaneStylesNames = 'root';
 
-export interface SplitPaneProps extends BoxProps, StylesApiProps<SplitPaneFactory> {
+export type SplitPaneVariant = SplitPaneResizerVariant;
+
+export type SplitPaneCssVariables = {};
+
+export interface SplitPaneProps
+  extends BoxProps,
+    Omit<SplitPaneResizerBaseProps, 'paneRef'>,
+    StylesApiProps<SplitPaneFactory> {
   /** Split pane content */
   children: React.ReactNode;
 
-  /** Resizer size */
-  size?: MantineSize | number | (string & {});
-
   /** Grow pane to fill available space */
   grow?: boolean;
-
-  /** Key of `theme.colors` or any valid CSS color value, by default value depends on color scheme */
-  color?: MantineColor;
-
-  /** Highlight color on hover */
-  hoverColor?: MantineColor;
 
   /** Initial width of the pane */
   initialWidth?: number | string;
@@ -38,33 +39,26 @@ export interface SplitPaneProps extends BoxProps, StylesApiProps<SplitPaneFactor
   /** Initial height of the pane */
   initialHeight?: number | string;
 
-  /** The minimum width of the pane when mode is vertical */
-  minWidth?: number;
-
-  /** The minimum height of the pane when mode is horizontal */
-  minHeight?: number;
-
-  /** The maximum width of the pane when mode is vertical */
-  maxWidth?: number;
-
-  /** The maximum height of the pane when mode is horizontal */
-  maxHeight?: number;
-
   /** Usually you won't need to use this prop directly, it's used internally by Split component */
   withResizer?: boolean;
-
-  /** Event called when pane size changes */
-  onPaneResize?: (width: string, height: string) => void;
 }
 
 export type SplitPaneFactory = Factory<{
   props: SplitPaneProps;
   ref: HTMLDivElement;
   stylesNames: SplitPaneStylesNames;
-  //vars: SplitPaneCssVariables;
+  vars: SplitPaneCssVariables;
+  variant: SplitPaneVariant;
   //defaultComponent: 'div';
-  //variant: SplitPaneResizerVariant;
 }>;
+
+const varsResolver = createVarsResolver<SplitPaneFactory>((_, { grow }) => {
+  return {
+    root: {
+      '--split-pane-grow': grow ? 1 : 'initial',
+    },
+  };
+});
 
 const defaultProps: Partial<SplitPaneProps> = {
   withResizer: true,
@@ -84,13 +78,26 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     grow,
     color,
     hoverColor,
+    opacity,
+    radius,
+    knobSize,
+    knobOpacity,
+    knobRadius,
+    knobColor,
+    knobHoverColor,
     initialWidth,
     initialHeight,
     minWidth,
     minHeight,
     maxWidth,
     maxHeight,
-    onPaneResize,
+    onResizeStart,
+    onResizing,
+    onResizeEnd,
+    variant,
+    withKnob,
+    knobAlwaysOn,
+    spacing,
 
     className,
     style,
@@ -103,10 +110,21 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
   } = props;
 
   const {
-    mode,
+    orientation,
     size: sizeContext,
+    opacity: opacityContext,
+    radius: radiusContext,
     color: colorContext,
     hoverColor: hoverColorContext,
+    knobSize: knobSizeContext,
+    knobOpacity: knobOpacityContext,
+    knobRadius: knobRadiusContext,
+    knobColor: knobColorContext,
+    knobHoverColor: knobHoverColorContext,
+    variant: variantContext,
+    withKnob: withKnobContext,
+    knobAlwaysOn: knobAlwaysOnContext,
+    spacing: spacingContext,
   } = useSplitContext();
 
   const paneRef = React.useRef<HTMLDivElement>(null);
@@ -121,51 +139,65 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     styles,
     unstyled,
     vars,
-    //varsResolver,
+    varsResolver,
   });
 
   const handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (mode === 'vertical') {
+    if (orientation === 'vertical') {
       paneRef.current.style.width =
         typeof initialWidth === 'number' ? `${initialWidth}px` : initialWidth;
     }
 
-    if (mode === 'horizontal') {
+    if (orientation === 'horizontal') {
       paneRef.current.style.height =
         typeof initialHeight === 'number' ? `${initialHeight}px` : initialHeight;
     }
   };
 
   return (
-    <Box
-      ref={paneRef}
-      w={mode === 'vertical' ? initialWidth : undefined}
-      h={mode === 'horizontal' ? initialHeight : undefined}
-      mod={{ mode: mode }}
-      {...getStyles('pane')}
-      style={{ flex: grow ? 1 : 'initial' }}
-      {...others}
-    >
-      {children}
+    <>
+      <Box
+        ref={paneRef}
+        w={orientation === 'vertical' ? initialWidth : undefined}
+        h={orientation === 'horizontal' ? initialHeight : undefined}
+        mod={{ orientation }}
+        {...others}
+        {...getStyles('root')}
+      >
+        {children}
+      </Box>
       {withResizer && (
         <SplitPaneResizer
-          onPaneResize={onPaneResize}
+          onResizeStart={onResizeStart}
+          onResizing={onResizing}
+          onResizeEnd={onResizeEnd}
           onDoubleClick={handleDoubleClick}
           paneRef={paneRef}
-          size={size || sizeContext}
-          color={color || colorContext}
-          hoverColor={hoverColor || hoverColorContext}
+          size={size === undefined ? sizeContext : size}
+          opacity={opacity === undefined ? opacityContext : opacity}
+          radius={radius === undefined ? radiusContext : radius}
+          color={color === undefined ? colorContext : color}
+          hoverColor={hoverColor === undefined ? hoverColorContext : hoverColor}
+          knobSize={knobSize === undefined ? knobSizeContext : knobSize}
+          knobOpacity={knobOpacity === undefined ? knobOpacityContext : knobOpacity}
+          knobRadius={knobRadius === undefined ? knobRadiusContext : knobRadius}
+          knobColor={knobColor === undefined ? knobColorContext : knobColor}
+          knobHoverColor={knobHoverColor === undefined ? knobHoverColorContext : knobHoverColor}
+          withKnob={withKnob === undefined ? withKnobContext : withKnob}
+          knobAlwaysOn={knobAlwaysOn === undefined ? knobAlwaysOnContext : knobAlwaysOn}
           minWidth={minWidth}
           minHeight={minHeight}
           maxWidth={maxWidth}
           maxHeight={maxHeight}
-          mode={mode}
+          orientation={orientation}
+          spacing={spacing === undefined ? spacingContext : spacing}
+          variant={variant === undefined ? variantContext : variant}
         />
       )}
-    </Box>
+    </>
   );
 });
 

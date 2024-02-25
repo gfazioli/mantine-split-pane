@@ -1,28 +1,33 @@
 import { Split } from '@gfazioli/mantine-split-pane';
-import { Code } from '@mantine/core';
+import { Code, Paper } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
 function Wrapper(props: any) {
   return (
     <Split>
       <Split.Pane>
-        <h1>Pane 1</h1>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 1</h1>
+        </Paper>
       </Split.Pane>
 
       <Split.Pane>
-        <h1>Pane 2</h1>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 2</h1>
+        </Paper>
       </Split.Pane>
 
-      <Split.Pane initialWidth={280} maxWidth={300}>
-        <div>
+      <Split.Pane color="red" initialWidth={280} maxWidth={300}>
+        <Paper withBorder w="100%" mih="100%">
           <h1>Pane 3</h1>
-
           <Code>{`initialWidth={280} maxWidth={300}`}</Code>
-        </div>
+        </Paper>
       </Split.Pane>
 
       <Split.Pane>
-        <h1>Pane 4</h1>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 4</h1>
+        </Paper>
       </Split.Pane>
     </Split>
   );
@@ -30,24 +35,34 @@ function Wrapper(props: any) {
 
 const code = `
 import { Split } from '@gfazioli/mantine-split-pane';
+import { Code, Paper } from '@mantine/core';
 
 function Demo() {
   return (
     <Split>
       <Split.Pane>
-        <h1>Pane 1</h1>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 1</h1>
+        </Paper>
       </Split.Pane>
 
       <Split.Pane>
-        <h1>Pane 2</h1>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 2</h1>
+        </Paper>
       </Split.Pane>
 
-      <Split.Pane initialWidth={280} maxWidth={300}>
-        <h1>Pane 3</h1>
+      <Split.Pane color="red" initialWidth={280} maxWidth={300}>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 3</h1>
+          <Code>initialWidth={280} maxWidth={300}</Code>
+        </Paper>
       </Split.Pane>
 
       <Split.Pane>
-        <h1>Pane 4</h1>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 4</h1>
+        </Paper>
       </Split.Pane>
     </Split>
   );

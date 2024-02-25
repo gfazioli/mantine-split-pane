@@ -2,8 +2,6 @@ import {
   Box,
   BoxProps,
   Factory,
-  MantineColor,
-  MantineSize,
   StylesApiProps,
   createVarsResolver,
   factory,
@@ -12,29 +10,21 @@ import {
 } from '@mantine/core';
 import React from 'react';
 import { SplitPane } from './Pane/SplitPane';
+import { SplitPaneResizerSharedProps, SplitPaneResizerVariant } from './Resizer/SplitPaneResizer';
 import { SplitContextProvider } from './Split.context';
 import classes from './Split.module.css';
 
-export type SplitStylesNames = 'root' | 'resizer';
+export type SplitStylesNames = 'root';
+
+export type SplitVariant = SplitPaneResizerVariant;
 
 export type SplitCssVariables = {
-  root: '--split-fluid';
+  root: '--split-inline';
 };
 
-export interface SplitBaseProps {
-  /** Split mode */
-  mode?: 'horizontal' | 'vertical';
-
-  /** Key of `theme.colors` or any valid CSS color value, by default value depends on color scheme */
-  color?: MantineColor;
-
-  /** Highlight color on hover */
-  hoverColor?: MantineColor;
-
-  /** Resizer size */
-  size?: MantineSize | number | (string & {});
-
-  fluid?: boolean;
+export interface SplitBaseProps extends SplitPaneResizerSharedProps {
+  /** Make main split container inline */
+  inline?: boolean;
 
   /** Split children */
   children?: React.ReactNode;
@@ -48,31 +38,46 @@ export type SplitFactory = Factory<{
   ref: HTMLDivElement;
   stylesNames: SplitStylesNames;
   vars: SplitCssVariables;
+  variant: SplitVariant;
   staticComponents: {
     Pane: typeof SplitPane;
   };
 }>;
 
 const defaultProps: Partial<SplitProps> = {
-  fluid: false,
-  mode: 'vertical',
-  size: 'xs',
+  inline: false,
+  orientation: 'vertical',
+  size: 'sm',
+  variant: 'default',
 };
 
-const varsResolver = createVarsResolver<SplitFactory>((_, { fluid }) => ({
+const varsResolver = createVarsResolver<SplitFactory>((_, { inline }) => ({
   root: {
-    '--split-fluid': fluid ? 'flex' : 'inline-flex',
+    '--split-inline': inline ? 'inline-flex' : 'flex',
   },
 }));
 
 export const Split = factory<SplitFactory>((_props, ref) => {
   const props = useProps('Split', defaultProps, _props);
   const {
-    mode,
-    fluid,
+    orientation,
+    inline,
+
     size,
+    radius,
     color,
     hoverColor,
+    opacity,
+
+    withKnob,
+    knobAlwaysOn,
+    knobSize,
+    knobOpacity,
+    knobRadius,
+    knobColor,
+    knobHoverColor,
+    variant,
+    spacing,
 
     classNames,
     style,
@@ -100,22 +105,37 @@ export const Split = factory<SplitFactory>((_props, ref) => {
 
   const childrenArray = React.Children.toArray(children);
 
+  const content = childrenArray.map((child, index) => {
+    const withResizer = index < childrenArray.length - 1;
+
+    return React.cloneElement(child as JSX.Element, {
+      key: `pane-${index}`,
+      withResizer,
+    });
+  });
+
   return (
     <SplitContextProvider
       value={{
-        mode,
+        orientation,
         size,
+        opacity,
+        radius,
         color,
         hoverColor,
+        knobSize,
+        knobOpacity,
+        knobRadius,
+        knobColor,
+        knobHoverColor,
+        variant,
+        withKnob,
+        knobAlwaysOn,
+        spacing,
       }}
     >
-      <Box ref={ref} mod={{ mode: mode }} {...getStyles('root')} {...others}>
-        {childrenArray.map((child, index) => {
-          return React.cloneElement(child as JSX.Element, {
-            key: `pane-${index}`,
-            withResizer: index < childrenArray.length - 1,
-          });
-        })}
+      <Box ref={ref} mod={{ orientation }} {...getStyles('root')} {...others}>
+        {content}
       </Box>
     </SplitContextProvider>
   );

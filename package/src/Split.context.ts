@@ -1,17 +1,22 @@
-import { MantineColor, MantineSize, createSafeContext } from '@mantine/core';
+import { MantineSpacing, createSafeContext } from '@mantine/core';
+import { SplitPaneResizerProps } from './Resizer/SplitPaneResizer';
 import { SPLIT_ERRORS } from './Split.errors';
 
-interface SplitContext {
-  mode: 'horizontal' | 'vertical';
-
-  /** Key of `theme.colors` or any valid CSS color value, by default value depends on color scheme */
-  color?: MantineColor;
-
-  /** Highlight color on hover */
-  hoverColor?: MantineColor;
-
-  /** Resizer size */
-  size?: MantineSize | number | (string & {});
+interface SplitContext
+  extends Omit<
+    SplitPaneResizerProps,
+    | 'minWidth'
+    | 'minHeight'
+    | 'maxWidth'
+    | 'maxHeight'
+    | 'onDoubleClick'
+    | 'onResizeEnd'
+    | 'onResizeStart'
+    | 'onResize'
+    | 'paneRef'
+  > {
+  /** Spacing between resizer and pane */
+  spacing?: MantineSpacing;
 }
 
 export const [SplitContextProvider, useSplitContext] = createSafeContext<SplitContext>(

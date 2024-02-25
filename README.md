@@ -46,18 +46,26 @@ import '@gfazioli/mantine-split-pane/styles.css';
 
 ```tsx
 import { Split } from '@gfazioli/mantine-split-pane';
+import { Paper } from '@mantine/core';
 
 function Demo() {
   return (
     <Split>
-      <div><h1>Left pane</h1></div>
-      <div><h1>Right pane</h1></div>
+      <Split.Pane>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 1</h1>
+        </Paper>
+      </Split.Pane>
+
+      <Split.Pane>
+        <Paper withBorder>
+          <h1>Pane 2</h1>
+        </Paper>
+      </Split.Pane>
     </Split>
   );
 }
 ```
 
-
-## Props
 
 

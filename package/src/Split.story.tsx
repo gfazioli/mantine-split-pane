@@ -1,23 +1,38 @@
-import { Button, Space, Stack } from '@mantine/core';
+import { Box, Button, Paper, Space, Stack } from '@mantine/core';
 import React from 'react';
 import { Split, type SplitProps } from './Split';
 
 export default {
   title: 'Split',
   args: {
-    fluid: false,
-    mode: 'vertical',
-    size: 'xs',
-    color: 'grey',
-    hoverColor: 'orange',
+    inline: false,
+    orientation: 'vertical',
+    size: 'sm',
+    opacity: 0.8,
+    radius: 'xl',
+    knobSize: 'sm',
+    spacing: 'xs',
+    withKnob: false,
+    knobAlwaysOn: true,
+    variant: 'default',
   },
   argTypes: {
-    fluid: { control: { type: 'boolean' } },
-    mode: {
+    inline: { control: { type: 'boolean' } },
+    withKnob: { control: { type: 'boolean' } },
+    knobAlwaysOn: { control: { type: 'boolean' } },
+    orientation: {
       control: { type: 'inline-radio' },
       options: ['horizontal', 'vertical'],
     },
+    variant: {
+      control: { type: 'inline-radio' },
+      options: ['default', 'filled', 'outline', 'transparent', 'dotted', 'dashed'],
+    },
     size: { control: { type: 'inline-radio' }, options: ['xs', 'sm', 'md', 'lg', 'xl'] },
+    opacity: { control: { type: 'range', min: 0, max: 1, step: 0.1 } },
+    radius: { control: { type: 'inline-radio' }, options: ['xs', 'sm', 'md', 'lg', 'xl'] },
+    knobSize: { control: { type: 'inline-radio' }, options: ['xs', 'sm', 'md', 'lg', 'xl'] },
+    spacing: { control: { type: 'inline-radio' }, options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     color: { control: { type: 'color' } },
     hoverColor: { control: { type: 'color' } },
   },
@@ -28,16 +43,69 @@ export function SimpleUsage(p: SplitProps) {
     <div style={{ padding: 40 }}>
       <Split {...p}>
         <Split.Pane>
-          <div>
-            <h1>Left</h1>
-            <h2>Ops</h2>
-          </div>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Pane>
+          <Paper withBorder>
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function Grow(p: SplitProps) {
+  return (
+    <Box p={40}>
+      <Split {...p}>
+        <Split.Pane>
+          <Paper withBorder>
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Pane>
+          <Paper withBorder>
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </Box>
+  );
+}
+
+export function Inline(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p}>
+        <Split.Pane>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1, Split 1</h1>
+          </Paper>
         </Split.Pane>
 
         <Split.Pane grow>
-          <div>
-            <h1>Right</h1>
-          </div>
+          <Paper withBorder>
+            <h1>Pane 2, Split 1</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+
+      <Split {...p}>
+        <Split.Pane>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1, Split 2</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Pane grow>
+          <Paper withBorder>
+            <h1>Pane 2, Split 2</h1>
+          </Paper>
         </Split.Pane>
       </Split>
     </div>
@@ -47,8 +115,8 @@ export function SimpleUsage(p: SplitProps) {
 export function ChangeWidth(p: SplitProps) {
   const [initialWidth, setInitialWidth] = React.useState(300);
 
-  const handleResize = (width: string) => {
-    console.log('width', width);
+  const handleResize = ({ width }) => {
+    console.log('!!!!!!', { width });
 
     setInitialWidth(parseInt(width, 10));
   };
@@ -56,18 +124,21 @@ export function ChangeWidth(p: SplitProps) {
   return (
     <Stack>
       <div style={{ padding: 40 }}>
-        <Split {...p}>
-          <Split.Pane initialWidth={initialWidth} onPaneResize={handleResize}>
-            <div>
-              <h1>Left</h1>
-              <h2>Ops</h2>
-            </div>
+        <Split {...p} spacing={2}>
+          <Split.Pane
+            initialWidth={initialWidth}
+            onResizeEnd={handleResize}
+            onResizing={(size) => console.log('onResizing', { size })}
+          >
+            <Paper withBorder>
+              <h1>Pane 1</h1>
+            </Paper>
           </Split.Pane>
 
           <Split.Pane grow>
-            <div>
-              <h1>Right</h1>
-            </div>
+            <Paper withBorder>
+              <h1>Pane 2</h1>
+            </Paper>
           </Split.Pane>
         </Split>
       </div>
@@ -80,15 +151,8 @@ export function ChangeWidth(p: SplitProps) {
 export function Usage(p: SplitProps) {
   return (
     <div style={{ padding: 40 }}>
-      <Split {...p}>
-        <Split.Pane
-          pr={32}
-          initialWidth={300}
-          minHeight={300}
-          initialHeight={500}
-          minWidth={150}
-          maxWidth={800}
-        >
+      <Split {...p} spacing={4}>
+        <Split.Pane>
           <h1>Left</h1>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </Split.Pane>
@@ -160,7 +224,7 @@ export function Nested(p: SplitProps) {
         </Split.Pane>
 
         <Split.Pane grow>
-          <Split mode="horizontal" w="100%">
+          <Split {...p} orientation="horizontal" w="100%">
             <Split.Pane>
               <div>
                 <h1>Left</h1>
