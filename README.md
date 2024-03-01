@@ -1,7 +1,7 @@
 # Mantine Split pane Component
 
 <p align="center">
-
+  <img alt="" src="https://github.com/gfazioli/mantine-split-pane/assets/432181/638a5ca0-040c-4114-a08f-67ce7b24dec5" />
 </p>
 
 ---
