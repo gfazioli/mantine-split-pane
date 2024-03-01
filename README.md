@@ -22,7 +22,8 @@
 ## Overview
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
-This React component, utilizing Mantine UI, enables users to create a flexible layout with resizable split panes. It supports both vertical and horizontal splitting, allowing the arrangement of content in various configurations. The component seamlessly handles nested split panes, enabling complex layouts with ease.
+
+Utilizing Mantine UI, enables users to create a flexible layout with resizable split panes. It supports both vertical and horizontal splitting, allowing the arrangement of content in various configurations. The component seamlessly handles nested split panes, enabling complex layouts with ease.
 With intuitive resizing functionality, users can adjust the size of each pane effortlessly. This component provides a responsive and user-friendly interface for organizing and displaying content in a way that best suits the application's needs.
 
 ## Installation

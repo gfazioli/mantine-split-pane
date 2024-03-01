@@ -108,23 +108,24 @@
 }
 
 
-.resizer--outline {
+.root--outline {
   border:1px solid var(--split-resizer-hover-color);
   background-color: transparent;
 }
 
-.resizer--transparent {
+.root--transparent {
   background-color: transparent;
   border-color: transparent;
 }
 
-.resizer--dotted, .resizer--dashed {
+.root--dotted, .root--dashed {
   background-color: transparent;
   border: none;
   border-radius: 0;
   
   &:after {
     content: '';
+    opacity: 1;
     display: flex;
     border: none;
     background-color: transparent;
@@ -160,7 +161,7 @@
   }
 }
 
-.resizer--dashed {
+.root--dashed {
   &[data-orientation="vertical"] {
     &:after {
       border-right-style: dashed;
@@ -174,57 +175,10 @@
   }
 }
 
-/* .resizer--dashed {
-  background-color: transparent;
-  border: none;
-  border-radius: 0;
-  
-  &:after {
-    content: '';
-    display: flex;
-    border: none;
-    background-color: transparent;
-    border-radius: 0;
-  }
-
-  &[data-orientation="vertical"] {
-    &:after {
-      top:0;
-      bottom: 0;
-      height: auto;
-      width: 4px;   
-      left: calc(50% - 2px);
-      border-right: 4px dashed var(--split-resizer-color);
-    }
-  }
-
-  &[data-orientation="horizontal"] {
-    &:after {
-      top:calc(50% - 2px);
-      height: 4px;
-      width: auto; 
-      left: 0;
-      right: 0;
-      border: none;
-      border-bottom: 4px dashed var(--split-resizer-color);
-    }
-  }
-
-  &:hover {
-    background-color: transparent;
-
-    &:after {
-      display: block;
-      border-color: var(--split-resizer-hover-color);
-      background-color: transparent;
-    }
-  }
-} */
-
-.resizer.disabled {
+.root.disabled {
   cursor: not-allowed;
 }
 
-.resizer.disabled:hover {
+.root.disabled:hover {
   border-color: transparent;
 }

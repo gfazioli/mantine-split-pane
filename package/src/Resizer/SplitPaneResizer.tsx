@@ -152,6 +152,7 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
       withKnob,
       knobAlwaysOn,
       spacing,
+      variant,
     }
   ) => {
     const colorDarkParsed = parseThemeColor({
@@ -174,6 +175,8 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
       theme,
     });
 
+    const knobVariant = variant === 'dotted' || variant === 'dashed';
+
     return {
       root: {
         '--split-resizer-size': getSize(size, 'split-resizer-size'),
@@ -183,8 +186,9 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
         '--split-resizer-hover-color-dark': rgba(hoverColorDarkParsed.value, 1),
         '--split-resizer-radius': getRadius(radius),
         '--split-resizer-knob-size': getSize(knobSize, 'split-resizer-knob-size'),
-        '--split-resizer-knob-opacity': withKnob && knobAlwaysOn ? (knobOpacity as string) : '0',
-        '--split-resizer-knob-hover-opacity': withKnob ? '1' : '0',
+        '--split-resizer-knob-opacity':
+          withKnob && knobAlwaysOn && !knobVariant ? (knobOpacity as string) : '0',
+        '--split-resizer-knob-hover-opacity': withKnob || knobVariant ? '1' : '0',
         '--split-resizer-knob-radius': getRadius(knobRadius),
         '--split-resizer-knob-color': getThemeColor(knobColor, theme),
         '--split-resizer-knob-hover-color': getThemeColor(knobHoverColor, theme),
