@@ -268,17 +268,48 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
 
   const containerRef = useRef(null);
 
-  const handleMouseMove = (event: MouseEvent) => {
+  /**
+   * Start resizing
+   * @param event
+   */
+  const handleStart = (
+    event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.type === 'mousedown') {
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    if (event.type === 'touchstart') {
+      document.addEventListener('touchmove', handleMove);
+      document.addEventListener('touchend', handleTouchEnd);
+    }
+
+    onResizeStart?.();
+
+    document.body.style.cursor = 'col-resize';
+  };
+
+  /**
+   * Handle resizing
+   * @param event
+   * @returns
+   */
+  const handleMove = (event: MouseEvent | TouchEvent) => {
     if (!paneRef.current) return;
 
-    // if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
     const computedStyle = window.getComputedStyle(containerRef.current);
+
+    const clientX = 'clientX' in event ? event.clientX : event.touches[0].clientX;
+    const clientY = 'clientY' in event ? event.clientY : event.touches[0].clientY;
 
     if (orientation === 'vertical') {
       const margin = parseFloat(computedStyle.getPropertyValue('margin-left')) + 1;
 
-      const delta = event.clientX - paneRef.current.getBoundingClientRect().right - margin;
+      const delta = clientX - paneRef.current.getBoundingClientRect().right - margin;
 
       const width = paneRef.current.getBoundingClientRect().width + delta;
 
@@ -294,7 +325,7 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     } else {
       const margin = parseFloat(computedStyle.getPropertyValue('margin-top')) + 1;
 
-      const delta = event.clientY - paneRef.current.getBoundingClientRect().bottom - margin;
+      const delta = clientY - paneRef.current.getBoundingClientRect().bottom - margin;
 
       const height = paneRef.current.getBoundingClientRect().height + delta;
 
@@ -310,10 +341,14 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     }
   };
 
+  /**
+   * Stop resizing for mouse
+   * @returns
+   */
   const handleMouseUp = () => {
     if (!paneRef.current) return;
 
-    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mousemove', handleMove);
     document.removeEventListener('mouseup', handleMouseUp);
 
     document.body.style.cursor = 'initial';
@@ -323,16 +358,21 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     onResizeEnd?.({ width, height });
   };
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+  /**
+   * Stop resizing for touch
+   * @returns
+   */
+  const handleTouchEnd = () => {
+    if (!paneRef.current) return;
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    document.removeEventListener('touchmove', handleMove);
+    document.removeEventListener('touchend', handleTouchEnd);
 
-    onResizeStart?.();
+    document.body.style.cursor = 'initial';
 
-    document.body.style.cursor = 'col-resize';
+    const { width, height } = paneRef.current.style || {};
+
+    onResizeEnd?.({ width, height });
   };
 
   return (
@@ -340,7 +380,8 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
       onDoubleClick={props?.onDoubleClick}
       ref={containerRef}
       mod={{ orientation }}
-      onMouseDown={handleDragStart}
+      onMouseDown={handleStart}
+      onTouchStart={handleStart}
       {...getStyles('root', { variant })}
       {...others}
     />
