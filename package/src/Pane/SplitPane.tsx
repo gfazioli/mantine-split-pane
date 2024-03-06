@@ -98,7 +98,10 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     withKnob,
     knobAlwaysOn,
     spacing,
+    step,
+    shiftStep,
 
+    onDoubleClick,
     className,
     style,
     classNames,
@@ -125,6 +128,8 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     withKnob: withKnobContext,
     knobAlwaysOn: knobAlwaysOnContext,
     spacing: spacingContext,
+    step: stepContext,
+    shiftStep: shiftStepContext,
   } = useSplitContext();
 
   const paneRef = React.useRef<HTMLDivElement>(null);
@@ -142,7 +147,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     varsResolver,
   });
 
-  const handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleDoubleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -195,6 +200,8 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
           orientation={orientation}
           spacing={spacing === undefined ? spacingContext : spacing}
           variant={variant === undefined ? variantContext : variant}
+          step={step === undefined ? stepContext : step}
+          shiftStep={shiftStep === undefined ? shiftStepContext : shiftStep}
         />
       )}
     </>

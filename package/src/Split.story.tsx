@@ -42,7 +42,7 @@ export function SimpleUsage(p: SplitProps) {
   return (
     <div style={{ padding: 40 }}>
       <Split {...p}>
-        <Split.Pane>
+        <Split.Pane minWidth={0}>
           <Paper withBorder w="100%" h="100%">
             <h1>Pane 1</h1>
           </Paper>
@@ -235,6 +235,42 @@ export function Nested(p: SplitProps) {
             <Split.Pane>
               <div>
                 <h1>Right</h1>
+              </div>
+            </Split.Pane>
+          </Split>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function Accessibility(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} step={100}>
+        <Split.Pane>
+          <h1>Left</h1>
+          <h2>Ops</h2>
+        </Split.Pane>
+
+        <Split.Pane grow>
+          <Split {...p} orientation="horizontal" w="100%" step={1}>
+            <Split.Pane>
+              <div>
+                <h1>Left</h1>
+                <p>Lorem ipsum dolor sit amet, Nulla facilisi.</p>
+              </div>
+            </Split.Pane>
+
+            <Split.Pane>
+              <div>
+                <h1>Right</h1>
+              </div>
+            </Split.Pane>
+
+            <Split.Pane>
+              <div>
+                <h1>Super bottom</h1>
               </div>
             </Split.Pane>
           </Split>

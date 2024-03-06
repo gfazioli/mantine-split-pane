@@ -1,3 +1,4 @@
+import { Kbd } from '@mantine/core';
 import { InstallScript } from './components/InstallScript/InstallScript';
 import * as demos from './demos';
 
@@ -81,6 +82,12 @@ Obviously, the `minWidth` and `maxWidth` will be used for vertical panes, and th
 
 <Demo data={demos.initials} />
 
+## Reset with Double Click
+
+You can reset the size of the panes by double-clicking on the separator.
+
+<Demo data={demos.reset} />
+
 ## Pane grow
 
 The `grow` property is only accessible for `Split.Pane` and enables the panel size to expand and occupy the available space. It is especially handy for establishing a dynamic layout or, as illustrated below, for crafting a layout with two centered panels.
@@ -112,3 +119,16 @@ You can store the layout of the panes and restore it later using the browser `lo
 Try to change the layout and refresh the page to see the layout restored.
 
 <Demo data={demos.store} />
+
+## Accessibility
+
+You may also use the Keyboard to navigate through the panes. Use the `Tab` key to navigate through the resizer and the <Kbd>Arrow</Kbd> keys to resize the panes. You may use <Kbd>◀︎</Kbd> <Kbd>▶︎</Kbd>  for horizontal panes and <Kbd>▼</Kbd> <Kbd>▲</Kbd> for vertical panes.
+
+By default, the `Arrow` keys will resize the panes by `8` pixel, but you can change this value using the `step` prop. 
+Keeping the <Kbd>SHIFT</Kbd> key pressed while using the `Arrow` keys will resize the panes by `64` pixel, but you can change this value using the `shiftStep` prop.
+
+<Demo data={demos.accessibility} />
+
+> **Note well** 
+> 
+> The `step` and `shiftStep` props are accessible both for the `Split` and `Split.Pane` components. Obviously, the `step` and `shiftStep` props of the `Split.Pane` component will override the `step` and `shiftStep` props of the `Split` component.

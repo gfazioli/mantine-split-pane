@@ -78,6 +78,8 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     knobHoverColor,
     variant,
     spacing,
+    step,
+    shiftStep,
 
     classNames,
     style,
@@ -132,6 +134,8 @@ export const Split = factory<SplitFactory>((_props, ref) => {
         withKnob,
         knobAlwaysOn,
         spacing,
+        step,
+        shiftStep,
       }}
     >
       <Box ref={ref} mod={{ orientation }} {...getStyles('root')} {...others}>

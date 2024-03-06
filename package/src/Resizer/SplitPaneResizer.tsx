@@ -1,5 +1,4 @@
 import {
-  Box,
   BoxProps,
   Factory,
   MantineColor,
@@ -7,6 +6,7 @@ import {
   MantineSize,
   MantineSpacing,
   StylesApiProps,
+  UnstyledButton,
   createVarsResolver,
   factory,
   getRadius,
@@ -85,6 +85,12 @@ export interface SplitPaneResizerSharedProps {
 
   /** Spacing between resizer and pane */
   spacing?: MantineSpacing;
+
+  /** Keyboard step, default is 8 */
+  step?: number;
+
+  /** Keyboard step when shift is pressed, default is 64 */
+  shiftStep?: number;
 }
 
 export type SPLIT_PANE_RESIZE_SIZE = {
@@ -106,7 +112,7 @@ export interface SplitPaneResizerBaseProps extends SplitPaneResizerSharedProps {
   maxHeight?: number;
 
   /** Event called when resizer is double clicked */
-  onDoubleClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onDoubleClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 
   /** Event called when pane size starts changing */
   onResizeStart?: () => void;
@@ -128,7 +134,7 @@ export interface SplitPaneResizerProps
 
 export type SplitPaneResizerFactory = Factory<{
   props: SplitPaneResizerProps;
-  ref: HTMLDivElement;
+  ref: HTMLButtonElement;
   stylesNames: SplitPaneResizerStylesNames;
   vars: SplitPaneResizerCssVariables;
   variant: SplitPaneResizerVariant;
@@ -213,6 +219,8 @@ const defaultProps: Partial<SplitPaneResizerProps> = {
   variant: 'default',
   withKnob: false,
   knobAlwaysOn: true,
+  step: 8,
+  shiftStep: 64,
 };
 
 export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) => {
@@ -242,6 +250,8 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     withKnob,
     knobAlwaysOn,
     spacing,
+    step,
+    shiftStep,
 
     className,
     style,
@@ -273,7 +283,7 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
    * @param event
    */
   const handleStart = (
-    event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+    event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
     event.stopPropagation();
@@ -375,13 +385,78 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     onResizeEnd?.({ width, height });
   };
 
+  /**
+   * Handle key up
+   * @param event
+   */
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    // check if containerRef has got the focus
+    if (containerRef.current !== document.activeElement) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const delta = event.shiftKey ? shiftStep : step;
+
+    // if the mode === 'vertical' and the key is 'ArrowRight' or 'ArrowLeft'
+    if (
+      orientation === 'vertical' &&
+      (event.nativeEvent.code === 'ArrowRight' || event.nativeEvent.code === 'ArrowLeft')
+    ) {
+      // increment or decrement the width of the paneRef.current
+
+      const deltaSign = event.nativeEvent.code === 'ArrowRight' ? 1 : -1;
+
+      const width = paneRef.current.getBoundingClientRect().width + delta * deltaSign;
+      const widthString = `${width}px`;
+
+      if (minWidth && width < minWidth) return;
+
+      if (maxWidth && width > maxWidth) return;
+
+      onResizing?.({ width: widthString, height: paneRef.current.style.height });
+
+      paneRef.current.style.width = widthString;
+    }
+
+    // if the mode === 'horizontal' and the key is 'ArrowUp' or 'ArrowDown'
+    if (
+      orientation === 'horizontal' &&
+      (event.nativeEvent.code === 'ArrowUp' || event.nativeEvent.code === 'ArrowDown')
+    ) {
+      // increment or decrement the height of the paneRef.current
+
+      const deltaSign = event.nativeEvent.code === 'ArrowDown' ? 1 : -1;
+
+      const height = paneRef.current.getBoundingClientRect().height + delta * deltaSign;
+      const heightString = `${height}px`;
+
+      if (minHeight && height < minHeight) return;
+
+      if (maxHeight && height > maxHeight) return;
+
+      onResizing?.({ width: paneRef.current.style.width, height: heightString });
+
+      paneRef.current.style.height = heightString;
+    }
+
+    if (event.nativeEvent.code === 'Escape') {
+      // remove focus from the containerRef
+      containerRef.current.blur();
+    }
+  };
+
   return (
-    <Box
+    <UnstyledButton
       onDoubleClick={props?.onDoubleClick}
       ref={containerRef}
       mod={{ orientation }}
       onMouseDown={handleStart}
+      onKeyDown={handleKeyUp}
       onTouchStart={handleStart}
+      aria-label="Resize"
       {...getStyles('root', { variant })}
       {...others}
     />

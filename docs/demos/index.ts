@@ -1,3 +1,4 @@
+export { accessibility } from './Split.demo.accessibility';
 export { configurator } from './Split.demo.configurator';
 export { events } from './Split.demo.events';
 export { grow } from './Split.demo.grow';
@@ -7,4 +8,5 @@ export { multiple } from './Split.demo.multiple';
 export { nested } from './Split.demo.nested';
 export { nestedprops } from './Split.demo.nestedprops';
 export { pane } from './Split.demo.pane';
+export { reset } from './Split.demo.reset';
 export { store } from './Split.demo.store';
