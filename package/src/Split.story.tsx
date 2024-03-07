@@ -247,33 +247,15 @@ export function Nested(p: SplitProps) {
 export function Accessibility(p: SplitProps) {
   return (
     <div style={{ padding: 40 }}>
-      <Split {...p} step={100}>
-        <Split.Pane>
-          <h1>Left</h1>
-          <h2>Ops</h2>
+      <Split step={1} shiftStep={128}>
+        <Split.Pane step={32} shiftStep={256}>
+          <h1>Pane 1</h1>
         </Split.Pane>
-
-        <Split.Pane grow>
-          <Split {...p} orientation="horizontal" w="100%" step={1}>
-            <Split.Pane>
-              <div>
-                <h1>Left</h1>
-                <p>Lorem ipsum dolor sit amet, Nulla facilisi.</p>
-              </div>
-            </Split.Pane>
-
-            <Split.Pane>
-              <div>
-                <h1>Right</h1>
-              </div>
-            </Split.Pane>
-
-            <Split.Pane>
-              <div>
-                <h1>Super bottom</h1>
-              </div>
-            </Split.Pane>
-          </Split>
+        <Split.Pane>
+          <h1>Pane 2</h1>
+        </Split.Pane>
+        <Split.Pane>
+          <h1>Pane 3</h1>
         </Split.Pane>
       </Split>
     </div>

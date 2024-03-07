@@ -395,9 +395,6 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
       return;
     }
 
-    event.preventDefault();
-    event.stopPropagation();
-
     const delta = event.shiftKey ? shiftStep : step;
 
     // if the mode === 'vertical' and the key is 'ArrowRight' or 'ArrowLeft'
@@ -405,6 +402,9 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
       orientation === 'vertical' &&
       (event.nativeEvent.code === 'ArrowRight' || event.nativeEvent.code === 'ArrowLeft')
     ) {
+      event.preventDefault();
+      event.stopPropagation();
+
       // increment or decrement the width of the paneRef.current
 
       const deltaSign = event.nativeEvent.code === 'ArrowRight' ? 1 : -1;
@@ -426,6 +426,9 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
       orientation === 'horizontal' &&
       (event.nativeEvent.code === 'ArrowUp' || event.nativeEvent.code === 'ArrowDown')
     ) {
+      event.preventDefault();
+      event.stopPropagation();
+
       // increment or decrement the height of the paneRef.current
 
       const deltaSign = event.nativeEvent.code === 'ArrowDown' ? 1 : -1;
@@ -443,6 +446,9 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     }
 
     if (event.nativeEvent.code === 'Escape') {
+      event.preventDefault();
+      event.stopPropagation();
+
       // remove focus from the containerRef
       containerRef.current.blur();
     }

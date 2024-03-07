@@ -132,3 +132,20 @@ Keeping the <Kbd>SHIFT</Kbd> key pressed while using the `Arrow` keys will resiz
 > **Note well** 
 > 
 > The `step` and `shiftStep` props are accessible both for the `Split` and `Split.Pane` components. Obviously, the `step` and `shiftStep` props of the `Split.Pane` component will override the `step` and `shiftStep` props of the `Split` component.
+>
+> ```tsx
+> <Split step={16} shiftStep={128}>
+>   <Split.Pane step={32} shiftStep={256}>
+>     <h1>Pane 1</h1>
+>   </Split.Pane>
+>   <Split.Pane>
+>     <h1>Pane 2</h1>
+>   </Split.Pane>
+>   <Split.Pane>
+>     <h1>Pane 3</h1>
+>   </Split.Pane>
+> </Split>
+> ```
+>
+> In the above example, the resizer between the **Pane 1** and **Pane 2** will resize the panes by `32` pixel, and the resizer between the **Pane 2** and **Pane 3** will resize the panes by `16` pixel. The `SHIFT` key will resize the panes by `256` pixel between the **Pane 1** and **Pane 2** and by `128` pixel between the **Pane 2** and **Pane 3**.
+

@@ -12,6 +12,7 @@ import favicon from '../assets/favicon.svg';
 import { theme } from '../theme';
 
 import '@gfazioli/mantine-split-pane/styles.css';
+import { Footer } from '../components/Footer';
 
 async function loadShiki() {
   const { getHighlighter } = await import('shikiji');
@@ -36,6 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ShikiProvider loadShiki={loadShiki}>
         <Component {...pageProps} />
       </ShikiProvider>
+      <Footer />
     </MantineProvider>
   );
 }

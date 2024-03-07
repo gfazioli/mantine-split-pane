@@ -50,8 +50,14 @@ function Demo() {
       </Split.Pane>
 
       <Split.Pane>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 2</h1>
+        </Paper>
+      </Split.Pane>
+
+      <Split.Pane>
         <Split orientation="horizontal">
-          <Split.Pane>
+          <Split.Pane step={1}>
             <Paper withBorder w="100%" mih="100%">
               <h1>Pane 1</h1>
             </Paper>
@@ -73,6 +79,7 @@ export const accessibility: MantineDemo = {
   type: 'configurator',
   component: Wrapper,
   code,
+  striped: true,
   controls: [
     {
       prop: 'step',
