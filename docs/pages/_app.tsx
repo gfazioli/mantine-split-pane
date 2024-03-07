@@ -1,7 +1,11 @@
-import '@mantine/core/styles.css';
-import '@mantinex/demo/styles.css';
 import '@mantinex/mantine-header/styles.css';
+
 import '@mantinex/mantine-logo/styles.css';
+
+import '@mantinex/demo/styles.css';
+
+import '@mantine/core/styles.css';
+
 import '@mantinex/shiki/styles.css';
 
 import { MantineProvider } from '@mantine/core';
