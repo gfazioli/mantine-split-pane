@@ -2,11 +2,7 @@ import { Anchor, Center, Container, Group, Stack, Text } from '@mantine/core';
 import { IconComponents, IconEye, IconNews } from '@tabler/icons-react';
 import classes from './Footer.module.css';
 
-interface FooterProps {
-  children?: React.ReactNode;
-}
-
-export function Footer({ children }: FooterProps) {
+export function Footer() {
   return (
     <footer>
       <Container className={classes.root} fluid m={0} p={0}>
