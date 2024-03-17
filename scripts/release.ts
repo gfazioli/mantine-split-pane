@@ -85,6 +85,21 @@ async function release() {
     path.join(process.cwd(), 'package/LICENSE')
   );
 
+  await fs.copyFile(
+    path.join(process.cwd(), 'CHANGELOG.md'),
+    path.join(process.cwd(), 'package/CHANGELOG.md')
+  );
+
+  await fs.copyFile(
+    path.join(process.cwd(), 'CODE_OF_CONDUCT.md'),
+    path.join(process.cwd(), 'package/CODE_OF_CONDUCT.md')
+  );
+
+  await fs.copyFile(
+    path.join(process.cwd(), 'CONTRIBUTING.md'),
+    path.join(process.cwd(), 'package/CONTRIBUTING.md')
+  );
+
   const revertVersion = await updateVersion(nextVersion);
 
   await run(
