@@ -141,6 +141,9 @@ package/dist
 package/node_modules
 package/LICENSE
 package/README.md
+package/CONTRIBUTING.md
+package/CHANGELOG.md
+package/CODE_OF_CONDUCT.md
 
 docs/next-env.d.ts
 docs/docgen.json
