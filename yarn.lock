@@ -2603,9 +2603,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/core@npm:7.6.2":
-  version: 7.6.2
-  resolution: "@mantine/core@npm:7.6.2"
+"@mantine/core@npm:7.7.0":
+  version: 7.7.0
+  resolution: "@mantine/core@npm:7.7.0"
   dependencies:
     "@floating-ui/react": "npm:^0.26.9"
     clsx: "npm:2.1.0"
@@ -2614,19 +2614,19 @@ __metadata:
     react-textarea-autosize: "npm:8.5.3"
     type-fest: "npm:^4.12.0"
   peerDependencies:
-    "@mantine/hooks": 7.6.2
+    "@mantine/hooks": 7.7.0
     react: ^18.2.0
     react-dom: ^18.2.0
-  checksum: c6e85ead73c8b825ed61761b48d6ecfd55cb53878e5505942ac81f15d4a4f20bc2c597b72fe7aebf1e0a752b1e1ae76fea1506db5c032d5717401e5769aeae1d
+  checksum: d2934192c92a5193431f56af473f50e06bed584aa4f1033038bf409444c608665814c072d064ad8c3fde4a5a3a3472f8a5363b3a095e6e8195e619c1d15032fc
   languageName: node
   linkType: hard
 
-"@mantine/hooks@npm:7.6.2":
-  version: 7.6.2
-  resolution: "@mantine/hooks@npm:7.6.2"
+"@mantine/hooks@npm:7.7.0":
+  version: 7.7.0
+  resolution: "@mantine/hooks@npm:7.7.0"
   peerDependencies:
     react: ^18.2.0
-  checksum: 95d2e33de0a7fa5dba0a579944e3846c5848b7c069a919e155cb25e712d0e47f1839a1edf7a9e63aa10ec22de2de41bd7f4cb631b5c2aebca0332e29b398947d
+  checksum: eadf0dc8e702a0c2e255bb8116ac9cc4da05b69f9895e29af1940a1e04eb752367062262cf17171fd2f18c3f7761618a2eb7e930e88a238db008c2f6892c0390
   languageName: node
   linkType: hard
 
@@ -12006,8 +12006,8 @@ __metadata:
   resolution: "m-90d2bb8@workspace:."
   dependencies:
     "@mantine-tests/core": "npm:^1.0.1"
-    "@mantine/core": "npm:7.6.2"
-    "@mantine/hooks": "npm:7.6.2"
+    "@mantine/core": "npm:7.7.0"
+    "@mantine/hooks": "npm:7.7.0"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-replace": "npm:^5.0.4"
     "@storybook/addon-essentials": "npm:^7.5.2"
@@ -12175,8 +12175,8 @@ __metadata:
   resolution: "mantine-minimal-next-template@workspace:docs"
   dependencies:
     "@gfazioli/mantine-split-pane": "workspace:*"
-    "@mantine/core": "npm:7.6.2"
-    "@mantine/hooks": "npm:7.6.2"
+    "@mantine/core": "npm:7.7.0"
+    "@mantine/hooks": "npm:7.7.0"
     "@mantinex/demo": "npm:^1.1.0"
     "@mantinex/dev-icons": "npm:^1.0.2"
     "@mantinex/mantine-header": "npm:^1.0.2"
