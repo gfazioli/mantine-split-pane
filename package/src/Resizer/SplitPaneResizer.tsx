@@ -288,6 +288,10 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     event.preventDefault();
     event.stopPropagation();
 
+    // disable the userSelect by css starting from the entire document
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
+
     if (event.type === 'mousedown') {
       document.addEventListener('mousemove', handleMove);
       document.addEventListener('mouseup', handleMouseUp);
@@ -310,6 +314,9 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
    */
   const handleMove = (event: MouseEvent | TouchEvent) => {
     if (!paneRef.current) return;
+
+    event.preventDefault();
+    event.stopPropagation();
 
     const computedStyle = window.getComputedStyle(containerRef.current);
 
@@ -357,6 +364,10 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
    */
   const handleMouseUp = () => {
     if (!paneRef.current) return;
+
+    // reenable the userSelect by css starting from the entire document
+    document.body.style.userSelect = 'initial';
+    document.body.style.webkitUserSelect = 'initial';
 
     document.removeEventListener('mousemove', handleMove);
     document.removeEventListener('mouseup', handleMouseUp);
