@@ -261,3 +261,26 @@ export function Accessibility(p: SplitProps) {
     </div>
   );
 }
+
+export function DoubleClick(p: SplitProps) {
+  const [initialWidth, setInitialWidth] = React.useState(300);
+
+  const handleDoubleClick = () => {
+    console.log('double click');
+
+    setInitialWidth(initialWidth === 300 ? 100 : 300);
+  };
+
+  return (
+    <div style={{ padding: 40 }}>
+      <Split>
+        <Split.Pane initialWidth={initialWidth} onDoubleClick={handleDoubleClick}>
+          <h1>Pane 1</h1>
+        </Split.Pane>
+        <Split.Pane>
+          <h1>Pane 2</h1>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}

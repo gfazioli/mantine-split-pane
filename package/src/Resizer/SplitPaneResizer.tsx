@@ -138,7 +138,6 @@ export type SplitPaneResizerFactory = Factory<{
   stylesNames: SplitPaneResizerStylesNames;
   vars: SplitPaneResizerCssVariables;
   variant: SplitPaneResizerVariant;
-  //defaultComponent: 'div';
 }>;
 
 const varsResolver = createVarsResolver<SplitPaneResizerFactory>(

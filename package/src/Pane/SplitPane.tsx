@@ -160,6 +160,8 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
       paneRef.current.style.height =
         typeof initialHeight === 'number' ? `${initialHeight}px` : initialHeight;
     }
+
+    onDoubleClick?.(e);
   };
 
   return (
