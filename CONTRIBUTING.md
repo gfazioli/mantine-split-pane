@@ -1,6 +1,6 @@
 # Contributing
 
-👏 Thank you for considering contributing to the WP Bones framework!
+👏 Thank you for considering contributing to the this project.
 
 ## Bug Reports
 

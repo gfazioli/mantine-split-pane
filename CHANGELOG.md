@@ -3,6 +3,12 @@
 The following is a list of notable changes to the Mantine Split component.  
 Minor versions that are not listed in the changelog are bug fixes and small improvements.
 
+## 0.2.4 (2024-06-10)
+
+- 📝 Updated CHANGELOG, CONTRIBUTING and CODE_OF_CONDUCT
+- 📦️ Updated Mantine 7.10.1
+- 👷 Updated script release
+
 ## 0.2.1 (2024-03-16)
 
 - 📝 Added CHANGELOG, CONTRIBUTING and CODE_OF_CONDUCT
