@@ -1,5 +1,5 @@
-import path from 'node:path';
 import fs from 'fs-extra';
+import path from 'node:path';
 import signale from 'signale';
 
 const rollupCssFilePath = path.join(process.cwd(), './package/dist/esm/index.css');
@@ -14,7 +14,7 @@ const content = fs.readFileSync(rollupCssFilePath, 'utf-8');
 fs.writeFileSync(path.join(process.cwd(), './package/dist/styles.css'), content);
 fs.writeFileSync(
   path.join(process.cwd(), './package/dist/styles.layer.css'),
-  `@layer mantine {${content}}`
+  `@layer mantine-split-pane {${content}}`
 );
 
 fs.removeSync(rollupCssFilePath);
