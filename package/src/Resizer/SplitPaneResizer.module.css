@@ -43,6 +43,7 @@
   z-index: 2;
   box-sizing: border-box;
   background-clip: padding-box;
+  touch-action: none;
 
   /* Knob */
   &:after {
