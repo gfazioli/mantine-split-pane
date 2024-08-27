@@ -30,9 +30,9 @@
     "syncpack:format": "syncpack format"
   },
   "devDependencies": {
-    "@mantine-tests/core": "^1.0.1",
-    "@mantine/core": "7.10.1",
-    "@mantine/hooks": "7.10.1",
+    "@mantine-tests/core": "^1.1.0",
+    "@mantine/core": "7.12.1",
+    "@mantine/hooks": "7.12.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.7",
     "@storybook/addon-essentials": "^7.6.19",
