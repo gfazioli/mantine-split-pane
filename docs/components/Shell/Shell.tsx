@@ -24,6 +24,14 @@ export function Shell({ children }: ShellProps) {
   const { toggleColorScheme } = useMantineColorScheme();
   useHotkeys([['mod + J', toggleColorScheme]]);
 
+  // get the package name
+  const packageName = PACKAGE_DATA.packageName
+    .replace('@gfazioli/', '')
+    .replaceAll('-', ' ')
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+
   return (
     <AppShell header={{ height: 60 }}>
       <AppShell.Header className={RemoveScroll.classNames.zeroRight}>
@@ -38,7 +46,7 @@ export function Shell({ children }: ShellProps) {
 
             <MantineLogo size={30} type="mark" />
           </a>
-            <Title order={2} c={"white"}>Mantine Split pane</Title>
+            <Title order={2} c={"white"}>{packageName}</Title>
             </Group>
           <Group gap={10}>
             <ActionIcon
