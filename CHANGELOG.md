@@ -3,6 +3,15 @@
 The following is a list of notable changes to the Mantine Split component.  
 Minor versions that are not listed in the changelog are bug fixes and small improvements.
 
+## 0.5.6 (2024-08-05)
+
+- 📦 Updates Mantine 7.13
+- ✨ Added `cursor` prop to change cursor style
+
+## 0.2.6 (2024-08-05)
+
+- 🩹 fixed mobile scroll issues
+
 ## 0.2.4 (2024-06-10)
 
 - 📝 Updated CHANGELOG, CONTRIBUTING and CODE_OF_CONDUCT

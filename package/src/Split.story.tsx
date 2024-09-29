@@ -58,6 +58,30 @@ export function SimpleUsage(p: SplitProps) {
   );
 }
 
+export function Styling(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p}>
+        <Split.Pane minWidth={0} styles={{
+          root: {
+            backgroundColor: 'red',
+          },
+        }}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Pane>
+          <Paper withBorder>
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
 export function Grow(p: SplitProps) {
   return (
     <Box p={40}>
@@ -71,6 +95,32 @@ export function Grow(p: SplitProps) {
         <Split.Pane>
           <Paper withBorder>
             <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </Box>
+  );
+}
+
+export function ThreePanel(p: SplitProps) {
+  return (
+    <Box p={40} style={{border: "1px solid red"}}>
+      <Split w="100%" style={{border: "1px solid blue"}}>
+        <Split.Pane minWidth={100} initialWidth={200}>
+          <Paper withBorder w="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Pane initialWidth={"calc(100% - 400px)"}>
+          <Paper withBorder w="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Pane minWidth={100} initialWidth={200} grow>
+          <Paper withBorder w="100%">
+            <h1>Pane 3</h1>
           </Paper>
         </Split.Pane>
       </Split>
