@@ -4,6 +4,7 @@ import {
   Container,
   Group,
   RemoveScroll,
+  Title,
   useMantineColorScheme,
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
@@ -27,14 +28,18 @@ export function Shell({ children }: ShellProps) {
     <AppShell header={{ height: 60 }}>
       <AppShell.Header className={RemoveScroll.classNames.zeroRight}>
         <Container size="lg" px="md" className={classes.inner}>
+          <Group>
           <a
             href="https://mantine.dev/"
             target="_blank"
             className={cx('mantine-focus-auto', classes.logo)}
             rel="noreferrer"
           >
-            <MantineLogo size={30} />
+
+            <MantineLogo size={30} type="mark" />
           </a>
+            <Title order={2} c={"white"}>Mantine Split pane</Title>
+            </Group>
           <Group gap={10}>
             <ActionIcon
               visibleFrom="sm"
@@ -46,10 +51,11 @@ export function Shell({ children }: ShellProps) {
               rel="noreferrer"
               aria-label="Undolog"
               title="Undolog"
+              variant='transparent'
             >
               <img
                 width={36}
-                src="https://substackcdn.com/image/fetch/w_170,c_limit,f_auto,q_auto:best,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa684f139-48b6-4cdb-8175-35869bc01be7_512x512.png"
+                src="https://substackcdn.com/image/fetch/w_96,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F188b250c-f113-4005-b757-5f21e7310424_1024x1024.png"
                 alt="GitHub"
               />
             </ActionIcon>
