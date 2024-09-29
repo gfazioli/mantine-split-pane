@@ -20,6 +20,8 @@ export const SplitPaneResizerStylesApi: StylesApiData<SplitPaneResizerFactory> =
       '--split-resizer-knob-color': 'Controls resizer knob color',
       '--split-resizer-knob-hover-color': 'Controls resizer knob hover color',
       '--split-resizer-spacing': 'Controls resizer spacing',
+      '--split-resizer-cursor-vertical': 'Controls resizer cursor in vertical mode',
+      '--split-resizer-cursor-horizontal': 'Controls resizer cursor in horizontal mode',
     },
   },
 
