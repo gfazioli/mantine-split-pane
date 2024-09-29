@@ -3,10 +3,11 @@
 The following is a list of notable changes to the Mantine Split component.  
 Minor versions that are not listed in the changelog are bug fixes and small improvements.
 
-## 0.5.6 (2024-08-05)
+## 0.5.0 (2024-09-29)
 
 - 📦 Updates Mantine 7.13
-- ✨ Added `cursor` prop to change cursor style
+- ✨ Added `cursorHorizontal` prop as CSS cursor property for horizontal orientation
+- ✨ Added `cursorVertical` prop as CSS cursor property for vertical orientation
 
 ## 0.2.6 (2024-08-05)
 

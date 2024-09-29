@@ -100,6 +100,8 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     spacing,
     step,
     shiftStep,
+    cursorVertical,
+    cursorHorizontal,
 
     onDoubleClick,
     className,
@@ -130,6 +132,8 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     spacing: spacingContext,
     step: stepContext,
     shiftStep: shiftStepContext,
+    cursorVertical: cursorVerticalContext,
+    cursorHorizontal: cursorHorizontalContext,
   } = useSplitContext();
 
   const paneRef = React.useRef<HTMLDivElement>(null);
@@ -204,6 +208,8 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
           variant={variant === undefined ? variantContext : variant}
           step={step === undefined ? stepContext : step}
           shiftStep={shiftStep === undefined ? shiftStepContext : shiftStep}
+          cursorVertical={cursorVertical === undefined ? cursorVerticalContext : cursorVertical}
+          cursorHorizontal={cursorHorizontal === undefined ? cursorHorizontalContext : cursorHorizontal}
         />
       )}
     </>

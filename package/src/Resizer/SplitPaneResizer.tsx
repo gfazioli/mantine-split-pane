@@ -17,7 +17,7 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import React, { MutableRefObject, useRef } from 'react';
+import React, { CSSProperties, MutableRefObject, useRef } from 'react';
 import classes from './SplitPaneResizer.module.css';
 
 export type SplitPaneResizerStylesNames = 'root';
@@ -43,7 +43,9 @@ export type SplitPaneResizerCssVariables = {
     | '--split-resizer-knob-radius'
     | '--split-resizer-knob-color'
     | '--split-resizer-knob-hover-color'
-    | '--split-resizer-spacing';
+    | '--split-resizer-spacing'
+    | '--split-resizer-cursor-vertical'
+    | '--split-resizer-cursor-horizontal';
 };
 
 export interface SplitPaneResizerSharedProps {
@@ -91,6 +93,13 @@ export interface SplitPaneResizerSharedProps {
 
   /** Keyboard step when shift is pressed, default is 64 */
   shiftStep?: number;
+
+  /** The CSS cursor property for vertical orientation */
+  cursorVertical?: CSSProperties['cursor'];
+
+  /** The CSS cursor property for horizontal orientation */
+  cursorHorizontal?: CSSProperties['cursor'];
+
 }
 
 export type SPLIT_PANE_RESIZE_SIZE = {
@@ -158,6 +167,8 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
       knobAlwaysOn,
       spacing,
       variant,
+      cursorVertical,
+      cursorHorizontal,
     }
   ) => {
     const colorDarkParsed = parseThemeColor({
@@ -198,6 +209,8 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
         '--split-resizer-knob-color': getThemeColor(knobColor, theme),
         '--split-resizer-knob-hover-color': getThemeColor(knobHoverColor, theme),
         '--split-resizer-spacing': getSize(spacing, 'split-resizer-spacing'),
+        '--split-resizer-cursor-vertical': cursorVertical || 'col-resize',
+        '--split-resizer-cursor-horizontal': cursorHorizontal || 'row-resize',
       },
     };
   }
@@ -220,6 +233,8 @@ const defaultProps: Partial<SplitPaneResizerProps> = {
   knobAlwaysOn: true,
   step: 8,
   shiftStep: 64,
+  cursorVertical: 'col-resize',
+  cursorHorizontal: 'row-resize',
 };
 
 export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) => {
@@ -251,6 +266,8 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     spacing,
     step,
     shiftStep,
+    cursorVertical,
+    cursorHorizontal,
 
     className,
     style,

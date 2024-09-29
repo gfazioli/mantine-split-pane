@@ -68,7 +68,7 @@
 
   &[data-orientation='vertical'] {
     width: var(--split-resizer-size);
-    cursor: col-resize;
+    cursor: var(--split-resizer-cursor-vertical);
     margin-left: var(--split-resizer-spacing);
     margin-right: var(--split-resizer-spacing);
 
@@ -87,7 +87,7 @@
 
   &[data-orientation='horizontal'] {
     height: var(--split-resizer-size);
-    cursor: row-resize;
+    cursor: var(--split-resizer-cursor-horizontal);
     margin-top: var(--split-resizer-spacing);
     margin-bottom: var(--split-resizer-spacing);
     width: 100%;

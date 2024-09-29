@@ -80,6 +80,8 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     spacing,
     step,
     shiftStep,
+    cursorVertical,
+    cursorHorizontal,
 
     classNames,
     style,
@@ -136,6 +138,8 @@ export const Split = factory<SplitFactory>((_props, ref) => {
         spacing,
         step,
         shiftStep,
+        cursorVertical,
+        cursorHorizontal,
       }}
     >
       <Box ref={ref} mod={{ orientation }} {...getStyles('root')} {...others}>

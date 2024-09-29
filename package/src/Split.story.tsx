@@ -15,6 +15,9 @@ export default {
     withKnob: false,
     knobAlwaysOn: true,
     variant: 'default',
+    cursorVertical: 'row-resize',
+    cursorHorizontal: 'col-resize',
+
   },
   argTypes: {
     inline: { control: { type: 'boolean' } },
@@ -35,6 +38,7 @@ export default {
     spacing: { control: { type: 'inline-radio' }, options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     color: { control: { type: 'color' } },
     hoverColor: { control: { type: 'color' } },
+
   },
 };
 
