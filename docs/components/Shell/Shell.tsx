@@ -45,9 +45,7 @@ export function Shell({ children }: ShellProps) {
             >
               <MantineLogo size={30} type="mark" />
             </a>
-            <Title order={2} c={"white"}>
-              {packageName}
-            </Title>
+            <Title order={2}>{packageName}</Title>
           </Group>
           <Group gap={10}>
             <ActionIcon

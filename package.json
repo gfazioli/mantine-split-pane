@@ -2,7 +2,7 @@
   "name": "m-90d2bb8",
   "version": "0.1.1",
   "description": "This package.json is not published to npm, modify the file in package/package.json",
-  "packageManager": "yarn@4.4.1",
+  "packageManager": "yarn@4.5.0",
   "workspaces": [
     "docs",
     "package"
@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@mantine-tests/core": "^1.1.0",
-    "@mantine/core": "7.13.0",
-    "@mantine/hooks": "7.13.0",
+    "@mantine/core": "7.13.2",
+    "@mantine/hooks": "7.13.2",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.7",
     "@storybook/addon-essentials": "^7.6.19",
