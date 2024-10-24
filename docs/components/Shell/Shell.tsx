@@ -48,12 +48,19 @@ export function Shell({ children }: ShellProps) {
             <Title order={2}>{packageName}</Title>
           </Group>
           <Group gap={10}>
+            <iframe
+              src="https://github.com/sponsors/gfazioli/button"
+              title="Sponsor gfazioli"
+              height="34"
+              width="114"
+              className={classes.sponsor}
+            ></iframe>
             <ActionIcon
               visibleFrom="sm"
               size={36}
               radius={8}
               component="a"
-              href="https://undolog.substack.com/"
+              href="https://undolog.com/"
               target="_blank"
               rel="noreferrer"
               aria-label="Undolog"

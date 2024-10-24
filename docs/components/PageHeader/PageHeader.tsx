@@ -1,4 +1,4 @@
-import { Badge, Container, Group, Text, Title } from "@mantine/core";
+import { Badge, Container, Text, Title } from "@mantine/core";
 import { GithubIcon, NpmIcon } from "@mantinex/dev-icons";
 import {
   IconEdit,
@@ -75,15 +75,6 @@ export function PageHeader({ data }: PageHeaderProps) {
           >
             MIT
           </PageHeaderLink>
-          <Group mt={18}>
-            <a href="https://www.buymeacoffee.com/johnfazioli">
-              <img
-                alt="Buy me a coffee"
-                height={32}
-                src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=johnfazioli&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"
-              />
-            </a>
-          </Group>
         </div>
       </Container>
     </header>
