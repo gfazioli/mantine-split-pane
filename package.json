@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@mantine-tests/core": "^1.1.0",
-    "@mantine/core": "7.13.4",
-    "@mantine/hooks": "7.13.4",
+    "@mantine/core": "7.14.0",
+    "@mantine/hooks": "7.14.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.7",
     "@storybook/addon-essentials": "^7.6.19",
