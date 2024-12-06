@@ -31,6 +31,13 @@ export function PageHeader({ data }: PageHeaderProps) {
             <Badge>v{pack.version}</Badge>
           </PageHeaderLink>
           <PageHeaderLink
+            label="Changelog"
+            icon={<GithubIcon size={16} />}
+            link={data.repositoryUrl + "/releases/tag/" + pack.version}
+          >
+            View the Changelog
+          </PageHeaderLink>
+          <PageHeaderLink
             label="Source"
             icon={<GithubIcon size={16} />}
             link={data.repositoryUrl}
