@@ -2,6 +2,7 @@ import { Badge, Container, Text, Title } from "@mantine/core";
 import { GithubIcon, NpmIcon } from "@mantinex/dev-icons";
 import {
   IconEdit,
+  IconHeartFilled,
   IconLicense,
   IconPackage,
   IconUserCode,
@@ -81,6 +82,13 @@ export function PageHeader({ data }: PageHeaderProps) {
             link={data.licenseUrl}
           >
             MIT
+          </PageHeaderLink>
+          <PageHeaderLink
+            label="Support"
+            icon={<IconHeartFilled color="red" size={18} stroke={1.5} />}
+            link={"https://github.com/sponsors/gfazioli?o=esb"}
+          >
+            Become a sponsor
           </PageHeaderLink>
         </div>
       </Container>

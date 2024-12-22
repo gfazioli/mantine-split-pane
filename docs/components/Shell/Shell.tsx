@@ -78,6 +78,7 @@ export function Shell({ children }: ShellProps) {
               githubLink={PACKAGE_DATA.repositoryUrl}
               withDirectionToggle={false}
               withSearch={false}
+              withSupport={false}
               discordLink={meta.discordLink}
             />
           </Group>
