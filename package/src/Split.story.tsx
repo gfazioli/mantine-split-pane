@@ -88,6 +88,7 @@ export function Styling(p: SplitProps) {
           styles={{
             root: {
               backgroundColor: "red",
+              padding: 5,
             },
           }}
         >
