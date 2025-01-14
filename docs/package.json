@@ -22,7 +22,7 @@
     "@next/mdx": "^14.2.13",
     "@tabler/icons-react": "^3.28.1",
     "@types/mdx": "^2.0.13",
-    "next": "13.4.4",
+    "next": "13.5.8",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "remark-slug": "^7.0.1",
