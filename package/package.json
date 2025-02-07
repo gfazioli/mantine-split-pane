@@ -1,23 +1,23 @@
 {
-  "author" : "Giovambattista Fazioli <giovambattista.fazioli@gmail.com>",
-  "bugs" : "https://github.com/gfazioli/mantine-split-pane/issues",
-  "description" : "A React component that manages split panes allows users to divide and resize content areas within a layout efficiently.",
-  "exports" : {
-    "." : {
-      "import" : {
-        "default" : "./dist/esm/index.mjs",
-        "types" : "./dist/types/index.d.mts"
+  "author": "Giovambattista Fazioli <giovambattista.fazioli@gmail.com>",
+  "bugs": "https://github.com/gfazioli/mantine-split-pane/issues",
+  "description": "A React component that manages split panes allows users to divide and resize content areas within a layout efficiently.",
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/esm/index.mjs",
+        "types": "./dist/types/index.d.mts"
       },
-      "require" : {
-        "default" : "./dist/cjs/index.cjs",
-        "types" : "./dist/types/index.d.ts"
+      "require": {
+        "default": "./dist/cjs/index.cjs",
+        "types": "./dist/types/index.d.ts"
       }
     },
-    "./styles.css" : "./dist/styles.css",
-    "./styles.layer.css" : "./dist/styles.layer.css"
+    "./styles.css": "./dist/styles.css",
+    "./styles.layer.css": "./dist/styles.layer.css"
   },
-  "homepage" : "https://gfazioli.github.io/mantine-split-pane/",
-  "keywords" : [
+  "homepage": "https://gfazioli.github.io/mantine-split-pane/",
+  "keywords": [
     "extension",
     "mantine",
     "react",
@@ -27,18 +27,18 @@
     "pane",
     "resizer"
   ],
-  "license" : "MIT",
-  "main" : "./dist/cjs/index.cjs",
-  "module" : "./dist/esm/index.mjs",
-  "name" : "@gfazioli/mantine-split-pane",
-  "packageManager" : "yarn@4.0.1",
-  "peerDependencies" : {
-    "@mantine/core" : ">=7.0.0",
-    "@mantine/hooks" : ">=7.0.0",
-    "react" : "^18.x || ^19.x",
-    "react-dom" : "^18.x || ^19.x"
+  "license": "MIT",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "name": "@gfazioli/mantine-split-pane",
+  "packageManager": "yarn@4.0.1",
+  "peerDependencies": {
+    "@mantine/core": ">=7.0.0",
+    "@mantine/hooks": ">=7.0.0",
+    "react": "^18.x || ^19.x",
+    "react-dom": "^18.x || ^19.x"
   },
-  "repository" : "https://github.com/gfazioli/mantine-split-pane.git",
-  "types" : "./dist/types/index.d.ts",
-  "version" : "1.0.2"
+  "repository": "https://github.com/gfazioli/mantine-split-pane.git",
+  "types": "./dist/types/index.d.ts",
+  "version": "1.1.0"
 }
