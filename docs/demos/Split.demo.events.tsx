@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { Split } from '@gfazioli/mantine-split-pane';
 import { Code, Paper, Stack } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
-import { useState } from 'react';
 
 function Wrapper(props: any) {
   const [start, setStart] = useState(false);

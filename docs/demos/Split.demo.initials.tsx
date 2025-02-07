@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { Split } from '@gfazioli/mantine-split-pane';
 import { Button, Group, Paper, Stack } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
-import { useState } from 'react';
 
 function Wrapper(props: any) {
   const [mode, setMode] = useState<'horizontal' | 'vertical'>('vertical');

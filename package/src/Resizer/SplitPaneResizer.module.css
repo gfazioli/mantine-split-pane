@@ -10,9 +10,7 @@
   --split-resizer-knob-size-sm: rem(30%);
   --split-resizer-knob-size-md: rem(50%);
   --split-resizer-knob-size-lg: rem(60%);
-  --split-resizer-knob-size-xl: calc(
-    100% - calc(var(--split-resizer-size) / 2)
-  );
+  --split-resizer-knob-size-xl: calc(100% - calc(var(--split-resizer-size) / 2));
   --split-resizer-knob-size: var(--split-resizer-knob-size-xs);
 
   --split-resizer-spacing-xs: rem(2px);
@@ -49,14 +47,11 @@
 
   /* Knob */
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     background-color: var(--split-resizer-knob-color);
     opacity: var(--split-resizer-knob-opacity, 0.4);
-    border-radius: var(
-      --split-resizer-knob-radius,
-      var(--mantine-radius-default)
-    );
+    border-radius: var(--split-resizer-knob-radius, var(--mantine-radius-default));
     z-index: 1;
     transition: all 0.5s ease;
   }
@@ -71,7 +66,7 @@
     }
   }
 
-  &[data-orientation="vertical"] {
+  &[data-orientation='vertical'] {
     width: var(--split-resizer-size);
     cursor: var(--split-resizer-cursor-vertical);
     margin-left: var(--split-resizer-spacing);
@@ -90,7 +85,7 @@
     }
   }
 
-  &[data-orientation="horizontal"] {
+  &[data-orientation='horizontal'] {
     height: var(--split-resizer-size);
     cursor: var(--split-resizer-cursor-horizontal);
     margin-top: var(--split-resizer-spacing);
@@ -127,7 +122,7 @@
   border-radius: 0;
 
   &:after {
-    content: "";
+    content: '';
     opacity: 1;
     display: flex;
     border: none;
@@ -135,22 +130,18 @@
     border-radius: 0;
   }
 
-  &[data-orientation="vertical"] {
+  &[data-orientation='vertical'] {
     &:after {
       width: 2px;
-      left: calc(
-        var(--split-resizer-size) - calc(var(--split-resizer-size) / 2) - 2px
-      );
+      left: calc(var(--split-resizer-size) - calc(var(--split-resizer-size) / 2) - 2px);
       border: none;
       border-right: 4px dotted var(--split-resizer-color);
     }
   }
 
-  &[data-orientation="horizontal"] {
+  &[data-orientation='horizontal'] {
     &:after {
-      top: calc(
-        var(--split-resizer-size) - calc(var(--split-resizer-size) / 2) - 2px
-      );
+      top: calc(var(--split-resizer-size) - calc(var(--split-resizer-size) / 2) - 2px);
       height: 2px;
       border: none;
       border-bottom: 4px dotted var(--split-resizer-color);
@@ -169,13 +160,13 @@
 }
 
 .root--dashed {
-  &[data-orientation="vertical"] {
+  &[data-orientation='vertical'] {
     &:after {
       border-right-style: dashed;
     }
   }
 
-  &[data-orientation="horizontal"] {
+  &[data-orientation='horizontal'] {
     &:after {
       border-bottom-style: dashed;
     }

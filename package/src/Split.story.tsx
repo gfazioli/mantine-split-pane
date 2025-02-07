@@ -1,61 +1,54 @@
-import { Box, Button, Paper, Space, Stack } from "@mantine/core";
-import React from "react";
-import { Split, type SplitProps } from "./Split";
+import React from 'react';
+import { Box, Button, Paper, Space, Stack } from '@mantine/core';
+import { Split, type SplitProps } from './Split';
 
 export default {
-  title: "Split",
+  title: 'Split',
   args: {
     inline: false,
-    orientation: "vertical",
-    size: "sm",
+    orientation: 'vertical',
+    size: 'sm',
     opacity: 0.8,
-    radius: "xl",
-    knobSize: "sm",
-    spacing: "xs",
+    radius: 'xl',
+    knobSize: 'sm',
+    spacing: 'xs',
     withKnob: false,
     knobAlwaysOn: true,
-    variant: "default",
-    cursorVertical: "row-resize",
-    cursorHorizontal: "col-resize",
+    variant: 'default',
+    cursorVertical: 'row-resize',
+    cursorHorizontal: 'col-resize',
   },
   argTypes: {
-    inline: { control: { type: "boolean" } },
-    withKnob: { control: { type: "boolean" } },
-    knobAlwaysOn: { control: { type: "boolean" } },
+    inline: { control: { type: 'boolean' } },
+    withKnob: { control: { type: 'boolean' } },
+    knobAlwaysOn: { control: { type: 'boolean' } },
     orientation: {
-      control: { type: "inline-radio" },
-      options: ["horizontal", "vertical"],
+      control: { type: 'inline-radio' },
+      options: ['horizontal', 'vertical'],
     },
     variant: {
-      control: { type: "inline-radio" },
-      options: [
-        "default",
-        "filled",
-        "outline",
-        "transparent",
-        "dotted",
-        "dashed",
-      ],
+      control: { type: 'inline-radio' },
+      options: ['default', 'filled', 'outline', 'transparent', 'dotted', 'dashed'],
     },
     size: {
-      control: { type: "inline-radio" },
-      options: ["xs", "sm", "md", "lg", "xl"],
+      control: { type: 'inline-radio' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
-    opacity: { control: { type: "range", min: 0, max: 1, step: 0.1 } },
+    opacity: { control: { type: 'range', min: 0, max: 1, step: 0.1 } },
     radius: {
-      control: { type: "inline-radio" },
-      options: ["xs", "sm", "md", "lg", "xl"],
+      control: { type: 'inline-radio' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     knobSize: {
-      control: { type: "inline-radio" },
-      options: ["xs", "sm", "md", "lg", "xl"],
+      control: { type: 'inline-radio' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     spacing: {
-      control: { type: "inline-radio" },
-      options: ["xs", "sm", "md", "lg", "xl"],
+      control: { type: 'inline-radio' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
-    color: { control: { type: "color" } },
-    hoverColor: { control: { type: "color" } },
+    color: { control: { type: 'color' } },
+    hoverColor: { control: { type: 'color' } },
   },
 };
 
@@ -87,7 +80,7 @@ export function Styling(p: SplitProps) {
           minWidth={0}
           styles={{
             root: {
-              backgroundColor: "red",
+              backgroundColor: 'red',
               padding: 5,
             },
           }}
@@ -129,15 +122,15 @@ export function Grow(p: SplitProps) {
 
 export function ThreePanel(p: SplitProps) {
   return (
-    <Box p={40} style={{ border: "1px solid red" }}>
-      <Split w="100%" style={{ border: "1px solid blue" }}>
+    <Box p={40} style={{ border: '1px solid red' }}>
+      <Split w="100%" style={{ border: '1px solid blue' }}>
         <Split.Pane minWidth={100} initialWidth={200}>
           <Paper withBorder w="100%">
             <h1>Pane 1</h1>
           </Paper>
         </Split.Pane>
 
-        <Split.Pane initialWidth={"calc(100% - 400px)"}>
+        <Split.Pane initialWidth={'calc(100% - 400px)'}>
           <Paper withBorder w="100%">
             <h1>Pane 2</h1>
           </Paper>
@@ -191,7 +184,7 @@ export function ChangeWidth(p: SplitProps) {
   const [initialWidth, setInitialWidth] = React.useState(300);
 
   const handleResize = ({ width }) => {
-    console.log("!!!!!!", { width });
+    console.log('!!!!!!', { width });
 
     setInitialWidth(parseInt(width, 10));
   };
@@ -203,7 +196,7 @@ export function ChangeWidth(p: SplitProps) {
           <Split.Pane
             initialWidth={initialWidth}
             onResizeEnd={handleResize}
-            onResizing={(size) => console.log("onResizing", { size })}
+            onResizing={(size) => console.log('onResizing', { size })}
           >
             <Paper withBorder>
               <h1>Pane 1</h1>
@@ -217,9 +210,7 @@ export function ChangeWidth(p: SplitProps) {
           </Split.Pane>
         </Split>
       </div>
-      <Button onClick={() => setInitialWidth((w) => w + 100)}>
-        Increase width
-      </Button>
+      <Button onClick={() => setInitialWidth((w) => w + 100)}>Increase width</Button>
       <p>{initialWidth}</p>
     </Stack>
   );
@@ -237,8 +228,8 @@ export function Usage(p: SplitProps) {
         <Split.Pane>
           <h1>Right</h1>
           <p>
-            Lorem ipsum dolor sit amet, Nulla facilisi. Nullam auctor, libero
-            auctor bibendum aliquet, er
+            Lorem ipsum dolor sit amet, Nulla facilisi. Nullam auctor, libero auctor bibendum
+            aliquet, er
           </p>
         </Split.Pane>
       </Split>
@@ -261,8 +252,8 @@ export function Usage(p: SplitProps) {
         <Split.Pane grow>
           <h1>Right</h1>
           <p>
-            Lorem ipsum dolor sit amet, Nulla facilisi. Nullam auctor, libero
-            auctor bibendum aliquet, er
+            Lorem ipsum dolor sit amet, Nulla facilisi. Nullam auctor, libero auctor bibendum
+            aliquet, er
           </p>
         </Split.Pane>
       </Split>
@@ -343,7 +334,7 @@ export function DoubleClick(p: SplitProps) {
   const [initialWidth, setInitialWidth] = React.useState(300);
 
   const handleDoubleClick = () => {
-    console.log("double click");
+    console.log('double click');
 
     setInitialWidth(initialWidth === 300 ? 100 : 300);
   };
@@ -351,10 +342,7 @@ export function DoubleClick(p: SplitProps) {
   return (
     <div style={{ padding: 40 }}>
       <Split>
-        <Split.Pane
-          initialWidth={initialWidth}
-          onDoubleClick={handleDoubleClick}
-        >
+        <Split.Pane initialWidth={initialWidth} onDoubleClick={handleDoubleClick}>
           <h1>Pane 1</h1>
         </Split.Pane>
         <Split.Pane>

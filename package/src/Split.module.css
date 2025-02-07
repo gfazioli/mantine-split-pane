@@ -1,6 +1,6 @@
 .root {
   display: var(--split-inline, 'flex');
-  &[data-orientation="horizontal"] {
+  &[data-orientation='horizontal'] {
     flex-direction: column;
   }
 }

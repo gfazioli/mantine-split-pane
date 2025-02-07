@@ -1,10 +1,10 @@
 import {
   Box,
   BoxProps,
-  Factory,
-  StylesApiProps,
   createVarsResolver,
+  Factory,
   factory,
+  StylesApiProps,
   useProps,
   useStyles,
 } from '@mantine/core';
@@ -209,7 +209,9 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
           step={step === undefined ? stepContext : step}
           shiftStep={shiftStep === undefined ? shiftStepContext : shiftStep}
           cursorVertical={cursorVertical === undefined ? cursorVerticalContext : cursorVertical}
-          cursorHorizontal={cursorHorizontal === undefined ? cursorHorizontalContext : cursorHorizontal}
+          cursorHorizontal={
+            cursorHorizontal === undefined ? cursorHorizontalContext : cursorHorizontal
+          }
         />
       )}
     </>

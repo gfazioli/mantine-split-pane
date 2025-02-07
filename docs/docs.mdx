@@ -11,12 +11,12 @@ After installation import package styles at the root of your application:
 ```tsx
 import '@gfazioli/mantine-split-pane/styles.css';
 ```
-You can import styles within a layer `@layer mantine-split-pane` by importing `@gfazioli/mantine-split-pane/styles.layer.css` file. 
+
+You can import styles within a layer `@layer mantine-split-pane` by importing `@gfazioli/mantine-split-pane/styles.layer.css` file.
 
 ```tsx
 import '@gfazioli/mantine-split-pane/styles.layer.css';
 ```
-
 
 ## Usage
 
@@ -33,15 +33,14 @@ The `Split.Pane` component is a child component of `Split` and allows setting so
 
 <Demo data={demos.pane} />
 
-
 ## Multiple Panes
 
 You can add as many panes as you want, and you can also set the `minWidth` and `maxWidth` props for each pane alogn with other props.
 
 <Demo data={demos.multiple} />
 
-> **Note well** 
-> 
+> **Note well**
+>
 > Obviously, you **cannot** set the `minWidth` and `maxWidth` from the `Split` component, as these props are specific to each individual `Split.Pane`. As well as you **cannot** set the `orientation` of the `Split.Pane` component, as this is specific to the `Split` component.
 
 The below code **won't work**:
@@ -134,15 +133,15 @@ Try to change the layout and refresh the page to see the layout restored.
 
 ## Accessibility
 
-You may also use the Keyboard to navigate through the panes. Use the `Tab` key to navigate through the resizer and the <Kbd>Arrow</Kbd> keys to resize the panes. You may use <Kbd>◀︎</Kbd> <Kbd>▶︎</Kbd>  for horizontal panes and <Kbd>▼</Kbd> <Kbd>▲</Kbd> for vertical panes.
+You may also use the Keyboard to navigate through the panes. Use the `Tab` key to navigate through the resizer and the <Kbd>Arrow</Kbd> keys to resize the panes. You may use <Kbd>◀︎</Kbd> <Kbd>▶︎</Kbd> for horizontal panes and <Kbd>▼</Kbd> <Kbd>▲</Kbd> for vertical panes.
 
-By default, the `Arrow` keys will resize the panes by `8` pixel, but you can change this value using the `step` prop. 
+By default, the `Arrow` keys will resize the panes by `8` pixel, but you can change this value using the `step` prop.
 Keeping the <Kbd>SHIFT</Kbd> key pressed while using the `Arrow` keys will resize the panes by `64` pixel, but you can change this value using the `shiftStep` prop.
 
 <Demo data={demos.accessibility} />
 
-> **Note well** 
-> 
+> **Note well**
+>
 > The `step` and `shiftStep` props are accessible both for the `Split` and `Split.Pane` components. Obviously, the `step` and `shiftStep` props of the `Split.Pane` component will override the `step` and `shiftStep` props of the `Split` component.
 >
 > ```tsx

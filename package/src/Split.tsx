@@ -1,14 +1,14 @@
+import React from 'react';
 import {
   Box,
   BoxProps,
-  Factory,
-  StylesApiProps,
   createVarsResolver,
+  Factory,
   factory,
+  StylesApiProps,
   useProps,
   useStyles,
 } from '@mantine/core';
-import React from 'react';
 import { SplitPane } from './Pane/SplitPane';
 import { SplitPaneResizerSharedProps, SplitPaneResizerVariant } from './Resizer/SplitPaneResizer';
 import { SplitContextProvider } from './Split.context';
@@ -112,7 +112,7 @@ export const Split = factory<SplitFactory>((_props, ref) => {
   const content = childrenArray.map((child, index) => {
     const withResizer = index < childrenArray.length - 1;
 
-    return React.cloneElement(child as JSX.Element, {
+    return React.cloneElement(child as React.ReactElement<any>, {
       key: `pane-${index}`,
       withResizer,
     });

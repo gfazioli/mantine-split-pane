@@ -5,11 +5,11 @@
   overflow: hidden;
   flex: var(--split-pane-grow, initial);
 
-  &[data-orientation="vertical"] {
+  &[data-orientation='vertical'] {
     flex-direction: row;
   }
 
-  &[data-orientation="horizontal"] {
+  &[data-orientation='horizontal'] {
     flex-direction: column;
   }
 }

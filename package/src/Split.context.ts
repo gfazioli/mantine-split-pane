@@ -1,4 +1,4 @@
-import { MantineSpacing, createSafeContext } from '@mantine/core';
+import { createSafeContext, MantineSpacing } from '@mantine/core';
 import { SplitPaneResizerProps } from './Resizer/SplitPaneResizer';
 import { SPLIT_ERRORS } from './Split.errors';
 
