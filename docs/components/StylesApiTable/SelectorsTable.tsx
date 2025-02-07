@@ -1,5 +1,5 @@
-import { Table, TableProps } from '@mantine/core';
-import { HtmlText } from '../HtmlText';
+import React from 'react';
+import { Table, TableProps, Text } from '@mantine/core';
 import { TableInlineCode } from '../TableInlineCode';
 import type { StylesApiData } from './StylesApiTable';
 
@@ -24,7 +24,7 @@ export function SelectorsTable({
         </TableInlineCode>
       </Table.Td>
       <Table.Td>
-        <HtmlText fz="sm">{data.selectors[selector]}</HtmlText>
+        <Text fz="sm">{data.selectors[selector]}</Text>
       </Table.Td>
     </Table.Tr>
   ));

@@ -1,38 +1,40 @@
 {
-  "name": "mantine-minimal-next-template",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --port 9281",
-    "build": "next build",
-    "start": "next start"
-  },
   "dependencies": {
     "@gfazioli/mantine-split-pane": "workspace:*",
-    "@mantine/core": "7.16.0",
-    "@mantine/hooks": "7.16.0",
+    "@mantine/core": "7.16.2",
+    "@mantine/dates": "^7.16.2",
+    "@mantine/hooks": "7.16.2",
     "@mantinex/demo": "^1.2.0",
     "@mantinex/dev-icons": "^1.1.0",
     "@mantinex/mantine-header": "^1.1.0",
     "@mantinex/mantine-logo": "^1.1.0",
     "@mantinex/mantine-meta": "^1.0.2",
     "@mantinex/shiki": "^1.1.0",
-    "@mdx-js/loader": "^3.0.1",
-    "@mdx-js/react": "^3.0.1",
-    "@next/mdx": "^14.2.13",
-    "@tabler/icons-react": "^3.28.1",
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "@next/mdx": "^15.1.6",
+    "@tabler/icons-react": "^3.29.0",
     "@types/mdx": "^2.0.13",
-    "next": "13.5.8",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "next": "15.1.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "remark-slug": "^7.0.1",
-    "shikiji": "^0.7.4",
-    "type-fest": "^4.6.0"
+    "shikiji": "^0.10.2",
+    "type-fest": "^4.33.0"
   },
   "devDependencies": {
-    "@types/node": "^20.8.9",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "typescript": "5.2.2"
-  }
+    "@types/node": "^22.13.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "5.7.3"
+  },
+  "name": "extension-template-docs",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 9281",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.1.0"
 }

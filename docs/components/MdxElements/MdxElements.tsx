@@ -1,9 +1,9 @@
+import React from 'react';
+import cx from 'clsx';
+import type { MDXComponents } from 'mdx/types';
 import { Anchor, Code, Image, Title } from '@mantine/core';
 import { Demo } from '@mantinex/demo';
 import { CodeHighlight } from '@mantinex/shiki';
-import cx from 'clsx';
-import type { MDXComponents } from 'mdx/types';
-import React from 'react';
 import { MdxInfo } from '../MdxInfo/MdxInfo';
 import classes from './MdxElements.module.css';
 
@@ -30,6 +30,7 @@ export const h = (order: 1 | 2 | 3 | 4 | 5 | 6) => (props: any) => (
 );
 
 function getLanguage(children: any) {
+  // @ts-ignore
   const matches = (children.props.className || '').match(/language-(?<lang>.*)/);
   return matches && matches.groups && matches.groups.lang ? matches.groups.lang : 'tsx';
 }

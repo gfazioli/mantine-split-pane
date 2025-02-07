@@ -1,3 +1,5 @@
+import React from 'react';
+import cx from 'clsx';
 import {
   ActionIcon,
   AppShell,
@@ -6,15 +8,13 @@ import {
   RemoveScroll,
   Title,
   useMantineColorScheme,
-} from "@mantine/core";
-import { useHotkeys } from "@mantine/hooks";
-import { ColorSchemeControl, HeaderControls } from "@mantinex/mantine-header";
-import { MantineLogo } from "@mantinex/mantine-logo";
-import { meta } from "@mantinex/mantine-meta";
-import cx from "clsx";
-import React from "react";
-import { PACKAGE_DATA } from "../../data";
-import classes from "./Shell.module.css";
+} from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
+import { ColorSchemeControl, HeaderControls } from '@mantinex/mantine-header';
+import { MantineLogo } from '@mantinex/mantine-logo';
+import { meta } from '@mantinex/mantine-meta';
+import { PACKAGE_DATA } from '../../data';
+import classes from './Shell.module.css';
 
 interface ShellProps {
   children: React.ReactNode;
@@ -22,25 +22,25 @@ interface ShellProps {
 
 export function Shell({ children }: ShellProps) {
   const { toggleColorScheme } = useMantineColorScheme();
-  useHotkeys([["mod + J", toggleColorScheme]]);
+  useHotkeys([['mod + J', toggleColorScheme]]);
 
   // get the package name
   const packageName = PACKAGE_DATA.packageName
-    .replace("@gfazioli/", "")
-    .replaceAll("-", " ")
-    .split(" ")
+    .replace('@gfazioli/', '')
+    .replaceAll('-', ' ')
+    .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+    .join(' ');
 
   return (
     <AppShell header={{ height: 60 }}>
-      <AppShell.Header className={RemoveScroll.classNames.zeroRight}>
+      <AppShell.Header className={cx(RemoveScroll.classNames.zeroRight, classes.header)}>
         <Container size="lg" px="md" className={classes.inner}>
           <Group>
             <a
               href="https://mantine.dev/"
               target="_blank"
-              className={cx("mantine-focus-auto", classes.logo)}
+              className={cx('mantine-focus-auto', classes.logo)}
               rel="noreferrer"
             >
               <MantineLogo size={30} type="mark" />

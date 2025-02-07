@@ -6,21 +6,22 @@
 
 .title {
   color: var(--mantine-color-bright);
-  font-size: rem(32px);
-  letter-spacing: rem(-0.5px);
+  font-size: 32px;
+  letter-spacing: -0.5px;
+  font-weight: 500;
 
-  @media (max-width: $mantine-breakpoint-sm) {
-    font-size: rem(24px);
+  @mixin smaller-than $mantine-breakpoint-sm {
+    font-size: 24px;
   }
 }
 
 .description {
   margin-top: var(--mantine-spacing-md);
-  max-width: rem(600px);
+  max-width: 600px;
   font-size: var(--mantine-font-size-lg);
   color: var(--mantine-color-dimmed);
 
-  @media (max-width: $mantine-breakpoint-sm) {
+  @mixin smaller-than $mantine-breakpoint-sm {
     margin-top: var(--mantine-spacing-xs);
     font-size: var(--mantine-font-size-sm);
   }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Title } from '@mantine/core';
-import { TableError } from '../TableError';
 import { getComponentName } from '../PropsTable';
+import { TableError } from '../TableError';
+import { ModifiersTable } from './ModifiersTable';
 import { SelectorsTable } from './SelectorsTable';
 import { VariablesTable } from './VariablesTable';
-import { ModifiersTable } from './ModifiersTable';
 import classes from './StylesApiTable.module.css';
 
 export interface StylesApiData {

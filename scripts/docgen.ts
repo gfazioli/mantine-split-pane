@@ -1,5 +1,5 @@
-import { generateDeclarations } from 'mantine-docgen-script';
 import path from 'path';
+import { generateDeclarations } from 'mantine-docgen-script';
 
 const getComponentPath = (componentPath: string) =>
   path.join(process.cwd(), 'package/src', componentPath);

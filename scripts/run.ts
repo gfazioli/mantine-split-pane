@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import signale from 'signale';
 
 interface RunMessages {

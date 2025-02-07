@@ -2,52 +2,35 @@
   & code {
     font-family: var(--mantine-font-family-monospace);
     line-height: var(--mantine-line-height);
-    padding: rem(2px) calc(var(--mantine-spacing-xs) / 2);
+    padding: 2px calc(var(--mantine-spacing-xs) / 2);
     border-radius: var(--mantine-radius-sm);
     font-size: var(--mantine-font-size-xs);
     margin: 0;
-
-    @mixin light {
-      background-color: var(--mantine-color-gray-1);
-      color: var(--mantine-color-black);
-    }
-
-    @mixin dark {
-      background-color: var(--mantine-color-dark-5);
-      color: var(--mantine-color-white);
-    }
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+    color: var(--mantine-color-bright);
   }
 }
 
 .groupsHeader {
-  margin-bottom: rem(30px);
+  margin-bottom: 30px;
 }
 
 .group {
-  --_group-spacing: rem(40px);
-
   & + & {
-    margin-top: var(--_group-spacing);
-    padding-top: var(--_group-spacing);
-    border-top: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-3));
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-3));
   }
 }
 
 .title {
-  font-family: var(--docs-font-primary);
   margin-bottom: var(--mantine-spacing-sm);
-
-  @mixin light {
-    color: var(--mantine-color-black);
-  }
-
-  @mixin dark {
-    color: var(--mantine-color-white);
-  }
+  font-weight: 500;
+  color: var(--mantine-color-bright);
 }
 
 .section {
   & + & {
-    margin-top: rem(40px);
+    margin-top: 40px;
   }
 }

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Tabs } from '@mantine/core';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { Tabs } from '@mantine/core';
 import { PropsTablesList } from '../PropsTable';
+import { StylesApiTablesList } from '../StylesApiTable';
 import { TableOfContents } from '../TableOfContents';
 import classes from './DocsTabs.module.css';
-import { StylesApiTablesList } from '../StylesApiTable';
 
 interface DocsTabsProps {
   children: React.ReactNode;

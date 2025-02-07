@@ -11,9 +11,9 @@
 
 .label {
   color: var(--mantine-color-dimmed);
-  flex: 0 0 rem(80px);
+  flex: 0 0 80px;
 
-  @media (max-width: $mantine-breakpoint-sm) {
+  @mixin smaller-than $mantine-breakpoint-sm {
     display: none;
   }
 }
@@ -30,13 +30,13 @@
     text-decoration: underline;
   }
 
-  @media (max-width: $mantine-breakpoint-sm) {
-    min-height: rem(24px);
+  @mixin smaller-than $mantine-breakpoint-sm {
+    min-height: 24px;
   }
 }
 
 .icon {
-  width: rem(18px);
+  width: 18px;
 
   & svg {
     display: block;

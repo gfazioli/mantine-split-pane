@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Text, Highlight } from '@mantine/core';
-import { TableInlineCode } from '../TableInlineCode';
+import { Highlight, Table, Text } from '@mantine/core';
 import { TableError } from '../TableError';
+import { TableInlineCode } from '../TableInlineCode';
 
 export interface DocgenProp {
   defaultValue: {
