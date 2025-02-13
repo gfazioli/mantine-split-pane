@@ -1,5 +1,3 @@
-import '@gfazioli/mantine-split-pane/styles.css';
-
 import { MantineProvider } from '@mantine/core';
 
 import '@mantine/core/styles.css';
@@ -9,6 +7,7 @@ import '@mantinex/mantine-logo/styles.css';
 
 import { ShikiProvider } from '@mantinex/shiki';
 
+import '@gfazioli/mantine-split-pane/styles.css';
 import '@mantinex/shiki/styles.css';
 
 import { AppProps } from 'next/app';
