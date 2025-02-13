@@ -1,23 +1,22 @@
 # Mantine Split pane Component
 
-<p align="center">
-  <img alt="" src="https://github.com/gfazioli/mantine-split-pane/assets/432181/638a5ca0-040c-4114-a08f-67ce7b24dec5" />
-</p>
+<div align="center">
+
+  ![Image](https://github.com/gfazioli/mantine-split-pane/assets/432181/638a5ca0-040c-4114-a08f-67ce7b24dec5)
+
+</div>
 
 ---
 
-<p align="center">
-  <a aria-label="NPM version" href="https://www.npmjs.com/package/@gfazioli/mantine-split-pane">
-    <img alt="NPM version" src="https://img.shields.io/npm/v/%40gfazioli%2Fmantine-split-pane?style=for-the-badge">
-  </a>
-  
-  <a aria-label="NPM version" href="https://www.npmjs.com/package/@gfazioli/mantine-split-pane">
-    <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/%40gfazioli%2Fmantine-split-pane?style=for-the-badge">
-  </a>
+<div align="center">
 
-  <img alt="NPM License" src="https://img.shields.io/npm/l/%40gfazioli%2Fmantine-split-pane?style=for-the-badge">
+  [![NPM version](https://img.shields.io/npm/v/%40gfazioli%2Fmantine-split-pane?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-split-pane)
+  [![NPM Downloads](https://img.shields.io/npm/dm/%40gfazioli%2Fmantine-split-pane?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-split-pane)
+  [![NPM Downloads](https://img.shields.io/npm/dy/%40gfazioli%2Fmantine-split-pane?style=for-the-badge&label=%20&color=f90)](https://www.npmjs.com/package/@gfazioli/mantine-split-pane)
+  ![NPM License](https://img.shields.io/npm/l/%40gfazioli%2Fmantine-split-pane?style=for-the-badge)
 
-</p>
+
+</div>
 
 ## Overview
 

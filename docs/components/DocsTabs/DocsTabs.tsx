@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Tabs } from '@mantine/core';
+import { IconAdjustments, IconCode, IconFileText } from '@tabler/icons-react';
+import { Container, Tabs } from '@mantine/core';
 import { PropsTablesList } from '../PropsTable';
 import { StylesApiTablesList } from '../StylesApiTable';
 import { TableOfContents } from '../TableOfContents';
@@ -38,7 +39,7 @@ export function DocsTabs({
 
   return (
     <Tabs
-      variant="outline"
+      variant="pills"
       value={activeTab}
       classNames={{ root: classes.root, list: classes.tabsList, tab: classes.tab }}
       keepMounted={false}
@@ -49,42 +50,65 @@ export function DocsTabs({
       }}
     >
       <div className={classes.tabsWrapper}>
-        <Tabs.List>
-          <Tabs.Tab value="docs">Documentation</Tabs.Tab>
-          {hasProps && <Tabs.Tab value="props">Props</Tabs.Tab>}
-          {hasStyles && <Tabs.Tab value="styles-api">Styles API</Tabs.Tab>}
-        </Tabs.List>
+        <Container size="lg">
+          <Tabs.List>
+            <Tabs.Tab value="docs">
+              <div className={classes.tabInner}>
+                <IconFileText size={20} stroke={1.5} className={classes.tabIcon} />
+                Documentation
+              </div>
+            </Tabs.Tab>
+            {hasProps && (
+              <Tabs.Tab value="props">
+                <div className={classes.tabInner}>
+                  <IconCode size={20} stroke={1.5} className={classes.tabIcon} />
+                  Props
+                </div>
+              </Tabs.Tab>
+            )}
+            {hasStyles && (
+              <Tabs.Tab value="styles-api">
+                <div className={classes.tabInner}>
+                  <IconAdjustments size={20} stroke={1.5} className={classes.tabIcon} />
+                  Styles API
+                </div>
+              </Tabs.Tab>
+            )}
+          </Tabs.List>
+        </Container>
       </div>
 
-      <Tabs.Panel value="docs">
-        <div className={classes.tabContent} data-main>
-          <div className={classes.main} id="mdx">
-            {children}
+      <Container size="lg">
+        <Tabs.Panel value="docs">
+          <div className={classes.tabContent} data-main>
+            <div className={classes.main} id="mdx">
+              {children}
+            </div>
+
+            <div className={classes.tableOfContents}>
+              <TableOfContents withTabs />
+            </div>
           </div>
+        </Tabs.Panel>
 
-          <div className={classes.tableOfContents}>
-            <TableOfContents withTabs />
+        <Tabs.Panel value="props">
+          <div className={classes.tabContent} data-secondary>
+            <PropsTablesList components={componentsProps!} data={docgen} />
           </div>
-        </div>
-      </Tabs.Panel>
+        </Tabs.Panel>
 
-      <Tabs.Panel value="props">
-        <div className={classes.tabContent} data-secondary>
-          <PropsTablesList components={componentsProps!} data={docgen} />
-        </div>
-      </Tabs.Panel>
-
-      <Tabs.Panel value="styles-api">
-        <div className={classes.tabContent} data-secondary>
-          {stylesApiData && (
-            <StylesApiTablesList
-              data={stylesApiData}
-              components={componentsStyles!}
-              componentPrefix={componentPrefix}
-            />
-          )}
-        </div>
-      </Tabs.Panel>
+        <Tabs.Panel value="styles-api">
+          <div className={classes.tabContent} data-secondary>
+            {stylesApiData && (
+              <StylesApiTablesList
+                data={stylesApiData}
+                components={componentsStyles!}
+                componentPrefix={componentPrefix}
+              />
+            )}
+          </div>
+        </Tabs.Panel>
+      </Container>
     </Tabs>
   );
 }

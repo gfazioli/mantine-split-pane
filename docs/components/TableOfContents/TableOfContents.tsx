@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
-import { IconList } from '@tabler/icons-react';
-import { Box, Group, rem, ScrollArea, Space, Text } from '@mantine/core';
+import { Box, ScrollArea, Space, Text } from '@mantine/core';
 import { useScrollSpy } from '@mantine/hooks';
 import classes from './TableOfContents.module.css';
 
@@ -43,10 +42,7 @@ export function TableOfContents({ withTabs }: TableOfContentsProps) {
     <Box component="nav" mod={{ 'with-tabs': withTabs }} className={classes.wrapper}>
       <div className={classes.inner}>
         <div>
-          <Group mb="md">
-            <IconList style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
-            <Text className={classes.title}>Table of contents</Text>
-          </Group>
+          <Text className={classes.title}>Table of contents</Text>
           <ScrollArea.Autosize mah="calc(100vh - 172px)" type="never">
             <div className={classes.items}>{items}</div>
             <Space h="xl" />

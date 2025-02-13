@@ -1,7 +1,7 @@
 .root {
-  padding-top: rem(60px);
-  padding-bottom: rem(40px);
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+  padding-top: 60px;
+  padding-bottom: 40px;
+  background-color: var(--mantine-color-body);
 }
 
 .title {

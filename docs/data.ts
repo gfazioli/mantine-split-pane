@@ -28,7 +28,7 @@ export const PACKAGE_DATA: PackageData = {
   packageName: '@gfazioli/mantine-split-pane',
   packageDescription:
     'A Mantine component that manages split panes allows users to divide and resize content areas within a layout efficiently',
-  mdxFileUrl: 'https://github.com/gfazioli/mantine-split-pane/blob/master/docs/pages/index.mdx',
+  mdxFileUrl: 'https://github.com/gfazioli/mantine-split-pane/blob/master/docs/docs.mdx',
   repositoryUrl: 'https://github.com/gfazioli/mantine-split-pane',
   licenseUrl: 'https://github.com/gfazioli/mantine-split-pane/blob/master/LICENSE',
   author: {

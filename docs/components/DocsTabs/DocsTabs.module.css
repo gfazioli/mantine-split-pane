@@ -1,105 +1,96 @@
-.root {
-  --docs-table-of-contents-width: rem(260px);
-}
-
 .tabsWrapper {
-  @mixin light {
-    background-color: var(--mantine-color-gray-0);
-    border-bottom: rem(1px) solid var(--mantine-color-gray-2);
-  }
-
-  @mixin dark {
-    background-color: var(--mantine-color-dark-8);
-    border-bottom: rem(1px) solid var(--mantine-color-dark-6);
-  }
-}
-
-.tabsList {
-  max-width: rem(1140px);
-  padding-left: var(--mantine-spacing-md);
-  padding-right: var(--mantine-spacing-md);
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: rem(-1px);
-
-  &::before {
-    @mixin light {
-      border-color: var(--mantine-color-gray-2);
-    }
-
-    @mixin dark {
-      border-color: var(--mantine-color-dark-6);
-    }
-  }
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  padding-bottom: var(--mantine-spacing-md);
 }
 
 .tab {
   font-size: var(--mantine-font-size-md);
   font-weight: 500;
-  height: rem(46px);
-  padding-left: var(--mantine-spacing-lg);
-  padding-right: var(--mantine-spacing-lg);
-  background-color: transparent;
+  height: 42px;
+  padding-inline-start: var(--mantine-spacing-sm);
+  padding-inline-end: var(--mantine-spacing-lg);
+  border: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  color: var(--mantine-color-bright);
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
 
-  @media (max-width: $docs-mdx-breakpoint) {
+  @mixin hover {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
+  }
+
+  @mixin smaller-than $mantine-breakpoint-md {
     font-size: var(--mantine-font-size-sm);
     padding-left: var(--mantine-spacing-md);
     padding-right: var(--mantine-spacing-md);
   }
 
   &[data-active] {
-    background-color: var(--mantine-color-body);
+    border-color: transparent;
+    color: light-dark(var(--mantine-color-white), var(--mantine-color-black));
+    background-color: light-dark(var(--mantine-color-gray-9), var(--mantine-color-gray-1));
 
-    @mixin light {
-      color: var(--mantine-color-black);
-      border-color: var(--mantine-color-gray-2);
-      border-bottom-color: transparent;
-    }
-
-    @mixin dark {
-      color: var(--mantine-color-white);
-      border-color: var(--mantine-color-dark-6);
-      border-bottom-color: transparent;
+    .tabIcon {
+      color: inherit;
     }
   }
 }
 
-.tabContent {
-  max-width: rem(1140px);
-  padding-left: var(--mantine-spacing-md);
-  padding-right: var(--mantine-spacing-md);
-  padding-top: var(--mantine-spacing-xs);
-  margin-left: auto;
-  margin-right: auto;
+.tabInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: var(--mantine-spacing-xs);
+}
 
-  &[data-main] {
-    display: flex;
-    position: relative;
-    justify-content: space-between;
-  }
+.tabIcon {
+  color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-1));
 
-  &[data-secondary] {
-    margin-top: rem(24px);
+  @mixin smaller-than $mantine-breakpoint-md {
+    display: none;
   }
 }
 
 .main {
-  width: calc(100% - var(--docs-table-of-contents-width));
-  max-width: var(--docs-mdx-content-width);
-  margin-left: auto;
-  margin-right: auto;
-
-  @media (max-width: $docs-mdx-breakpoint) {
-    width: 100%;
-    padding-right: 0;
-  }
+  position: relative;
+  width: 100%;
 }
 
 .tableOfContents {
-  flex: 0 0 var(--docs-table-of-contents-width);
-  margin-top: var(--mantine-spacing-xl);
+  flex: 0 0 280px;
+  padding-top: 45px;
+  position: sticky;
+  z-index: 1;
+  top: calc(var(--app-shell-header-height) - 30px);
+  left: 0;
 
-  @media (max-width: $docs-mdx-breakpoint) {
+  @mixin smaller-than $mantine-breakpoint-md {
     display: none;
   }
+}
+
+.tabContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &[data-main] {
+    flex-direction: row;
+    align-items: flex-start;
+    max-width: calc(100% - 280px);
+
+    @mixin smaller-than $mantine-breakpoint-md {
+      max-width: 100%;
+    }
+  }
+
+  &[data-secondary] {
+    padding-top: 45px;
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  justify-content: space-between;
+  max-width: 100%;
 }

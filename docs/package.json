@@ -1,9 +1,18 @@
 {
+  "name": "extension-template-docs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 9281",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
     "@gfazioli/mantine-split-pane": "workspace:*",
-    "@mantine/core": "7.16.2",
-    "@mantine/dates": "^7.16.2",
-    "@mantine/hooks": "7.16.2",
+    "@mantine/core": "7.16.3",
+    "@mantine/dates": "^7.16.3",
+    "@mantine/hooks": "7.16.3",
     "@mantinex/demo": "^1.2.0",
     "@mantinex/dev-icons": "^1.1.0",
     "@mantinex/mantine-header": "^1.1.0",
@@ -13,7 +22,7 @@
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.1.6",
-    "@tabler/icons-react": "^3.29.0",
+    "@tabler/icons-react": "^3.30.0",
     "@types/mdx": "^2.0.13",
     "next": "15.1.6",
     "react": "19.0.0",
@@ -27,14 +36,5 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "typescript": "5.7.3"
-  },
-  "name": "extension-template-docs",
-  "private": true,
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev --port 9281",
-    "start": "next start",
-    "typecheck": "tsc --noEmit"
-  },
-  "version": "0.1.0"
+  }
 }

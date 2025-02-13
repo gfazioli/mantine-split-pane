@@ -1,7 +1,8 @@
+import '@gfazioli/mantine-split-pane/styles.css';
+
 import { MantineProvider } from '@mantine/core';
 
 import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
 import '@mantinex/demo/styles.css';
 import '@mantinex/mantine-header/styles.css';
 import '@mantinex/mantine-logo/styles.css';
@@ -15,8 +16,6 @@ import Head from 'next/head';
 import favicon from '../assets/favicon.svg';
 import { Footer } from '../components/Footer';
 import { theme } from '../theme';
-
-import '@gfazioli/mantine-split-pane/styles.css';
 
 async function loadShiki() {
   const { getHighlighter } = await import('shikiji');

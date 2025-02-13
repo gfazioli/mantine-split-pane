@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   BoxProps,
@@ -8,7 +9,6 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import React from 'react';
 import {
   SplitPaneResizer,
   SplitPaneResizerBaseProps,
