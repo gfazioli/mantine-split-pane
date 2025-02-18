@@ -60,4 +60,5 @@ export const reset: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,
+  defaultExpanded: false,
 };

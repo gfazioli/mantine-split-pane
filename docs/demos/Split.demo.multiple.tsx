@@ -73,4 +73,5 @@ export const multiple: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,
+  defaultExpanded: false,
 };

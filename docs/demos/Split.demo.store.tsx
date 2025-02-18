@@ -59,4 +59,5 @@ export const store: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,
+  defaultExpanded: false,
 };

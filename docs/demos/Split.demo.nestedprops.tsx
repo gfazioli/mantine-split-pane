@@ -61,4 +61,5 @@ export const nestedprops: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,
+  defaultExpanded: false,
 };

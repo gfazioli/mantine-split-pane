@@ -67,4 +67,5 @@ export const initials: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,
+  defaultExpanded: false,
 };

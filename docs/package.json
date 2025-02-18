@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@gfazioli/mantine-split-pane": "workspace:*",
-    "@mantine/core": "7.16.3",
-    "@mantine/dates": "^7.16.3",
-    "@mantine/hooks": "7.16.3",
+    "@mantine/core": "7.17.0",
+    "@mantine/dates": "^7.17.0",
+    "@mantine/hooks": "7.17.0",
     "@mantinex/demo": "^1.2.0",
     "@mantinex/dev-icons": "^1.1.0",
     "@mantinex/mantine-header": "^1.1.0",

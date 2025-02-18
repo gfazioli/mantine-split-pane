@@ -67,4 +67,5 @@ export const nested: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,
+  defaultExpanded: false,
 };
