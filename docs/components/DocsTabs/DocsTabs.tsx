@@ -93,7 +93,11 @@ export function DocsTabs({
 
         <Tabs.Panel value="props">
           <div className={classes.tabContent} data-secondary>
-            <PropsTablesList components={componentsProps!} data={docgen} />
+            <PropsTablesList
+              components={componentsProps!}
+              componentPrefix={componentPrefix}
+              data={docgen}
+            />
           </div>
         </Tabs.Panel>
 

@@ -14,6 +14,7 @@ export default function HomePage() {
         docgen={docgen}
         componentsProps={['Split', 'SplitPane']}
         componentsStyles={['Split', 'SplitPane', 'SplitPaneResizer']}
+        componentPrefix="Split"
         stylesApiData={STYLES_API_DATA}
       >
         <Docs />
