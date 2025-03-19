@@ -1,5 +1,61 @@
-.root {
-  box-shadow: inset 0 4px 6px 0 #00000022;
-  background-color: #1c1d1f;
-  padding: 16px 0;
+.contentFooter {
+  padding-top: 32px;
+  background: var(--mantine-color-body);
+  box-shadow: inset 0px 4px 32px 0px #00000032;
+}
+
+.footer {
+  padding-bottom: 32px;
+}
+
+.title {
+  font-size: 14px !important;
+  font-weight: 300;
+}
+
+.columnAnchor {
+  font-size: 12.8px !important;
+  font-weight: 500 !important;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
+.badgeNew {
+  animation: pulse 1.5s infinite;
+}
+
+.lastDivider {
+  @mixin light {
+    box-shadow: 0 0px 20px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  @mixin dark {
+    box-shadow: 0 3px 8px 2px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.nextraIcon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-size: cover;
+  color: red;
+
+  @mixin light {
+    background-image: url('https://github.com/shuding/nextra/blob/main/docs/public/favicon.svg?raw=true');
+  }
+
+  @mixin dark {
+    background-image: url('https://github.com/shuding/nextra/blob/main/docs/public/favicon-dark.svg?raw=true');
+  }
 }

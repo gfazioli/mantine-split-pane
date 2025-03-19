@@ -1,0 +1,1 @@
+export { AnimateBadge } from './AnimateBadge';

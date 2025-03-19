@@ -81,11 +81,6 @@ async function release() {
   );
 
   await fs.copyFile(
-    path.join(process.cwd(), 'CHANGELOG.md'),
-    path.join(process.cwd(), 'package/CHANGELOG.md')
-  );
-
-  await fs.copyFile(
     path.join(process.cwd(), 'CODE_OF_CONDUCT.md'),
     path.join(process.cwd(), 'package/CODE_OF_CONDUCT.md')
   );
