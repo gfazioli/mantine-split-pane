@@ -61,9 +61,7 @@ export const Footer: React.FC<FooterProps> = () => {
             <Stack gap="xs">
               <ThemeIcon>
                 <img
-                  style={{
-                    borderRadius: '8px',
-                  }}
+                  style={{ borderRadius: '8px' }}
                   width={36}
                   src="https://substackcdn.com/image/fetch/f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5d483192-7bf9-4d61-aaf7-ced1a3f4adf8_1024x1024.png"
                   alt="Undolog"
@@ -161,7 +159,7 @@ export const Footer: React.FC<FooterProps> = () => {
             <Text fz={12} inline>
               <Group gap={4} component={'span'} justify="flex-start">
                 Built with{' '}
-                <Anchor fz={13} href="https://vercel.com/frameworks/nextjs">
+                <Anchor fz={13} href="https://github.com/mantinedev/extension-template">
                   <Group gap={4} component={'span'}>
                     <IconBrandMantine size={16} /> Mantine Extension Template
                   </Group>
