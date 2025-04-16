@@ -1,19 +1,27 @@
-import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper } from '@mantine/core';
+import { Split, SplitProps } from '@gfazioli/mantine-split-pane';
+import { Paper, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function Wrapper(props: any) {
+function Demo(props: SplitProps) {
+  const paperProps = {
+    withBorder: true,
+    w: '100%',
+    h: '100%',
+  };
+
   return (
     <Split {...props}>
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 1</h1>
+        <Paper {...paperProps}>
+          <Title>Pane number 1</Title>
         </Paper>
       </Split.Pane>
 
+      <Split.Resizer />
+
       <Split.Pane>
-        <Paper withBorder>
-          <h1>Pane 2</h1>
+        <Paper {...paperProps}>
+          <Title>Pane number 2</Title>
         </Paper>
       </Split.Pane>
     </Split>
@@ -21,21 +29,25 @@ function Wrapper(props: any) {
 }
 
 const code = `
-import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper } from '@mantine/core';
+import { Split, SplitProps } from '@gfazioli/mantine-split-pane';
+import { Paper, Title } from '@mantine/core';
 
 function Demo() {
+  const paperProps = { withBorder: true, w: '100%', h: '100%' };
+
   return (
-    <Split{{props}}>
+    <Split {{props}}>
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 1</h1>
+        <Paper {...paperProps}>
+          <Title>Pane number 1</Title>
         </Paper>
       </Split.Pane>
 
+      <Split.Resizer />
+
       <Split.Pane>
-        <Paper withBorder>
-          <h1>Pane 2</h1>
+        <Paper {...paperProps}>
+          <Title>Pane number 2</Title>
         </Paper>
       </Split.Pane>
     </Split>
@@ -45,7 +57,7 @@ function Demo() {
 
 export const configurator: MantineDemo = {
   type: 'configurator',
-  component: Wrapper,
+  component: Demo,
   code,
   controls: [
     {

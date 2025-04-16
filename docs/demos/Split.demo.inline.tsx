@@ -1,33 +1,38 @@
-import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper } from '@mantine/core';
+import { Split, type SplitProps } from '@gfazioli/mantine-split-pane';
+import { Paper, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function Wrapper(props: any) {
+function Demo(props: SplitProps) {
   return (
     <>
       <Split {...props}>
         <Split.Pane>
           <Paper withBorder>
-            <h1>P 1</h1>
+            <Title>Pane 1a</Title>
           </Paper>
         </Split.Pane>
 
+        <Split.Resizer />
+
         <Split.Pane>
           <Paper withBorder>
-            <h1>P 2</h1>
+            <Title>Pane 2a</Title>
           </Paper>
         </Split.Pane>
       </Split>
+
       <Split {...props}>
         <Split.Pane>
           <Paper withBorder>
-            <h1>P 1</h1>
+            <Title>Pane 1b</Title>
           </Paper>
         </Split.Pane>
 
+        <Split.Resizer />
+
         <Split.Pane>
           <Paper withBorder>
-            <h1>P 2</h1>
+            <Title>Pane 2b</Title>
           </Paper>
         </Split.Pane>
       </Split>
@@ -36,35 +41,44 @@ function Wrapper(props: any) {
 }
 
 const code = `
-import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper } from '@mantine/core';
+import { Split, type SplitProps } from '@gfazioli/mantine-split-pane';
+import { Paper, Title } from '@mantine/core';
 
 function Demo() {
   return (
     <>
-      <Split{{props}}>
+      <Split
+      {{props}}
+      >
         <Split.Pane>
           <Paper withBorder>
-            <h1>Pane 1</h1>
+            <Title>Pane 1a</Title>
           </Paper>
         </Split.Pane>
 
+        <Split.Resizer />
+
         <Split.Pane>
           <Paper withBorder>
-            <h1>Pane 2</h1>
+            <Title>Pane 2a</Title>
           </Paper>
         </Split.Pane>
       </Split>
-      <Split>
+
+      <Split
+      {{props}}
+      >
         <Split.Pane>
           <Paper withBorder>
-            <h1>Pane 1</h1>
+            <Title>Pane 1b</Title>
           </Paper>
         </Split.Pane>
 
+        <Split.Resizer />
+
         <Split.Pane>
           <Paper withBorder>
-            <h1>Pane 2</h1>
+            <Title>Pane 2b</Title>
           </Paper>
         </Split.Pane>
       </Split>
@@ -75,7 +89,7 @@ function Demo() {
 
 export const inline: MantineDemo = {
   type: 'configurator',
-  component: Wrapper,
+  component: Demo,
   code,
   controls: [
     {

@@ -2,6 +2,58 @@ import { Kbd } from '@mantine/core';
 import { InstallScript } from './components/InstallScript/InstallScript';
 import * as demos from './demos';
 
+## Update to v2
+
+> **Note well**
+>
+> This version of the package is a complete rewrite of the previous version.
+> We have rewritten the component to address some limitations of the previous version, particularly with **multiple panes**.
+> We have made the `Split.Resizer` component visible and usable so that it can be customized and managed more easily.
+> The API has changed, and some props have been removed or modified.
+>
+> ↓ Follow the instructions below to update your code ↓
+
+### Breaking changes
+
+- Added the new `Split.Resizer` component to manage the resizer between the panes. The `Split.Resizer` component is now a child of the `Split` component and is used to manage the resizing of the panes.
+- The `Split` component structure has changed. The `Split` component now needs the `Split.Pane` component as as well as the `Split.Resizer` component.
+- The `Split.Pane` component props have changed. We have moved the resizer props to the `Split.Resizer` component. The `Split.Pane` component now only accepts props related to the pane itself.
+- The `Split.Pane` `onDoubleClick` prop has been removed. You can now use the `onResetInitialSize` event to manage the double click event. The `onResetInitialSize` event is triggered when the user double clicks on the resizer to reset the initial size of the pane.
+- You can still use the `onDoubleClick` prop to manage the double click event in the `Split.Resizer` component.
+- The `step` and `shiftStep` props are now accessible both for the `Split` and `Split.Resizer` components. Those props are not accessible for the `Split.Pane` component.
+
+### JSX structure v1
+
+```tsx
+<Split>
+  <Split.Pane>
+    <h1>Pane 1</h1>
+  </Split.Pane>
+
+  <Split.Pane>
+    <h1>Pane 2</h1>
+  </Split.Pane>
+</Split>
+```
+
+### JSX structure v2
+
+```tsx
+<Split>
+  <Split.Pane>
+    <h1>Pane 1</h1>
+  </Split.Pane>
+
+  <Split.Resizer />
+
+  <Split.Pane>
+    <h1>Pane 2</h1>
+  </Split.Pane>
+</Split>
+```
+
+- In the `Split.Pane` component all props related to the resizer have been removed. Now you can use the `Split.Resizer` component to manage the resizer between the panes. Have a look at the [Props](/?t=props) section for more information.
+
 ## Installation
 
 <InstallScript packages="@gfazioli/mantine-split-pane" />
@@ -14,60 +66,19 @@ import '@gfazioli/mantine-split-pane/styles.css';
 
 You can import styles within a layer `@layer mantine-split-pane` by importing `@gfazioli/mantine-split-pane/styles.layer.css` file.
 
-```tsx
+```tsx title=src/index.tsx highlight={4}
 import '@gfazioli/mantine-split-pane/styles.layer.css';
 ```
 
 ## Usage
 
-The main component for creating a Split pane is `Split`, which accepts two or more children, `Split.Pane`.
-Below a very basic example with the main props:
+The main component for creating a Split pane is `Split`, which accepts two or more children, `Split.Pane`. Between each `Split.Pane` you need to add a `Split.Resizer` component. The `Split.Resizer` component is used to manage the resizing of the panes.
 
 <Demo data={demos.configurator} />
 
-> By setting properties on the main component `Split`, these will be applied to all child `Split.Pane` components. However, you can also set specific properties for each `Split.Pane` component, as shown below.
-
-## Pane
-
-The `Split.Pane` component is a child component of `Split` and allows setting some props for panel management.
-
-<Demo data={demos.pane} />
-
-## Multiple Panes
-
-You can add as many panes as you want, and you can also set the `minWidth` and `maxWidth` props for each pane along with other props.
-
-<Demo data={demos.multiple} />
-
 > **Note well**
 >
-> Obviously, you **cannot** set the `minWidth` and `maxWidth` from the `Split` component, as these props are specific to each individual `Split.Pane`. As well as you **cannot** set the `orientation` of the `Split.Pane` component, as this is specific to the `Split` component.
-
-The below code **won't work**:
-
-```tsx
-<Split>
-  <Split.Pane orientation="vertical">
-    <h1>Pane 1</h1>
-  </Split.Pane>
-  <Split.Pane>
-    <h1>Pane 2</h1>
-  </Split.Pane>
-</Split>
-```
-
-The below code **won't work**:
-
-```tsx
-<Split maxWidth={300}>
-  <Split.Pane>
-    <h1>Pane 1</h1>
-  </Split.Pane>
-  <Split.Pane>
-    <h1>Pane 2</h1>
-  </Split.Pane>
-</Split>
-```
+> In the example above, the `Paper` component's width and height are set to `100%` to fill the available space. Below are examples without this setting.
 
 ## Inline
 
@@ -75,17 +86,124 @@ By default, each `Split` is displayed using `flex`, but in case you want to disp
 
 <Demo data={demos.inline} />
 
-## Initial and mix/max sizes
+## Split.Resizer component
 
-As mentioned above, you can set the initial size of the panes using the `initialWidth` and `initialHeight` props.
-Obviously, the `initialWidth` will be used for vertical panes, and the `initialHeight` for horizontal panes.
+Starting from version 2, the `Split.Resizer` component is a child component of `Split` and allows setting some props for the resizer management. It is the component that will be used to resize the panes.
 
-### Min and Max sizes
+You don't need to set the `Split.Resizer` properties for each resizer, as they inherit these properties from the `Split` component.
 
-You can set the minimum and maximum size of the panes using the `minWidth` and `maxWidth` props.
-Obviously, the `minWidth` and `maxWidth` will be used for vertical panes, and the `minHeight` and `maxHeight` for horizontal panes.
+In the example below, the first instance shows the `Split.Resizer` component inheriting props from the `Split` component. In contrast, the second instance shows the `Split.Resizer` component with its own props.
+
+<Demo data={demos.resizer} />
+
+### onResizeStart, onResizing, and onResizeEnd events
+
+The `Split.Resizer` provides the same events `onResizeStart`, `onResizing`, and `onResizeEnd` that are [available](#onresizestart-onresizing-and-onresizeend-events-1) in the `Split.Pane`. However, pay attention to the difference in the parameter found in `onResizing` and `onResizeEnd`. In the case of the `Split.Resizer`, the parameter is an object with the properties `width` and `height` for both panes; the one on the left (or top) `beforePane` and the one on the right (or bottom) `afterPane`.
+
+```tsx
+export type SPLIT_PANE_RESIZE_SIZES = {
+  beforePane: {
+    width: number;
+    height: number;
+  };
+  afterPane: {
+    width: number;
+    height: number;
+  };
+};
+```
+
+The events released are therefore:
+
+```tsx
+onResizeStart?: () => void; // Same release as the Split.Pane component
+
+/** Event called when pane size changes */
+onResizing?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
+
+/** Event called when pane size changes */
+onResizeEnd?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
+```
+
+<Demo data={demos.resizerEvents} />
+
+## Split.Pane component
+
+The `Split.Pane` component is a child component of `Split` and allows setting some props for panel management. It is the container which will be resized by the `Split.Resizer` component. It's very important because you can set the initial size of the pane, the minimum and maximum size of the pane, and the `grow` property.
+
+<Demo data={demos.pane} />
+
+### initialWidth, initialHeight
+
+The initial size as well as the min and max size of the pane can be set using the `initialWidth`, `initialHeight`, `minWidth`, `maxWidth`, `minHeight`, and `maxHeight` props. You may use a numeric value or a string with a unit (px, %) for the size of the pane. The `initialWidth` and `initialHeight` props are used to set the initial size of the pane, while the `minWidth`, `maxWidth`, `minHeight`, and `maxHeight` props are used to set the minimum and maximum size of the pane.
 
 <Demo data={demos.initials} />
+
+### minWidth, maxWidth, minHeight, maxHeight
+
+The minimum and maximum sizes of the panes can be set using the `minWidth`, `maxWidth`, `minHeight`, and `maxHeight` props. These props allow you to control the resizing behavior of the panes, ensuring they do not shrink or grow beyond specified limits.
+
+<Demo data={demos.max} />
+
+> **Note well**
+>
+> When resizing the panes, both will adjust simultaneously. This means the maximum and minimum values affect each other. For example, the minimum width of the second panel can impact the maximum width of the first panel. Choose the values carefully.
+
+### grow
+
+The `grow` property is only accessible for `Split.Pane` and enables the panel size to expand and occupy the available space. It is especially handy for establishing a dynamic layout or, as illustrated below, for crafting a layout with two centered panels.
+
+Below the `grow` property is set to `true` for the first pane and `false` for the second pane. The first pane will occupy all the available space, while the second pane will occupy only the space needed for its content.
+
+<Demo data={demos.growFirst} />
+
+Below the `grow` property is set to `true` for the second pane and `false` for the first pane. The second pane will occupy all the available space, while the first pane will occupy only the space needed for its content.
+
+<Demo data={demos.growSecond} />
+
+Below an interesting example of a layout with three panes. The first and third panes are set to `grow={false}` and the second pane is set to `grow={true}`. The second pane will occupy all the available space, while the first and third panes will occupy only the space needed for their content.
+
+<Demo data={demos.growThreePanes} />
+
+Of course, the grow feature can be use also when the orientation is vertical. In the example below, the first pane is set to `grow={false}` and the second pane is set to `grow={true}`. The second pane will occupy all the available space, while the first pane will occupy only the space needed for its content.
+
+<Demo data={demos.growHorizontal} />
+
+> 💡 Suggestions
+>
+> Try to use the `grow` property with the `initialWidth`, `initialHeight`, `minWidth`, `maxWidth`, `minHeight`, and `maxHeight` props to create a dynamic layout.
+
+### onResizeStart, onResizing, and onResizeEnd events
+
+The `Split.Pane` provides the same events `onResizeStart`, `onResizing`, and `onResizeEnd` that are [available](#onresizestart-onresizing-and-onresizeend-events) in the `Split.Resizer`. However, pay attention to the difference in the parameter found in `onResizing` and `onResizeEnd`. In the case of the `Split.Pane`, the parameter is an object with the properties `width` and `height` of the selected pane.
+
+```tsx
+export type SPLIT_PANE_SIZE = {
+  width: number;
+  height: number;
+};
+```
+
+The events released are therefore:
+
+```tsx
+/** Event called when pane size starts changing */
+onResizeStart?: () => void; // Same release as the Split.Resizer component
+
+/** Event called when pane size changes */
+onResizing?: (size: SPLIT_PANE_SIZE) => void;
+
+/** Event called when pane size changes */
+onResizeEnd?: (size: SPLIT_PANE_SIZE) => void;
+```
+
+<Demo data={demos.events} />
+
+## Multiple Panes
+
+You can add as many panes as you want, and you can also set the `minWidth` and `maxWidth` props for each pane along with other props.
+
+<Demo data={demos.multiple} />
 
 ## Reset with Double Click
 
@@ -99,15 +217,66 @@ You can also manage double click to swap two different dimensions in rotation. I
 
 <Demo data={demos.doubleclick} />
 
-## Pane grow
-
-The `grow` property is only accessible for `Split.Pane` and enables the panel size to expand and occupy the available space. It is especially handy for establishing a dynamic layout or, as illustrated below, for crafting a layout with two centered panels.
-
-<Demo data={demos.grow} />
+> **Note well**
+>
+> The `onResetInitialSize` event is triggered when the user double clicks on the resizer to reset the initial size of the pane. You can use this event to manage the double click event in the `Split.Pane` component. The code below shows how to use the `onResetInitialSize` event to manage the double click event in the `Split.Pane` component.
+>
+> ```tsx
+> <Stack>
+>   <Text>
+>     Double-click on the resizer to swap the initial width of the
+>     panes.
+>   </Text>
+>   <Split>
+>     <Split.Pane
+>       initialWidth={initialWidth}
+>       onResetInitialSize={handleDoubleClick}
+>     >
+>       <Paper withBorder>
+>         <Title>Pane 1</Title>
+>       </Paper>
+>     </Split.Pane>
+>
+>     <Split.Resizer />
+>
+>     <Split.Pane grow>
+>       <Paper withBorder>
+>         <Title>Pane 2</Title>
+>       </Paper>
+>     </Split.Pane>
+>   </Split>
+> </Stack>
+> ```
+>
+> Alternatively, which is the same:
+>
+> ```tsx
+> <Stack>
+>   <Text>
+>     Double-click on the resizer to swap the initial width of the
+>     panes.
+>   </Text>
+>   <Split>
+>     <Split.Pane initialWidth={initialWidth}>
+>       <Paper withBorder>
+>         <Title>Pane 1</Title>
+>       </Paper>
+>     </Split.Pane>
+>
+>     <Split.Resizer />
+>
+>     <Split.Pane grow onResetInitialSize={handleDoubleClick}>
+>       <Paper withBorder>
+>         <Title>Pane 2</Title>
+>       </Paper>
+>     </Split.Pane>
+>   </Split>
+> </Stack>
+> ```
 
 ## Nested Split
 
-Of course, you can also nest `Split` components to create more complex layouts.
+Naturally, you can nest `Split` components to create more intricate layouts.
 
 <Demo data={demos.nested} />
 
@@ -117,12 +286,55 @@ Now you can appreciate the flexibility of the `Split` component, which allows yo
 
 <Demo data={demos.nestedprops} />
 
-## Events
-
-The Split.Pane component emits some events that you can use to manage the layout of your application.
-You may want to use the `onResizeStart`, `onResize`, and `onResizeEnd` events to manage the layout of your application.
-
-<Demo data={demos.events} />
+> **Note well**
+>
+> Remember that you can set the resizer props both on the `Split` component and the `Split.Resizer` component. The `Split.Resizer` component will inherit the props from the `Split` component, but you can override them by setting them on the `Split.Resizer` component.
+>
+> For example, in the code below, the `Split.Resizer` component will inherit the `spacing` and `radius` prop from the `Split` component.
+>
+> ```tsx
+> <Split orientation="horizontal" radius={256} spacing={16}>
+>  <Split.Pane initialHeight={200}>
+>    <Paper {...paperProps}>
+>      <Title>Pane 2</Title>
+>    </Paper>
+>  </Split.Pane>
+>
+>  <Split.Resizer color="red.3" hoverColor="blue.7" >size="xl" />
+>
+>  <Split.Pane initialHeight={300}>
+>    <Paper {...paperProps}>
+>      <Title>Pane 3</Title>
+>    </Paper>
+>  </Split.Pane>
+> </Split>
+> ```
+>
+> The same with:
+>
+> ```tsx
+> <Split orientation="horizontal">
+>   <Split.Pane initialHeight={200}>
+>     <Paper {...paperProps}>
+>       <Title>Pane 2</Title>
+>     </Paper>
+>   </Split.Pane>
+>
+>   <Split.Resizer
+>     color="red.3"
+>     hoverColor="blue.7"
+>     size="xl"
+>     radius={256}
+>     spacing={16}
+>   />
+>
+>   <Split.Pane initialHeight={300}>
+>     <Paper {...paperProps}>
+>       <Title>Pane 3</Title>
+>     </Paper>
+>   </Split.Pane>
+> </Split>
+> ```
 
 ## Store the layout
 
@@ -130,6 +342,8 @@ You can store the layout of the panes and restore it later using the browser `lo
 Try to change the layout and refresh the page to see the layout restored.
 
 <Demo data={demos.store} />
+
+As [previously explained](#onresizestart-onresizing-and-onresizeend-events), you can choose to use events from either the `Split.Pane` or the `Split.Resizer`. Here, the code uses events from the `Split.Pane`, but you can easily use events from the `Split.Resizer` and decide to store a specific pane or both panels.
 
 ## Accessibility
 
@@ -142,17 +356,23 @@ Keeping the <Kbd>SHIFT</Kbd> key pressed while using the `Arrow` keys will resiz
 
 > **Note well**
 >
-> The `step` and `shiftStep` props are accessible both for the `Split` and `Split.Pane` components. Obviously, the `step` and `shiftStep` props of the `Split.Pane` component will override the `step` and `shiftStep` props of the `Split` component.
+> The `step` and `shiftStep` props are accessible both for the `Split` and `Split.Resizer` components. Obviously, the `step` and `shiftStep` props of the `Split.Resizer` component will override the `step` and `shiftStep` props of the `Split` component.
 >
 > ```tsx
 > ...
 > <Split step={16} shiftStep={128}>
->   <Split.Pane step={32} shiftStep={256}>
+>   <Split.Pane >
 >     <h1>Pane 1</h1>
 >   </Split.Pane>
+>
+>   <Split.Resizer step={32} shiftStep={256} />
+>
 >   <Split.Pane>
 >     <h1>Pane 2</h1>
 >   </Split.Pane>
+>
+>   <Split.Resizer />
+>
 >   <Split.Pane>
 >     <h1>Pane 3</h1>
 >   </Split.Pane>

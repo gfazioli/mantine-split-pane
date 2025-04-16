@@ -1,27 +1,35 @@
-import React from 'react';
-import { Box, Button, Paper, Space, Stack } from '@mantine/core';
+import React, { useState } from 'react';
+import { Box, Button, Code, Paper, Space, Stack, Title } from '@mantine/core';
+import { SPLIT_PANE_RESIZE_SIZES } from './Resizer/SplitPaneResizer';
 import { Split, type SplitProps } from './Split';
 
 export default {
   title: 'Split',
   args: {
     inline: false,
-    orientation: 'vertical',
-    size: 'sm',
-    opacity: 0.8,
-    radius: 'xl',
-    knobSize: 'sm',
     spacing: 'xs',
-    withKnob: false,
-    knobAlwaysOn: true,
+
+    orientation: 'vertical',
     variant: 'default',
-    cursorVertical: 'row-resize',
-    cursorHorizontal: 'col-resize',
+    size: 'sm',
+    radius: 'xl',
+    opacity: 0.8,
+    color: undefined,
+    hoverColor: undefined,
+
+    withKnob: false,
+    knobSize: 'sm',
+    knobOpacity: 0.8,
+    knobRadius: 'xl',
+    knobColor: undefined,
+    knobHoverColor: undefined,
+    knobAlwaysOn: true,
+    cursorVertical: undefined,
+    cursorHorizontal: undefined,
   },
   argTypes: {
     inline: { control: { type: 'boolean' } },
-    withKnob: { control: { type: 'boolean' } },
-    knobAlwaysOn: { control: { type: 'boolean' } },
+
     orientation: {
       control: { type: 'inline-radio' },
       options: ['horizontal', 'vertical'],
@@ -30,6 +38,9 @@ export default {
       control: { type: 'inline-radio' },
       options: ['default', 'filled', 'outline', 'transparent', 'dotted', 'dashed'],
     },
+    withKnob: { control: { type: 'boolean' } },
+    knobAlwaysOn: { control: { type: 'boolean' } },
+
     size: {
       control: { type: 'inline-radio' },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
@@ -49,6 +60,53 @@ export default {
     },
     color: { control: { type: 'color' } },
     hoverColor: { control: { type: 'color' } },
+    knobColor: { control: { type: 'color' } },
+    knobHoverColor: { control: { type: 'color' } },
+    knobOpacity: { control: { type: 'range', min: 0, max: 1, step: 0.1 } },
+    knobRadius: {
+      control: { type: 'inline-radio' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+    },
+    cursorVertical: {
+      control: { type: 'select' },
+      options: [
+        'row-resize',
+        'col-resize',
+        'ew-resize',
+        'ns-resize',
+        'nesw-resize',
+        'nwse-resize',
+        'all-scroll',
+        'auto',
+        'crosshair',
+        'default',
+        'help',
+        'move',
+        'pointer',
+        'text',
+        'wait',
+      ],
+    },
+    cursorHorizontal: {
+      control: { type: 'select' },
+      options: [
+        'row-resize',
+        'col-resize',
+        'ew-resize',
+        'ns-resize',
+        'nesw-resize',
+        'nwse-resize',
+        'all-scroll',
+        'auto',
+        'crosshair',
+        'default',
+        'help',
+        'move',
+        'pointer',
+        'text',
+        'wait',
+      ],
+    },
   },
 };
 
@@ -56,15 +114,195 @@ export function SimpleUsage(p: SplitProps) {
   return (
     <div style={{ padding: 40 }}>
       <Split {...p}>
-        <Split.Pane minWidth={0}>
+        <Split.Pane>
           <Paper withBorder w="100%" h="100%">
             <h1>Pane 1</h1>
           </Paper>
         </Split.Pane>
 
+        <Split.Resizer />
+
         <Split.Pane>
-          <Paper withBorder>
+          <Paper withBorder w="100%" h="100%">
             <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function Initial(p: SplitProps) {
+  return (
+    <div style={{ padding: 40, height: 600, border: '1px solid red' }}>
+      <Split {...p} h="100%" orientation="horizontal">
+        <Split.Pane initialHeight="50%" maxHeight={600}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane initialWidth="50%" initialHeight="50%">
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function SimpleUsageWidth(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} w="100%">
+        <Split.Pane minWidth={200} initialWidth={300}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane grow>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function SimpleUsageWidthMax(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} w="100%">
+        <Split.Pane w={{ base: 200, xs: 'auto', sm: 'auto' }}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function SimpleMinUsage(p: SplitProps) {
+  const [start, setStart] = useState(false);
+  const [end, setEnd] = useState<SPLIT_PANE_RESIZE_SIZES>();
+  const [resizing, setResizing] = useState<SPLIT_PANE_RESIZE_SIZES>();
+
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} orientation="horizontal" h={1000}>
+        <Split.Pane initialHeight={300} minHeight={200} maxHeight="60%">
+          <Paper withBorder w="100%" h="100%">
+            <Title>Pane 1</Title>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer
+          onResizeStart={() => {
+            setStart(true);
+          }}
+          onResizeEnd={(sizes) => {
+            setStart(false);
+            setEnd(sizes);
+          }}
+          onResizing={setResizing}
+        />
+
+        <Split.Pane grow>
+          <Paper withBorder w="100%" h="100%">
+            <Title>Pane 2</Title>
+          </Paper>
+        </Split.Pane>
+      </Split>
+
+      <Stack gap={2}>
+        <Code>Start: {start ? 'true' : 'false'}</Code>
+        <Code>
+          End (beforePanePane 1): w={end?.beforePane.width} h={end?.beforePane.height}
+        </Code>
+        <Code>
+          End (afterPanePane 1): w={end?.afterPane.width} h={end?.afterPane.height}
+        </Code>
+        <Code>
+          Resizing (beforePanePane 1): w={resizing?.beforePane.width} h=
+          {resizing?.beforePane.height}
+        </Code>
+        <Code>
+          Resizing (afterPanePane 1): w={resizing?.afterPane.width} h={resizing?.afterPane.height}
+        </Code>
+      </Stack>
+    </div>
+  );
+}
+
+export function SimpleThreeUsage(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} w="100%">
+        <Split.Pane minWidth={200} initialWidth={300}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane grow minWidth={80}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane minWidth={300}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 3</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function SimpleThreePercentage(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p}>
+        <Split.Pane minWidth={200} initialWidth="25%">
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane minWidth={200} initialWidth="50%">
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer variant="dotted" />
+
+        <Split.Pane minWidth={200} initialWidth="25%">
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 3</h1>
           </Paper>
         </Split.Pane>
       </Split>
@@ -75,20 +313,14 @@ export function SimpleUsage(p: SplitProps) {
 export function Styling(p: SplitProps) {
   return (
     <div style={{ padding: 40 }}>
-      <Split {...p}>
-        <Split.Pane
-          minWidth={0}
-          styles={{
-            root: {
-              backgroundColor: 'red',
-              padding: 5,
-            },
-          }}
-        >
+      <Split radius={256}>
+        <Split.Pane>
           <Paper withBorder w="100%" h="100%">
             <h1>Pane 1</h1>
           </Paper>
         </Split.Pane>
+
+        <Split.Resizer />
 
         <Split.Pane>
           <Paper withBorder>
@@ -110,6 +342,8 @@ export function Grow(p: SplitProps) {
           </Paper>
         </Split.Pane>
 
+        <Split.Resizer variant="dotted" />
+
         <Split.Pane>
           <Paper withBorder>
             <h1>Pane 2</h1>
@@ -123,20 +357,24 @@ export function Grow(p: SplitProps) {
 export function ThreePanel(p: SplitProps) {
   return (
     <Box p={40} style={{ border: '1px solid red' }}>
-      <Split w="100%" style={{ border: '1px solid blue' }}>
+      <Split style={{ border: '1px solid blue' }}>
         <Split.Pane minWidth={100} initialWidth={200}>
           <Paper withBorder w="100%">
             <h1>Pane 1</h1>
           </Paper>
         </Split.Pane>
 
-        <Split.Pane initialWidth={'calc(100% - 400px)'}>
+        <Split.Resizer />
+
+        <Split.Pane grow>
           <Paper withBorder w="100%">
             <h1>Pane 2</h1>
           </Paper>
         </Split.Pane>
 
-        <Split.Pane minWidth={100} initialWidth={200} grow>
+        <Split.Resizer />
+
+        <Split.Pane minWidth={100} initialWidth={200}>
           <Paper withBorder w="100%">
             <h1>Pane 3</h1>
           </Paper>
@@ -156,6 +394,8 @@ export function Inline(p: SplitProps) {
           </Paper>
         </Split.Pane>
 
+        <Split.Resizer />
+
         <Split.Pane grow>
           <Paper withBorder>
             <h1>Pane 2, Split 1</h1>
@@ -169,6 +409,8 @@ export function Inline(p: SplitProps) {
             <h1>Pane 1, Split 2</h1>
           </Paper>
         </Split.Pane>
+
+        <Split.Resizer />
 
         <Split.Pane grow>
           <Paper withBorder>
@@ -203,6 +445,8 @@ export function ChangeWidth(p: SplitProps) {
             </Paper>
           </Split.Pane>
 
+          <Split.Resizer />
+
           <Split.Pane grow>
             <Paper withBorder>
               <h1>Pane 2</h1>
@@ -224,6 +468,8 @@ export function Usage(p: SplitProps) {
           <h1>Left</h1>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </Split.Pane>
+
+        <Split.Resizer />
 
         <Split.Pane>
           <h1>Right</h1>
@@ -249,6 +495,8 @@ export function Usage(p: SplitProps) {
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </Split.Pane>
 
+        <Split.Resizer />
+
         <Split.Pane grow>
           <h1>Right</h1>
           <p>
@@ -270,9 +518,13 @@ export function Multiple(p: SplitProps) {
           <h2>Ops</h2>
         </Split.Pane>
 
+        <Split.Resizer />
+
         <Split.Pane>
           <h1>Center</h1>
         </Split.Pane>
+
+        <Split.Resizer />
 
         <Split.Pane w="auto">
           <h1>Right</h1>
@@ -291,6 +543,8 @@ export function Nested(p: SplitProps) {
           <h2>Ops</h2>
         </Split.Pane>
 
+        <Split.Resizer />
+
         <Split.Pane grow>
           <Split {...p} orientation="horizontal" w="100%">
             <Split.Pane>
@@ -299,6 +553,8 @@ export function Nested(p: SplitProps) {
                 <p>Lorem ipsum dolor sit amet, Nulla facilisi.</p>
               </div>
             </Split.Pane>
+
+            <Split.Resizer />
 
             <Split.Pane>
               <div>
@@ -316,12 +572,17 @@ export function Accessibility(p: SplitProps) {
   return (
     <div style={{ padding: 40 }}>
       <Split step={1} shiftStep={128}>
-        <Split.Pane step={32} shiftStep={256}>
+        <Split.Pane>
           <h1>Pane 1</h1>
         </Split.Pane>
+
+        <Split.Resizer step={32} shiftStep={256} />
         <Split.Pane>
           <h1>Pane 2</h1>
         </Split.Pane>
+
+        <Split.Resizer />
+
         <Split.Pane>
           <h1>Pane 3</h1>
         </Split.Pane>
@@ -333,19 +594,52 @@ export function Accessibility(p: SplitProps) {
 export function DoubleClick(p: SplitProps) {
   const [initialWidth, setInitialWidth] = React.useState(300);
 
-  const handleDoubleClick = () => {
-    console.log('double click');
+  return (
+    <div style={{ padding: 40 }}>
+      <Split>
+        <Split.Pane initialWidth={initialWidth} onResetInitialSize={() => console.log('reset')}>
+          <h1>Pane 1</h1>
+        </Split.Pane>
 
-    setInitialWidth(initialWidth === 300 ? 100 : 300);
-  };
+        <Split.Resizer onDoubleClick={() => console.log('double click')} />
+
+        <Split.Pane>
+          <h1>Pane 2</h1>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function Events(p: SplitProps) {
+  const [initialWidth, setInitialWidth] = React.useState(300);
 
   return (
     <div style={{ padding: 40 }}>
       <Split>
-        <Split.Pane initialWidth={initialWidth} onDoubleClick={handleDoubleClick}>
+        <Split.Pane
+          initialWidth={initialWidth}
+          onResizeStart={() => console.log('PANE before: resize start')}
+          onResizing={(s) => console.log('PANE before: resizing', s)}
+          onResizeEnd={(s) => console.log('PANE before: resize end', s)}
+          onResetInitialSize={() => console.log('PANE before: reset')}
+        >
           <h1>Pane 1</h1>
         </Split.Pane>
-        <Split.Pane>
+
+        <Split.Resizer
+          onResizeStart={() => console.log('Resizer: resize start')}
+          onResizing={(s) => console.log('Resizer: resizing', s)}
+          onResizeEnd={(s) => console.log('Resizer: resize end', s)}
+          onDoubleClick={() => console.log('Resizer:double click')}
+        />
+
+        <Split.Pane
+          onResizeStart={() => console.log('PANE after: resize start')}
+          onResizing={(s) => console.log('PANE after: resizing', s)}
+          onResizeEnd={(s) => console.log('PANE after: resize end', s)}
+          onResetInitialSize={() => console.log('PANE after: reset')}
+        >
           <h1>Pane 2</h1>
         </Split.Pane>
       </Split>

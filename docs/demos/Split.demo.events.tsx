@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Split } from '@gfazioli/mantine-split-pane';
-import { Code, Paper, Stack } from '@mantine/core';
+import { Split, SPLIT_PANE_SIZE, SplitProps } from '@gfazioli/mantine-split-pane';
+import { Code, Paper, Stack, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function Wrapper(props: any) {
+function Demo(props: SplitProps) {
   const [start, setStart] = useState(false);
-  const [end, setEnd] = useState('');
-  const [resizing, setResizing] = useState('');
+  const [end, setEnd] = useState<SPLIT_PANE_SIZE>();
+  const [resizing, setResizing] = useState<SPLIT_PANE_SIZE>();
 
   return (
     <Stack>
@@ -14,73 +14,93 @@ function Wrapper(props: any) {
         <Split.Pane
           onResizeStart={() => {
             setStart(true);
-            setEnd('');
           }}
-          onResizeEnd={({ width, height }) => {
+          onResizeEnd={(size) => {
             setStart(false);
-            setEnd(`w=${width}, h=${height}`);
+            setEnd(size);
           }}
-          onResizing={({ width, height }) => setResizing(`w=${width}, h=${height}`)}
+          onResizing={setResizing}
         >
           <Paper withBorder w="100%" mih="100%">
-            <h1>Pane 1</h1>
+            <Title>Pane 1</Title>
           </Paper>
         </Split.Pane>
 
-        <Split.Pane>
+        <Split.Resizer />
+
+        <Split.Pane grow>
           <Paper withBorder w="100%" mih="100%">
-            <h1>Pane 2</h1>
+            <Title>Pane 2</Title>
           </Paper>
         </Split.Pane>
       </Split>
 
-      <Code>Start: {start ? 'true' : 'false'}</Code>
-      <Code>End: {end}</Code>
-      <Code>Resizing: {resizing}</Code>
+      <Stack gap={2}>
+        <Code>Start: {start ? 'true' : 'false'}</Code>
+        <Code>
+          End (Pane 1): w={end?.width} h={end?.height}
+        </Code>
+        <Code>
+          Resizing (Pane 1): w={resizing?.width} h={resizing?.height}
+        </Code>
+      </Stack>
     </Stack>
   );
 }
 
 const code = `
-import { Split } from '@gfazioli/mantine-split-pane';
+import { useState } from 'react';
+import { Split, SPLIT_PANE_SIZE, SplitProps } from '@gfazioli/mantine-split-pane';
+import { Code, Paper, Stack, Title } from '@mantine/core';
 
 function Demo() {
+  const [start, setStart] = useState(false);
+  const [end, setEnd] = useState<SPLIT_PANE_SIZE>();
+  const [resizing, setResizing] = useState<SPLIT_PANE_SIZE>()
+  
   return (
     <Stack>
       <Split{{props}}>
         <Split.Pane
           onResizeStart={() => {
             setStart(true);
-            setEnd(false);
           }}
-          onResizeEnd={() => {
+          onResizeEnd={(size) => {
             setStart(false);
-            setEnd(true);
+            setEnd(size);
           }}
-          onResizing={(w: string, h: string) => setResizing(\`w=\${w}, h=\${h}\`)}
+          onResizing={setResizing}
         >
           <Paper withBorder w="100%" mih="100%">
-            <h1>Pane 1</h1>
+            <Title>Pane 1</Title>
           </Paper>
         </Split.Pane>
 
-        <Split.Pane>
+        <Split.Resizer />
+
+        <Split.Pane grow>
           <Paper withBorder w="100%" mih="100%">
-            <h1>Pane 2</h1>
+            <Title>Pane 2</Title>
           </Paper>
         </Split.Pane>
       </Split>
 
-      <Code>Start: {start ? 'true' : 'false'}</Code>
-      <Code>End: {end ? 'true' : 'false'}</Code>
-      <Code>Resizing: {resizing}</Code>
+      <Stack gap={2}>
+        <Code>Start: {start ? 'true' : 'false'}</Code>
+        <Code>
+          End (Pane 1): w={end?.width} h={end?.height}
+        </Code>
+        <Code>
+          Resizing (Pane 1): w={resizing?.width} h={resizing?.height}
+        </Code>
+      </Stack>
     </Stack>
 }
 `;
 
 export const events: MantineDemo = {
   type: 'configurator',
-  component: Wrapper,
+  component: Demo,
   code,
   controls: [
     {

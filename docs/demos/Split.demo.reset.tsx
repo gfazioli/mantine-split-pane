@@ -1,24 +1,23 @@
 import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper, Stack } from '@mantine/core';
+import { Paper, Stack, Text, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function Wrapper() {
+function Demo() {
   return (
     <Stack>
+      <Text>Resize the panes, then double-click the resizer to reset their size.</Text>
       <Split>
-        <Split.Pane initialWidth={200}>
-          <Paper withBorder w="100%" mih="100%">
-            <h3>
-              Resize and then
-              <br />
-              Double Click →
-            </h3>
+        <Split.Pane initialWidth="50%">
+          <Paper withBorder>
+            <Title>Pane 1</Title>
           </Paper>
         </Split.Pane>
 
-        <Split.Pane>
-          <Paper withBorder w="100%" mih="100%">
-            <h1>Pane 2</h1>
+        <Split.Resizer />
+
+        <Split.Pane initialWidth="50%">
+          <Paper withBorder>
+            <Title>Pane 2</Title>
           </Paper>
         </Split.Pane>
       </Split>
@@ -28,26 +27,24 @@ function Wrapper() {
 
 const code = `
 import { Split } from '@gfazioli/mantine-split-pane';
-import { Button, Group, Paper, Stack } from '@mantine/core';
-import { useState } from 'react';
+import { Paper, Stack, Text, Title } from '@mantine/core';
 
 function Demo() {
   return (
     <Stack>
+      <Text>Resize the panes, then double-click the resizer to reset their size.</Text>
       <Split>
-        <Split.Pane initialWidth={200}>
-          <Paper withBorder w="100%" mih="100%">
-            <h3>
-              Resize and then
-              <br />
-              Double Click →
-            </h3>
+        <Split.Pane initialWidth="50%">
+          <Paper withBorder>
+            <Title>Pane 1</Title>
           </Paper>
         </Split.Pane>
 
-        <Split.Pane>
-          <Paper withBorder w="100%" mih="100%">
-            <h1>Pane 2</h1>
+        <Split.Resizer />
+
+        <Split.Pane initialWidth="50%">
+          <Paper withBorder>
+            <Title>Pane 2</Title>
           </Paper>
         </Split.Pane>
       </Split>
@@ -58,7 +55,7 @@ function Demo() {
 
 export const reset: MantineDemo = {
   type: 'code',
-  component: Wrapper,
+  component: Demo,
   code,
   defaultExpanded: false,
 };

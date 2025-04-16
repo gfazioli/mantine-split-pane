@@ -1,25 +1,27 @@
 import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper } from '@mantine/core';
+import { Paper, Title } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
 
-function Wrapper(props: any) {
+function Demo() {
   const [width, setWidth] = useLocalStorage({
     key: 'split-width',
-    defaultValue: 'auto',
+    getInitialValueInEffect: true,
   });
 
   return (
     <Split>
-      <Split.Pane initialWidth={width} onResizeEnd={({ width }) => setWidth(width)}>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 1</h1>
+      <Split.Pane initialWidth={+width} onResizeEnd={({ width }) => setWidth(width.toString())}>
+        <Paper withBorder>
+          <Title>Pane 1</Title>
         </Paper>
       </Split.Pane>
 
-      <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 2</h1>
+      <Split.Resizer />
+
+      <Split.Pane grow>
+        <Paper withBorder>
+          <Title>Pane 2</Title>
         </Paper>
       </Split.Pane>
     </Split>
@@ -32,22 +34,21 @@ import { Paper } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
 function Demo() {
-  const [width, setWidth] = useLocalStorage({
-    key: 'split-width',
-    defaultValue: 'auto',
-  });
+  const [width, setWidth] = useLocalStorage({ key: 'split-width', defaultValue: 'auto' });
 
   return (
     <Split>
-      <Split.Pane initialWidth={width} onResizeEnd={({ width }) => setWidth(width)}>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 1</h1>
+      <Split.Pane initialWidth={width} onResizeEnd={({ width }) => setWidth(width.toString())}>
+        <Paper withBorder>
+          <Title>Pane 1</Title>
         </Paper>
       </Split.Pane>
 
-      <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 2</h1>
+      <Split.Resizer />
+
+      <Split.Pane grow>
+        <Paper withBorder>
+          <Title>Pane 2</Title>
         </Paper>
       </Split.Pane>
     </Split>
@@ -57,7 +58,7 @@ function Demo() {
 
 export const store: MantineDemo = {
   type: 'code',
-  component: Wrapper,
+  component: Demo,
   code,
   defaultExpanded: false,
 };
