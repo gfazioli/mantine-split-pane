@@ -1,24 +1,12 @@
-import { createSafeContext, MantineSpacing } from '@mantine/core';
-import { SplitPaneResizerProps } from './Resizer/SplitPaneResizer';
-import { SPLIT_ERRORS } from './Split.errors';
+import { createOptionalContext, MantineSpacing } from '@mantine/core';
+import { SplitPaneResizerContextProps, SplitPaneResizerVariant } from './Resizer/SplitPaneResizer';
 
-interface SplitContext
-  extends Omit<
-    SplitPaneResizerProps,
-    | 'minWidth'
-    | 'minHeight'
-    | 'maxWidth'
-    | 'maxHeight'
-    | 'onDoubleClick'
-    | 'onResizeEnd'
-    | 'onResizeStart'
-    | 'onResize'
-    | 'paneRef'
-  > {
+interface SplitContext extends SplitPaneResizerContextProps {
+  /** Resizer Variant */
+  variant?: SplitPaneResizerVariant;
+
   /** Spacing between resizer and pane */
   spacing?: MantineSpacing;
 }
 
-export const [SplitContextProvider, useSplitContext] = createSafeContext<SplitContext>(
-  SPLIT_ERRORS.context
-);
+export const [SplitContextProvider, useSplitContext] = createOptionalContext<SplitContext>();

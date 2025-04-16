@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement, isValidElement, useRef } from 'react';
 import {
   Box,
   BoxProps,
@@ -9,8 +9,14 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import { SplitPane } from './Pane/SplitPane';
-import { SplitPaneResizerSharedProps, SplitPaneResizerVariant } from './Resizer/SplitPaneResizer';
+import { SplitPane, type SplitPaneProps } from './Pane/SplitPane';
+import {
+  SplitPaneResizer,
+  defaultProps as splitPaneResizerDefaultProps,
+  type SplitPaneResizerContextProps,
+  type SplitPaneResizerProps,
+  type SplitPaneResizerVariant,
+} from './Resizer/SplitPaneResizer';
 import { SplitContextProvider } from './Split.context';
 import classes from './Split.module.css';
 
@@ -22,12 +28,12 @@ export type SplitCssVariables = {
   root: '--split-inline';
 };
 
-export interface SplitBaseProps extends SplitPaneResizerSharedProps {
+export interface SplitBaseProps extends SplitPaneResizerContextProps {
   /** Make main split container inline */
   inline?: boolean;
 
   /** Split children */
-  children?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export interface SplitProps extends BoxProps, SplitBaseProps, StylesApiProps<SplitFactory> {}
@@ -41,14 +47,13 @@ export type SplitFactory = Factory<{
   variant: SplitVariant;
   staticComponents: {
     Pane: typeof SplitPane;
+    Resizer: typeof SplitPaneResizer;
   };
 }>;
 
 const defaultProps: Partial<SplitProps> = {
   inline: false,
-  orientation: 'vertical',
-  size: 'sm',
-  variant: 'default',
+  ...splitPaneResizerDefaultProps,
 };
 
 const varsResolver = createVarsResolver<SplitFactory>((_, { inline }) => ({
@@ -60,15 +65,14 @@ const varsResolver = createVarsResolver<SplitFactory>((_, { inline }) => ({
 export const Split = factory<SplitFactory>((_props, ref) => {
   const props = useProps('Split', defaultProps, _props);
   const {
-    orientation,
     inline,
 
+    orientation,
     size,
     radius,
     color,
     hoverColor,
     opacity,
-
     withKnob,
     knobAlwaysOn,
     knobSize,
@@ -107,15 +111,33 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     varsResolver,
   });
 
-  const childrenArray = React.Children.toArray(children);
+  type ChildrenType =
+    | React.ReactElement<SplitPaneProps>
+    | React.ReactElement<SplitPaneResizerProps>;
 
-  const content = childrenArray.map((child, index) => {
-    const withResizer = index < childrenArray.length - 1;
+  const childRefs = React.Children.map(children, () => useRef<HTMLDivElement>(null));
 
-    return React.cloneElement(child as React.ReactElement<any>, {
-      key: `pane-${index}`,
-      withResizer,
-    });
+  const clonedChildren = React.Children.map(children, (child: ChildrenType, index) => {
+    if (isValidElement(child)) {
+      if (child.type === SplitPaneResizer) {
+        const beforeRef = childRefs[index - 1];
+        const afterRef = childRefs[index + 1];
+
+        return cloneElement(child as React.ReactElement<SplitPaneResizerProps>, {
+          __beforeRef: beforeRef,
+          __afterRef: afterRef,
+        });
+      } else if (child.type === SplitPane) {
+        {
+          return cloneElement(child as React.ReactElement<SplitPaneProps>, {
+            ref: childRefs[index],
+          });
+        }
+      } else {
+        return child;
+      }
+    }
+    return child;
   });
 
   return (
@@ -132,7 +154,7 @@ export const Split = factory<SplitFactory>((_props, ref) => {
         knobRadius,
         knobColor,
         knobHoverColor,
-        variant,
+        variant: variant as SplitPaneResizerVariant,
         withKnob,
         knobAlwaysOn,
         spacing,
@@ -143,7 +165,7 @@ export const Split = factory<SplitFactory>((_props, ref) => {
       }}
     >
       <Box ref={ref} mod={{ orientation }} {...getStyles('root')} {...others}>
-        {content}
+        {clonedChildren}
       </Box>
     </SplitContextProvider>
   );
@@ -152,3 +174,4 @@ export const Split = factory<SplitFactory>((_props, ref) => {
 Split.classes = classes;
 Split.displayName = 'Split';
 Split.Pane = SplitPane;
+Split.Resizer = SplitPaneResizer;

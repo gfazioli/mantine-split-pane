@@ -1,32 +1,38 @@
 import { Split } from '@gfazioli/mantine-split-pane';
-import { Code, Paper } from '@mantine/core';
+import { Code, Paper, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function Wrapper(props: any) {
+function Demo() {
   return (
     <Split>
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 1</h1>
+        <Paper withBorder>
+          <Title>Pane 1</Title>
         </Paper>
       </Split.Pane>
+
+      <Split.Resizer />
 
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 2</h1>
+        <Paper withBorder>
+          <Title>Pane 2</Title>
         </Paper>
       </Split.Pane>
 
-      <Split.Pane color="red" initialWidth={280} maxWidth={300}>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 3</h1>
+      <Split.Resizer variant="outline" />
+
+      <Split.Pane initialWidth={280} maxWidth={300}>
+        <Paper withBorder>
+          <Title>Pane 3</Title>
           <Code>{`initialWidth={280} maxWidth={300}`}</Code>
         </Paper>
       </Split.Pane>
 
+      <Split.Resizer color="red" />
+
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 4</h1>
+        <Paper withBorder>
+          <Title>Pane 4</Title>
         </Paper>
       </Split.Pane>
     </Split>
@@ -41,27 +47,33 @@ function Demo() {
   return (
     <Split>
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 1</h1>
+        <Paper withBorder>
+          <Title>Pane 1</Title>
         </Paper>
       </Split.Pane>
+
+      <Split.Resizer />
 
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 2</h1>
+        <Paper withBorder>
+          <Title>Pane 2</Title>
         </Paper>
       </Split.Pane>
 
-      <Split.Pane color="red" initialWidth={280} maxWidth={300}>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 3</h1>
-          <Code>initialWidth={280} maxWidth={300}</Code>
+      <Split.Resizer variant="outline" />
+
+      <Split.Pane initialWidth={280} maxWidth={300}>
+        <Paper withBorder>
+          <Title>Pane 3</Title>
+          <Code>{\`initialWidth={280} maxWidth={300}\`}</Code>
         </Paper>
       </Split.Pane>
+
+      <Split.Resizer color="red" />
 
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 4</h1>
+        <Paper withBorder>
+          <Title>Pane 4</Title>
         </Paper>
       </Split.Pane>
     </Split>
@@ -71,7 +83,7 @@ function Demo() {
 
 export const multiple: MantineDemo = {
   type: 'code',
-  component: Wrapper,
+  component: Demo,
   code,
   defaultExpanded: false,
 };

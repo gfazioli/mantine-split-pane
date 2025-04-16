@@ -1,4 +1,4 @@
-import React, { CSSProperties, MutableRefObject, useRef } from 'react';
+import React, { CSSProperties, useRef } from 'react';
 import {
   BoxProps,
   createVarsResolver,
@@ -6,18 +6,19 @@ import {
   factory,
   getRadius,
   getSize,
-  getThemeColor,
   MantineColor,
   MantineRadius,
   MantineSize,
   MantineSpacing,
   parseThemeColor,
   rgba,
+  StyleProp,
   StylesApiProps,
   UnstyledButton,
-  useProps,
   useStyles,
 } from '@mantine/core';
+import { SplitPaneHandlers } from '../Pane/SplitPane';
+import { useSplitContext } from '../Split.context';
 import classes from './SplitPaneResizer.module.css';
 
 export type SplitPaneResizerStylesNames = 'root';
@@ -49,9 +50,12 @@ export type SplitPaneResizerCssVariables = {
     | '--split-resizer-cursor-horizontal';
 };
 
-export interface SplitPaneResizerSharedProps {
+export interface SplitPaneResizerContextProps {
   /** Split orientation, `'vertical'` by default */
   orientation?: 'horizontal' | 'vertical';
+
+  /** Resizer opacity */
+  opacity?: StyleProp<React.CSSProperties['opacity']>;
 
   /** Resizer size */
   size?: MantineSize | number | (string & {});
@@ -102,24 +106,18 @@ export interface SplitPaneResizerSharedProps {
   cursorHorizontal?: CSSProperties['cursor'];
 }
 
-export type SPLIT_PANE_RESIZE_SIZE = {
-  width: string;
-  height: string;
+export type SPLIT_PANE_RESIZE_SIZES = {
+  beforePane: {
+    width: number;
+    height: number;
+  };
+  afterPane: {
+    width: number;
+    height: number;
+  };
 };
 
-export interface SplitPaneResizerBaseProps extends SplitPaneResizerSharedProps {
-  /** The minimum width of the pane when orientation is vertical */
-  minWidth?: number;
-
-  /** The minimum height of the pane when orientation is horizontal */
-  minHeight?: number;
-
-  /** The maximum width of the pane when orientation is vertical */
-  maxWidth?: number;
-
-  /** The maximum height of the pane when orientation is horizontal */
-  maxHeight?: number;
-
+export interface SplitPaneResizerBaseProps extends SplitPaneResizerContextProps {
   /** Event called when resizer is double clicked */
   onDoubleClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 
@@ -127,19 +125,28 @@ export interface SplitPaneResizerBaseProps extends SplitPaneResizerSharedProps {
   onResizeStart?: () => void;
 
   /** Event called when pane size changes */
-  onResizing?: (size: SPLIT_PANE_RESIZE_SIZE) => void;
+  onResizing?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
 
   /** Event called when pane size changes */
-  onResizeEnd?: (size: SPLIT_PANE_RESIZE_SIZE) => void;
-
-  /** The pane ref */
-  paneRef: MutableRefObject<HTMLDivElement | null>;
+  onResizeEnd?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
 }
 
 export interface SplitPaneResizerProps
   extends BoxProps,
     SplitPaneResizerBaseProps,
-    StylesApiProps<SplitPaneResizerFactory> {}
+    StylesApiProps<SplitPaneResizerFactory> {
+  /**
+   * The before (left | up) componentRef
+   * @access private
+   * */
+  __beforeRef?: React.RefObject<HTMLDivElement & SplitPaneHandlers>;
+
+  /**
+   * The after (right | down) componentRef
+   * @access private
+   * */
+  __afterRef?: React.RefObject<HTMLDivElement & SplitPaneHandlers>;
+}
 
 export type SplitPaneResizerFactory = Factory<{
   props: SplitPaneResizerProps;
@@ -171,65 +178,115 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
       cursorHorizontal,
     }
   ) => {
+    const ctx = useSplitContext();
+    const {
+      size: ctxSize = size,
+      opacity: ctxOpacity = opacity,
+      radius: ctxRadius = radius,
+      color: ctxColor = color,
+      hoverColor: ctxHoverColor = hoverColor,
+      knobSize: ctxKnobSize = knobSize,
+      knobOpacity: ctxKnobOpacity = knobOpacity,
+      knobRadius: ctxKnobRadius = knobRadius,
+      knobColor: ctxKnobColor = knobColor,
+      knobHoverColor: ctxKnobHoverColor = knobHoverColor,
+      spacing: ctxSpacing = spacing,
+      cursorVertical: ctxCursorVertical = cursorVertical,
+      cursorHorizontal: ctxCursorHorizontal = cursorHorizontal,
+      withKnob: ctxWithKnob = withKnob,
+      knobAlwaysOn: ctxKnobAlwaysOn = knobAlwaysOn,
+      variant: ctxVariant = variant,
+    } = {
+      ...ctx,
+      ...Object.fromEntries(
+        Object.entries({
+          size,
+          opacity,
+          radius,
+          color,
+          hoverColor,
+          knobSize,
+          knobOpacity,
+          knobRadius,
+          knobColor,
+          knobHoverColor,
+          withKnob,
+          knobAlwaysOn,
+          spacing,
+          variant,
+          cursorVertical,
+          cursorHorizontal,
+        }).filter(([_, value]) => value !== undefined)
+      ),
+    };
+
     const colorDarkParsed = parseThemeColor({
-      color: color || 'dark.5',
+      color: ctxColor || 'dark.5',
       theme,
     });
 
     const colorLightParsed = parseThemeColor({
-      color: color || 'gray.3',
+      color: ctxColor || 'gray.3',
       theme,
     });
 
     const hoverColorDarkParsed = parseThemeColor({
-      color: hoverColor || 'dark.3',
+      color: ctxHoverColor || theme.primaryColor,
       theme,
     });
 
     const hoverColorLightParsed = parseThemeColor({
-      color: hoverColor || 'gray.4',
+      color: ctxHoverColor || theme.primaryColor,
       theme,
     });
 
-    const knobVariant = variant === 'dotted' || variant === 'dashed';
+    const knobColorParsed = parseThemeColor({
+      color: ctxKnobColor || theme.primaryColor,
+      theme,
+    });
+
+    const knobHoverColorParsed = parseThemeColor({
+      color: ctxKnobHoverColor || 'white',
+      theme,
+    });
+
+    const knobVariant = ctxVariant === 'dotted' || ctxVariant === 'dashed';
+    const forceKnobOpacityValue =
+      ctxWithKnob && ctxKnobAlwaysOn && !knobVariant ? (ctxKnobOpacity as string) : '0';
 
     return {
       root: {
-        '--split-resizer-size': getSize(size, 'split-resizer-size'),
-        '--split-resizer-color': rgba(colorLightParsed.value, Number(opacity)),
-        '--split-resizer-color-light': rgba(colorLightParsed.value, Number(opacity)),
-        '--split-resizer-color-dark': rgba(colorDarkParsed.value, Number(opacity)),
+        '--split-resizer-size': getSize(ctxSize, 'split-resizer-size'),
+        '--split-resizer-color': rgba(colorLightParsed.value, Number(ctxOpacity)),
+        '--split-resizer-color-light': rgba(colorLightParsed.value, Number(ctxOpacity)),
+        '--split-resizer-color-dark': rgba(colorDarkParsed.value, Number(ctxOpacity)),
         '--split-resizer-hover-color-light': rgba(hoverColorLightParsed.value, 1),
         '--split-resizer-hover-color-dark': rgba(hoverColorDarkParsed.value, 1),
-        '--split-resizer-radius': getRadius(radius),
-        '--split-resizer-knob-size': getSize(knobSize, 'split-resizer-knob-size'),
-        '--split-resizer-knob-opacity':
-          withKnob && knobAlwaysOn && !knobVariant ? (knobOpacity as string) : '0',
-        '--split-resizer-knob-hover-opacity': withKnob || knobVariant ? '1' : '0',
-        '--split-resizer-knob-radius': getRadius(knobRadius),
-        '--split-resizer-knob-color': getThemeColor(knobColor, theme),
-        '--split-resizer-knob-hover-color': getThemeColor(knobHoverColor, theme),
-        '--split-resizer-spacing': getSize(spacing, 'split-resizer-spacing'),
-        '--split-resizer-cursor-vertical': cursorVertical || 'col-resize',
-        '--split-resizer-cursor-horizontal': cursorHorizontal || 'row-resize',
+        '--split-resizer-radius': getRadius(ctxRadius),
+        '--split-resizer-knob-size': getSize(ctxKnobSize, 'split-resizer-knob-size'),
+        '--split-resizer-knob-opacity': forceKnobOpacityValue,
+        '--split-resizer-knob-hover-opacity': ctx?.withKnob || withKnob || knobVariant ? '1' : '0',
+        '--split-resizer-knob-radius': getRadius(ctxKnobRadius),
+        '--split-resizer-knob-color': rgba(knobColorParsed.value, Number(forceKnobOpacityValue)),
+        '--split-resizer-knob-hover-color': rgba(knobHoverColorParsed.value, 1),
+        '--split-resizer-spacing': getSize(ctxSpacing, 'split-resizer-spacing'),
+        '--split-resizer-cursor-vertical': ctxCursorVertical || 'col-resize',
+        '--split-resizer-cursor-horizontal': ctxCursorHorizontal || 'row-resize',
       },
     };
   }
 );
 
-const defaultProps: Partial<SplitPaneResizerProps> = {
-  size: 'md',
+export const defaultProps: Partial<SplitPaneResizerContextProps> = {
+  orientation: 'vertical',
+  size: 'sm',
   opacity: 0.8,
   radius: 'xs',
-  knobColor: 'blue',
+  knobColor: 'white',
+  knobHoverColor: 'white',
   knobSize: 'sm',
   knobOpacity: 0.5,
   knobRadius: 'sm',
-  minWidth: 20,
-  minHeight: 20,
-  orientation: 'vertical',
-  paneRef: { current: null },
-  variant: 'default',
   withKnob: false,
   knobAlwaysOn: true,
   step: 8,
@@ -238,37 +295,41 @@ const defaultProps: Partial<SplitPaneResizerProps> = {
   cursorHorizontal: 'row-resize',
 };
 
-export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) => {
-  const props = useProps('Resizer', defaultProps, _props);
+export const SplitPaneResizer = factory<SplitPaneResizerFactory>((props, ref) => {
+  const ctx = useSplitContext();
+
+  const { cursorVertical, cursorHorizontal, orientation, variant, step, shiftStep } = {
+    ...ctx,
+    ...props,
+  };
 
   const {
     size,
     opacity,
     radius,
-    color,
     hoverColor,
     knobSize,
     knobOpacity,
     knobRadius,
     knobColor,
     knobHoverColor,
-    minWidth,
-    minHeight,
-    maxWidth,
-    maxHeight,
-    orientation,
-    onResizeStart,
-    onResizing,
-    onResizeEnd,
-    paneRef,
-    variant,
     withKnob,
     knobAlwaysOn,
     spacing,
-    step,
-    shiftStep,
-    cursorVertical,
-    cursorHorizontal,
+
+    color: _color,
+    variant: _variant,
+    step: _step,
+    shiftStep: _shiftStep,
+    cursorVertical: _cursorVertical,
+    cursorHorizontal: _cursorHorizontal,
+
+    onResizeStart,
+    onResizing,
+    onResizeEnd,
+    onDoubleClick,
+    __beforeRef: beforeRef,
+    __afterRef: afterRef,
 
     className,
     style,
@@ -296,6 +357,224 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
   const containerRef = useRef(null);
 
   /**
+   * Process the logic for vertical resizing.
+   * This function is called when the user drags the resizer
+   * in the vertical direction. It's used also for the keyboard
+   * resizing.
+   *
+   * @param deltaX
+   * @returns
+   */
+  const processVerticalSize = (deltaX: number = 0) => {
+    const minBeforeWidth = beforeRef.current.getMinWidth();
+    const maxBeforeWidth = beforeRef.current.getMaxWidth();
+
+    const minAfterWidth = afterRef.current.getMinWidth();
+    const maxAfterWidth = afterRef.current.getMaxWidth();
+
+    const beforePane = beforeRef.current.splitPane;
+    const afterPane = afterRef.current.splitPane;
+
+    let beforeWidth = beforePane.getBoundingClientRect().width;
+    let afterWidth = afterPane.getBoundingClientRect().width;
+
+    const isBeforeWidthMaxExceeded = maxBeforeWidth && beforeWidth + deltaX > maxBeforeWidth;
+    const isAfterWidthMaxExceeded = maxAfterWidth && afterWidth - deltaX > maxAfterWidth;
+    const isBeforeWidthMinExceeded = minBeforeWidth && beforeWidth + deltaX < minBeforeWidth;
+    const isAfterWidthMinExceeded = minAfterWidth && afterWidth - deltaX < minAfterWidth;
+    const isBeforeWidthNegative = beforeWidth + deltaX < 0;
+    const isAfterWidthNegative = afterWidth - deltaX < 0;
+
+    function setVerticalSize() {
+      const beforeWidthString = `${beforeWidth}px`;
+      const afterWidthString = `${afterWidth}px`;
+
+      const beforePaneSizes = {
+        width: beforeWidth,
+        height: beforePane.getBoundingClientRect().height,
+      };
+      const afterPaneSizes = {
+        width: afterWidth,
+        height: afterPane.getBoundingClientRect().height,
+      };
+      beforeRef.current.onResizing?.(beforePaneSizes);
+      afterRef.current.onResizing?.(afterPaneSizes);
+
+      onResizing?.({
+        beforePane: beforePaneSizes,
+        afterPane: afterPaneSizes,
+      });
+
+      beforePane.style.width = beforeWidthString;
+      afterPane.style.width = afterWidthString;
+    }
+
+    // Before
+    if (!isAfterWidthMaxExceeded && isBeforeWidthMinExceeded) {
+      afterWidth += beforeWidth - minBeforeWidth;
+      beforeWidth = minBeforeWidth;
+      return setVerticalSize();
+    }
+
+    if (!isAfterWidthMaxExceeded && isBeforeWidthNegative) {
+      afterWidth += beforeWidth;
+      beforeWidth = 0;
+      return setVerticalSize();
+    }
+
+    if (!isAfterWidthMinExceeded && !isAfterWidthNegative && isBeforeWidthMaxExceeded) {
+      afterWidth -= maxBeforeWidth - beforeWidth;
+      beforeWidth = maxBeforeWidth;
+      return setVerticalSize();
+    }
+
+    // After
+    if (!isBeforeWidthMaxExceeded && isAfterWidthMinExceeded) {
+      beforeWidth += afterWidth - minAfterWidth;
+      afterWidth = minAfterWidth;
+      return setVerticalSize();
+    }
+
+    if (!isBeforeWidthMaxExceeded && isAfterWidthNegative) {
+      beforeWidth += afterWidth;
+      afterWidth = 0;
+      // beforeWidth = containerRef.current.parentElement.getBoundingClientRect().width;
+      return setVerticalSize();
+    }
+
+    if (!isBeforeWidthMinExceeded && !isBeforeWidthNegative && isAfterWidthMaxExceeded) {
+      beforeWidth -= maxAfterWidth - afterWidth;
+      afterWidth = maxAfterWidth;
+      return setVerticalSize();
+    }
+
+    if (
+      isBeforeWidthNegative ||
+      isAfterWidthNegative ||
+      isBeforeWidthMaxExceeded ||
+      isAfterWidthMaxExceeded ||
+      isBeforeWidthMinExceeded ||
+      isAfterWidthMinExceeded
+    ) {
+      return;
+    }
+
+    beforeWidth += deltaX;
+    afterWidth -= deltaX;
+
+    setVerticalSize();
+  };
+
+  /**
+   * Process the logic for horizontal resizing.
+   * This function is called when the user drags the resizer
+   * in the horizontal direction. It's used also for the keyboard
+   * resizing.
+   *
+   * @param deltaY
+   * @returns
+   */
+  const processHorizontalSize = (deltaY: number = 0) => {
+    const minBeforeHeight = beforeRef.current.getMinHeight();
+    const maxBeforeHeight = beforeRef.current.getMaxHeight();
+
+    const minAfterHeight = afterRef.current.getMinHeight();
+    const maxAfterHeight = afterRef.current.getMaxHeight();
+
+    const beforePane = beforeRef.current.splitPane;
+    const afterPane = afterRef.current.splitPane;
+
+    let beforeHeight = beforePane.getBoundingClientRect().height;
+    let afterHeight = afterPane.getBoundingClientRect().height;
+
+    const isBeforeHeightMaxExceeded = maxBeforeHeight && beforeHeight + deltaY > maxBeforeHeight;
+    const isAfterHeightMaxExceeded = maxAfterHeight && afterHeight - deltaY > maxAfterHeight;
+    const isBeforeHeightMinExceeded = minBeforeHeight && beforeHeight + deltaY < minBeforeHeight;
+    const isAfterHeightMinExceeded = minAfterHeight && afterHeight - deltaY < minAfterHeight;
+    const isBeforeHeightNegative = beforeHeight + deltaY < 0;
+    const isAfterHeightNegative = afterHeight - deltaY < 0;
+
+    function setHorizontalSize() {
+      const beforeHeightString = `${beforeHeight}px`;
+      const afterHeightString = `${afterHeight}px`;
+
+      const beforePaneSizes = {
+        width: beforePane.getBoundingClientRect().width,
+        height: beforeHeight,
+      };
+      const afterPaneSizes = {
+        width: afterPane.getBoundingClientRect().width,
+        height: afterHeight,
+      };
+
+      onResizing?.({
+        beforePane: beforePaneSizes,
+        afterPane: afterPaneSizes,
+      });
+
+      beforeRef.current.onResizing?.(beforePaneSizes);
+      afterRef.current.onResizing?.(afterPaneSizes);
+
+      beforePane.style.height = beforeHeightString;
+      afterPane.style.height = afterHeightString;
+    }
+
+    // Before
+    if (!isAfterHeightMaxExceeded && isBeforeHeightMinExceeded) {
+      afterHeight += beforeHeight - minBeforeHeight;
+      beforeHeight = minBeforeHeight;
+      return setHorizontalSize();
+    }
+
+    if (!isAfterHeightMaxExceeded && isBeforeHeightNegative) {
+      afterHeight += beforeHeight;
+      beforeHeight = 0;
+      return setHorizontalSize();
+    }
+
+    if (!isAfterHeightMinExceeded && !isAfterHeightNegative && isBeforeHeightMaxExceeded) {
+      afterHeight -= maxBeforeHeight - beforeHeight;
+      beforeHeight = maxBeforeHeight;
+      return setHorizontalSize();
+    }
+
+    // After
+    if (!isBeforeHeightMaxExceeded && isAfterHeightMinExceeded) {
+      beforeHeight += afterHeight - minAfterHeight;
+      afterHeight = minAfterHeight;
+      return setHorizontalSize();
+    }
+
+    if (!isBeforeHeightMaxExceeded && isAfterHeightNegative) {
+      beforeHeight += afterHeight;
+      afterHeight = 0;
+      // beforeHeight = containerRef.current.parentElement.getBoundingClientRect().height;
+      return setHorizontalSize();
+    }
+
+    if (!isBeforeHeightMinExceeded && !isBeforeHeightNegative && isAfterHeightMaxExceeded) {
+      beforeHeight -= maxAfterHeight - afterHeight;
+      afterHeight = maxAfterHeight;
+      return setHorizontalSize();
+    }
+
+    if (
+      isBeforeHeightNegative ||
+      isAfterHeightNegative ||
+      isBeforeHeightMaxExceeded ||
+      isAfterHeightMaxExceeded ||
+      isBeforeHeightMinExceeded ||
+      isAfterHeightMinExceeded
+    ) {
+      return;
+    }
+    beforeHeight += deltaY;
+    afterHeight -= deltaY;
+
+    setHorizontalSize();
+  };
+
+  /**
    * Start resizing
    * @param event
    */
@@ -320,8 +599,10 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     }
 
     onResizeStart?.();
+    beforeRef.current.onResizeStart?.();
+    afterRef.current.onResizeStart?.();
 
-    document.body.style.cursor = 'col-resize';
+    document.body.style.cursor = orientation === 'vertical' ? cursorVertical : cursorHorizontal;
   };
 
   /**
@@ -330,54 +611,29 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
    * @returns
    */
   const handleMove = (event: MouseEvent | TouchEvent) => {
-    if (!paneRef.current) return;
+    if (!beforeRef.current || !afterRef.current) {
+      throw new Error('beforeRef or afterRef is not defined');
+    }
 
     event.preventDefault();
     event.stopPropagation();
 
     const computedStyle = window.getComputedStyle(containerRef.current);
 
-    const clientX = 'clientX' in event ? event.clientX : event.touches[0].clientX;
-    const clientY = 'clientY' in event ? event.clientY : event.touches[0].clientY;
-
     if (orientation === 'vertical') {
-      const margin = parseFloat(computedStyle.getPropertyValue('margin-left')) + 1;
+      const margin = parseFloat(computedStyle.getPropertyValue('margin-right')) - 1;
+      const clientX = 'clientX' in event ? event.clientX : event.touches[0].clientX;
+      const deltaX = clientX - containerRef.current.getBoundingClientRect().left - margin;
 
-      const delta = clientX - paneRef.current.getBoundingClientRect().right - margin;
+      return processVerticalSize(deltaX);
+    }
 
-      const width = paneRef.current.getBoundingClientRect().width + delta;
+    if (orientation === 'horizontal') {
+      const margin = parseFloat(computedStyle.getPropertyValue('margin-bottom')) - 1;
+      const clientY = 'clientY' in event ? event.clientY : event.touches[0].clientY;
+      const deltaY = clientY - containerRef.current.getBoundingClientRect().top - margin;
 
-      const widthString = `${width}px`;
-
-      if (minWidth && width < minWidth) return;
-
-      if (maxWidth && width > maxWidth) return;
-
-      onResizing?.({
-        width: widthString,
-        height: paneRef.current.style.height,
-      });
-
-      paneRef.current.style.width = widthString;
-    } else {
-      const margin = parseFloat(computedStyle.getPropertyValue('margin-top')) + 1;
-
-      const delta = clientY - paneRef.current.getBoundingClientRect().bottom - margin;
-
-      const height = paneRef.current.getBoundingClientRect().height + delta;
-
-      const heightString = `${height}px`;
-
-      if (minHeight && height < minHeight) return;
-
-      if (maxHeight && height > maxHeight) return;
-
-      onResizing?.({
-        width: paneRef.current.style.width,
-        height: heightString,
-      });
-
-      paneRef.current.style.height = heightString;
+      return processHorizontalSize(deltaY);
     }
   };
 
@@ -386,7 +642,9 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
    * @returns
    */
   const handleMouseUp = () => {
-    if (!paneRef.current) return;
+    if (!beforeRef.current || !afterRef.current) {
+      throw new Error('beforeRef or afterRef is not defined');
+    }
 
     // reenable the userSelect by css starting from the entire document
     document.body.style.userSelect = 'initial';
@@ -397,9 +655,25 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
 
     document.body.style.cursor = 'initial';
 
-    const { width, height } = paneRef.current.style || {};
+    const beforePane = beforeRef.current.splitPane;
+    const afterPane = afterRef.current.splitPane;
 
-    onResizeEnd?.({ width, height });
+    const beforePaneSizes = {
+      width: beforePane.getBoundingClientRect().width,
+      height: beforePane.getBoundingClientRect().height,
+    };
+    const afterPaneSizes = {
+      width: afterPane.getBoundingClientRect().width,
+      height: afterPane.getBoundingClientRect().height,
+    };
+
+    onResizeEnd?.({
+      beforePane: beforePaneSizes,
+      afterPane: afterPaneSizes,
+    });
+
+    beforeRef.current.onResizeEnd?.(beforePaneSizes);
+    afterRef.current.onResizeEnd?.(afterPaneSizes);
   };
 
   /**
@@ -407,16 +681,34 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
    * @returns
    */
   const handleTouchEnd = () => {
-    if (!paneRef.current) return;
+    if (!beforeRef.current || !afterRef.current) {
+      throw new Error('beforeRef or afterRef is not defined');
+    }
 
     document.removeEventListener('touchmove', handleMove);
     document.removeEventListener('touchend', handleTouchEnd);
 
     document.body.style.cursor = 'initial';
 
-    const { width, height } = paneRef.current.style || {};
+    const beforePane = beforeRef.current.splitPane;
+    const afterPane = afterRef.current.splitPane;
 
-    onResizeEnd?.({ width, height });
+    const beforePaneSizes = {
+      width: beforePane.getBoundingClientRect().width,
+      height: beforePane.getBoundingClientRect().height,
+    };
+    const afterPaneSizes = {
+      width: afterPane.getBoundingClientRect().width,
+      height: afterPane.getBoundingClientRect().height,
+    };
+
+    onResizeEnd?.({
+      beforePane: beforePaneSizes,
+      afterPane: afterPaneSizes,
+    });
+
+    beforeRef.current.onResizeEnd?.(beforePaneSizes);
+    afterRef.current.onResizeEnd?.(afterPaneSizes);
   };
 
   /**
@@ -429,63 +721,32 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
       return;
     }
 
+    const code = event.nativeEvent.code;
+
+    const arrowLeftRight = code === 'ArrowRight' || code === 'ArrowLeft';
+    const arrowUpDown = code === 'ArrowUp' || code === 'ArrowDown';
+
     const delta = event.shiftKey ? shiftStep : step;
 
-    // if the mode === 'vertical' and the key is 'ArrowRight' or 'ArrowLeft'
-    if (
-      orientation === 'vertical' &&
-      (event.nativeEvent.code === 'ArrowRight' || event.nativeEvent.code === 'ArrowLeft')
-    ) {
+    if (orientation === 'vertical' && arrowLeftRight) {
       event.preventDefault();
       event.stopPropagation();
 
-      // increment or decrement the width of the paneRef.current
-
-      const deltaSign = event.nativeEvent.code === 'ArrowRight' ? 1 : -1;
-
-      const width = paneRef.current.getBoundingClientRect().width + delta * deltaSign;
-      const widthString = `${width}px`;
-
-      if (minWidth && width < minWidth) return;
-
-      if (maxWidth && width > maxWidth) return;
-
-      onResizing?.({
-        width: widthString,
-        height: paneRef.current.style.height,
-      });
-
-      paneRef.current.style.width = widthString;
+      const deltaSign = code === 'ArrowRight' ? 1 : -1;
+      const deltaX = delta * deltaSign;
+      return processVerticalSize(deltaX);
     }
 
-    // if the mode === 'horizontal' and the key is 'ArrowUp' or 'ArrowDown'
-    if (
-      orientation === 'horizontal' &&
-      (event.nativeEvent.code === 'ArrowUp' || event.nativeEvent.code === 'ArrowDown')
-    ) {
+    if (orientation === 'horizontal' && arrowUpDown) {
       event.preventDefault();
       event.stopPropagation();
 
-      // increment or decrement the height of the paneRef.current
-
-      const deltaSign = event.nativeEvent.code === 'ArrowDown' ? 1 : -1;
-
-      const height = paneRef.current.getBoundingClientRect().height + delta * deltaSign;
-      const heightString = `${height}px`;
-
-      if (minHeight && height < minHeight) return;
-
-      if (maxHeight && height > maxHeight) return;
-
-      onResizing?.({
-        width: paneRef.current.style.width,
-        height: heightString,
-      });
-
-      paneRef.current.style.height = heightString;
+      const deltaSign = code === 'ArrowDown' ? 1 : -1;
+      const deltaY = delta * deltaSign;
+      return processHorizontalSize(deltaY);
     }
 
-    if (event.nativeEvent.code === 'Escape') {
+    if (code === 'Escape') {
       event.preventDefault();
       event.stopPropagation();
 
@@ -494,16 +755,31 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, ref) =
     }
   };
 
+  /**
+   * Used to reset the initial size of the pane
+   *
+   * @param e - The event object
+   */
+  const handleDoubleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    beforeRef.current.resetInitialSize(e);
+    afterRef.current.resetInitialSize(e);
+
+    onDoubleClick?.(e);
+  };
+
   return (
     <UnstyledButton
-      onDoubleClick={props?.onDoubleClick}
       ref={containerRef}
       mod={{ orientation }}
       onMouseDown={handleStart}
       onKeyDown={handleKeyUp}
       onTouchStart={handleStart}
+      onDoubleClick={handleDoubleClick}
       aria-label="Resize"
-      {...getStyles('root', { variant })}
+      {...getStyles('root', { variant: variant || 'default' })}
       {...others}
     />
   );

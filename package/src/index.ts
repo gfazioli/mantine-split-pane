@@ -1,7 +1,12 @@
-export { SplitPane } from './Pane';
-export type { SplitPaneFactory, SplitPaneProps } from './Pane/SplitPane';
-export { SplitPaneResizer } from './Resizer';
-export type { SplitPaneResizerFactory, SplitPaneResizerProps } from './Resizer/SplitPaneResizer';
-export { Split } from './Split';
-export type { SplitBaseProps, SplitCssVariables, SplitFactory } from './Split';
 export { useSplitContext } from './Split.context';
+
+export { Split } from './Split';
+export type { SplitCssVariables, SplitFactory, SplitProps } from './Split';
+
+export type { SPLIT_PANE_SIZE, SplitPaneFactory, SplitPaneProps } from './Pane/SplitPane';
+
+export type {
+  SPLIT_PANE_RESIZE_SIZES,
+  SplitPaneResizerFactory,
+  SplitPaneResizerProps,
+} from './Resizer/SplitPaneResizer';

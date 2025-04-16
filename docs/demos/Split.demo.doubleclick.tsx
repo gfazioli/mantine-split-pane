@@ -1,31 +1,30 @@
 import { useState } from 'react';
 import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper, Stack } from '@mantine/core';
+import { Paper, Stack, Text, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function Wrapper() {
-  const [initialWidth, setInitialWidth] = useState(200);
+function Demo() {
+  const [initialWidth, setInitialWidth] = useState(400);
 
   const handleDoubleClick = () => {
-    setInitialWidth(initialWidth === 200 ? 100 : 200);
+    setInitialWidth(initialWidth === 400 ? 100 : 400);
   };
 
   return (
     <Stack>
+      <Text>Double-click on the resizer to swap the initial width of the panes.</Text>
       <Split>
-        <Split.Pane initialWidth={initialWidth} onDoubleClick={handleDoubleClick}>
-          <Paper withBorder w="100%" mih="100%">
-            <h3>
-              Swap
-              <br />
-              Double Click →
-            </h3>
+        <Split.Pane initialWidth={initialWidth}>
+          <Paper withBorder>
+            <Title>Pane 1</Title>
           </Paper>
         </Split.Pane>
 
-        <Split.Pane>
-          <Paper withBorder w="100%" mih="100%">
-            <h2>Pane 2</h2>
+        <Split.Resizer onDoubleClick={handleDoubleClick} />
+
+        <Split.Pane grow>
+          <Paper withBorder>
+            <Title>Pane 2</Title>
           </Paper>
         </Split.Pane>
       </Split>
@@ -34,33 +33,32 @@ function Wrapper() {
 }
 
 const code = `
-import { Split } from '@gfazioli/mantine-split-pane';
-import { Button, Group, Paper, Stack } from '@mantine/core';
 import { useState } from 'react';
+import { Split } from '@gfazioli/mantine-split-pane';
+import { Paper, Stack, Text, Title } from '@mantine/core';
 
 function Demo() {
-  const [initialWidth, setInitialWidth] = useState(200);
+  const [initialWidth, setInitialWidth] = useState(400);
 
   const handleDoubleClick = () => {
-    setInitialWidth(initialWidth === 200 ? 100 : 200);
+    setInitialWidth(initialWidth === 400 ? 100 : 400);
   };
 
   return (
     <Stack>
+      <Text>Double-click on the resizer to swap the initial width of the panes.</Text>
       <Split>
-        <Split.Pane initialWidth={initialWidth} onDoubleClick={handleDoubleClick}>
-          <Paper withBorder w="100%" mih="100%">
-            <h3>
-              Swap
-              <br />
-              Double Click →
-            </h3>
+        <Split.Pane initialWidth={initialWidth}>
+          <Paper withBorder>
+            <Title>Pane 1</Title>
           </Paper>
         </Split.Pane>
 
-        <Split.Pane>
-          <Paper withBorder w="100%" mih="100%">
-            <h2>Pane 2</h2>
+        <Split.Resizer onDoubleClick={handleDoubleClick} />
+
+        <Split.Pane grow>
+          <Paper withBorder>
+            <Title>Pane 2</Title>
           </Paper>
         </Split.Pane>
       </Split>
@@ -71,7 +69,7 @@ function Demo() {
 
 export const doubleclick: MantineDemo = {
   type: 'code',
-  component: Wrapper,
+  component: Demo,
   code,
   defaultExpanded: false,
 };

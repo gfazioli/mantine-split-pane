@@ -1,33 +1,46 @@
-import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper } from '@mantine/core';
+import { Split, SplitProps } from '@gfazioli/mantine-split-pane';
+import { Paper, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function Wrapper(props: any) {
+function Demo(props: SplitProps) {
+  const paperProps = {
+    withBorder: true,
+    w: '100%',
+    h: '100%',
+    p: 'md',
+  };
+
   return (
     <Split {...props}>
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 1</h1>
+        <Paper {...paperProps}>
+          <Title>Pane 1</Title>
         </Paper>
       </Split.Pane>
 
+      <Split.Resizer />
+
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 2</h1>
+        <Paper {...paperProps}>
+          <Title>Pane 2</Title>
         </Paper>
       </Split.Pane>
 
-      <Split.Pane>
+      <Split.Resizer />
+
+      <Split.Pane grow>
         <Split orientation="horizontal">
-          <Split.Pane step={1}>
-            <Paper withBorder w="100%" mih="100%">
-              <h1>Pane 1</h1>
+          <Split.Pane>
+            <Paper {...paperProps}>
+              <Title>Pane 1</Title>
             </Paper>
           </Split.Pane>
 
+          <Split.Resizer step={1} color="violet" />
+
           <Split.Pane>
-            <Paper withBorder w="100%" mih="100%">
-              <h1>Pane 2</h1>
+            <Paper {...paperProps}>
+              <Title>Pane 2</Title>
             </Paper>
           </Split.Pane>
         </Split>
@@ -44,28 +57,34 @@ function Demo() {
   return (
     <Split{{props}}>
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 1</h1>
+        <Paper {...paperProps}>
+          <Title>Pane 1</Title>
         </Paper>
       </Split.Pane>
 
+      <Split.Resizer />
+
       <Split.Pane>
-        <Paper withBorder w="100%" mih="100%">
-          <h1>Pane 2</h1>
+        <Paper {...paperProps}>
+          <Title>Pane 2</Title>
         </Paper>
       </Split.Pane>
 
-      <Split.Pane>
+      <Split.Resizer />
+
+      <Split.Pane grow>
         <Split orientation="horizontal">
-          <Split.Pane step={1}>
-            <Paper withBorder w="100%" mih="100%">
-              <h1>Pane 1</h1>
+          <Split.Pane>
+            <Paper {...paperProps}>
+              <Title>Pane 1</Title>
             </Paper>
           </Split.Pane>
 
+          <Split.Resizer step={1} color="violet" />
+
           <Split.Pane>
-            <Paper withBorder w="100%" mih="100%">
-              <h1>Pane 2</h1>
+            <Paper {...paperProps}>
+              <Title>Pane 2</Title>
             </Paper>
           </Split.Pane>
         </Split>
@@ -77,9 +96,10 @@ function Demo() {
 
 export const accessibility: MantineDemo = {
   type: 'configurator',
-  component: Wrapper,
+  component: Demo,
   code,
   striped: true,
+
   controls: [
     {
       prop: 'step',

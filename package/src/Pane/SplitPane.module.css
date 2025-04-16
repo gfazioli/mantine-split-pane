@@ -1,9 +1,9 @@
 .root {
-  display: flex;
   position: relative;
   z-index: 1;
   overflow: hidden;
   flex: var(--split-pane-grow, initial);
+  /* display: flex; */
 
   &[data-orientation='vertical'] {
     flex-direction: row;

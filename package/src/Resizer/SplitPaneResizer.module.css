@@ -38,7 +38,11 @@
 
   position: relative;
   background-color: var(--split-resizer-color);
-  transition: all 0.5s ease;
+  transition:
+    color 0.5s ease,
+    background-color 0.5s ease,
+    opacity 0.5s ease;
+
   border-radius: var(--split-resizer-radius, var(--mantine-radius-xl));
   z-index: 2;
   box-sizing: border-box;
@@ -50,7 +54,7 @@
     content: '';
     position: absolute;
     background-color: var(--split-resizer-knob-color);
-    opacity: var(--split-resizer-knob-opacity, 0.4);
+    opacity: var(--split-resizer-knob-opacity, 1);
     border-radius: var(--split-resizer-knob-radius, var(--mantine-radius-default));
     z-index: 1;
     transition: all 0.5s ease;
