@@ -205,7 +205,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
    */
   function withPx(value: number | string) {
     if (typeof value === 'number') {
-      return value + 'px';
+      return `${value}px`;
     }
 
     if (typeof value === 'string') {

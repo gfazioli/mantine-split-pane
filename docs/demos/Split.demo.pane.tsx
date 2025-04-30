@@ -1,8 +1,8 @@
-import { Split, SplitPaneProps } from '@gfazioli/mantine-split-pane';
+import { Split } from '@gfazioli/mantine-split-pane';
 import { Code, Paper, Stack, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function Demo(props: SplitPaneProps) {
+function Demo() {
   return (
     <Stack>
       <Code>

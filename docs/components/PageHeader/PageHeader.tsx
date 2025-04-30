@@ -31,7 +31,7 @@ export function PageHeader({ data }: PageHeaderProps) {
           <PageHeaderLink
             label="Changelog"
             icon={<GithubIcon size={16} />}
-            link={data.repositoryUrl + '/releases/tag/' + pack.version}
+            link={`${data.repositoryUrl}/releases/tag/${pack.version}`}
           >
             View the Changelog
           </PageHeaderLink>
@@ -49,7 +49,7 @@ export function PageHeader({ data }: PageHeaderProps) {
           <PageHeaderLink
             label="See More"
             icon={<IconPackage size={16} />}
-            link={`https://mantine-extensions.vercel.app/`}
+            link="https://mantine-extensions.vercel.app/"
           >
             Mantine Extensions
           </PageHeaderLink>
@@ -80,7 +80,7 @@ export function PageHeader({ data }: PageHeaderProps) {
           <PageHeaderLink
             label="Support"
             icon={<IconHeartFilled color="red" size={18} stroke={1.5} />}
-            link={'https://github.com/sponsors/gfazioli?o=esb'}
+            link="https://github.com/sponsors/gfazioli?o=esb"
           >
             Become a sponsor
           </PageHeaderLink>

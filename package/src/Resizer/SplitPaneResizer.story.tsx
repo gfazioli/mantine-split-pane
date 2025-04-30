@@ -114,3 +114,11 @@ export function Usage(props: SplitPaneResizerProps) {
     </Flex>
   );
 }
+
+export function NoProps() {
+  return (
+    <Flex w={100} h={100}>
+      <SplitPaneResizer />
+    </Flex>
+  );
+}

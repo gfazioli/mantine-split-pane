@@ -54,7 +54,7 @@ export function Shell({ children }: ShellProps) {
               height="34"
               width="114"
               className={classes.sponsor}
-            ></iframe>
+            />
             <ActionIcon
               visibleFrom="sm"
               size={36}

@@ -15,6 +15,7 @@ import {
   StyleProp,
   StylesApiProps,
   UnstyledButton,
+  useProps,
   useStyles,
 } from '@mantine/core';
 import { SplitPaneHandlers } from '../Pane/SplitPane';
@@ -178,100 +179,58 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
       cursorHorizontal,
     }
   ) => {
-    const ctx = useSplitContext();
-    const {
-      size: ctxSize = size,
-      opacity: ctxOpacity = opacity,
-      radius: ctxRadius = radius,
-      color: ctxColor = color,
-      hoverColor: ctxHoverColor = hoverColor,
-      knobSize: ctxKnobSize = knobSize,
-      knobOpacity: ctxKnobOpacity = knobOpacity,
-      knobRadius: ctxKnobRadius = knobRadius,
-      knobColor: ctxKnobColor = knobColor,
-      knobHoverColor: ctxKnobHoverColor = knobHoverColor,
-      spacing: ctxSpacing = spacing,
-      cursorVertical: ctxCursorVertical = cursorVertical,
-      cursorHorizontal: ctxCursorHorizontal = cursorHorizontal,
-      withKnob: ctxWithKnob = withKnob,
-      knobAlwaysOn: ctxKnobAlwaysOn = knobAlwaysOn,
-      variant: ctxVariant = variant,
-    } = {
-      ...ctx,
-      ...Object.fromEntries(
-        Object.entries({
-          size,
-          opacity,
-          radius,
-          color,
-          hoverColor,
-          knobSize,
-          knobOpacity,
-          knobRadius,
-          knobColor,
-          knobHoverColor,
-          withKnob,
-          knobAlwaysOn,
-          spacing,
-          variant,
-          cursorVertical,
-          cursorHorizontal,
-        }).filter(([_, value]) => value !== undefined)
-      ),
-    };
-
     const colorDarkParsed = parseThemeColor({
-      color: ctxColor || 'dark.5',
+      color: color || 'dark.5',
       theme,
     });
 
     const colorLightParsed = parseThemeColor({
-      color: ctxColor || 'gray.3',
+      color: color || 'gray.3',
       theme,
     });
 
     const hoverColorDarkParsed = parseThemeColor({
-      color: ctxHoverColor || theme.primaryColor,
+      color: hoverColor || theme.primaryColor,
       theme,
     });
 
     const hoverColorLightParsed = parseThemeColor({
-      color: ctxHoverColor || theme.primaryColor,
+      color: hoverColor || theme.primaryColor,
       theme,
     });
 
     const knobColorParsed = parseThemeColor({
-      color: ctxKnobColor || theme.primaryColor,
+      color: knobColor || theme.primaryColor,
       theme,
     });
 
     const knobHoverColorParsed = parseThemeColor({
-      color: ctxKnobHoverColor || 'white',
+      color: knobHoverColor || 'white',
       theme,
     });
 
-    const knobVariant = ctxVariant === 'dotted' || ctxVariant === 'dashed';
+    const knobVariant = variant === 'dotted' || variant === 'dashed';
     const forceKnobOpacityValue =
-      ctxWithKnob && ctxKnobAlwaysOn && !knobVariant ? (ctxKnobOpacity as string) : '0';
+      withKnob && knobAlwaysOn && !knobVariant ? (knobOpacity as string) : '0';
 
     return {
       root: {
-        '--split-resizer-size': getSize(ctxSize, 'split-resizer-size'),
-        '--split-resizer-color': rgba(colorLightParsed.value, Number(ctxOpacity)),
-        '--split-resizer-color-light': rgba(colorLightParsed.value, Number(ctxOpacity)),
-        '--split-resizer-color-dark': rgba(colorDarkParsed.value, Number(ctxOpacity)),
+        '--split-resizer-size': getSize(size, 'split-resizer-size'),
+        '--split-resizer-color': rgba(colorLightParsed.value, Number(opacity)),
+        '--split-resizer-color-light': rgba(colorLightParsed.value, Number(opacity)),
+        '--split-resizer-color-dark': rgba(colorDarkParsed.value, Number(opacity)),
         '--split-resizer-hover-color-light': rgba(hoverColorLightParsed.value, 1),
         '--split-resizer-hover-color-dark': rgba(hoverColorDarkParsed.value, 1),
-        '--split-resizer-radius': getRadius(ctxRadius),
-        '--split-resizer-knob-size': getSize(ctxKnobSize, 'split-resizer-knob-size'),
+        '--split-resizer-radius': getRadius(radius),
+        '--split-resizer-knob-size': getSize(knobSize, 'split-resizer-knob-size'),
         '--split-resizer-knob-opacity': forceKnobOpacityValue,
-        '--split-resizer-knob-hover-opacity': ctx?.withKnob || withKnob || knobVariant ? '1' : '0',
-        '--split-resizer-knob-radius': getRadius(ctxKnobRadius),
+        '--split-resizer-knob-hover-opacity': withKnob || knobVariant ? '1' : '0',
+        '--split-resizer-knob-radius': getRadius(knobRadius),
         '--split-resizer-knob-color': rgba(knobColorParsed.value, Number(forceKnobOpacityValue)),
         '--split-resizer-knob-hover-color': rgba(knobHoverColorParsed.value, 1),
-        '--split-resizer-spacing': getSize(ctxSpacing, 'split-resizer-spacing'),
-        '--split-resizer-cursor-vertical': ctxCursorVertical || 'col-resize',
-        '--split-resizer-cursor-horizontal': ctxCursorHorizontal || 'row-resize',
+        '--split-resizer-spacing': getSize(spacing, 'split-resizer-spacing'),
+        '--split-resizer-cursor-vertical': cursorVertical || 'col-resize',
+        '--split-resizer-cursor-horizontal': cursorHorizontal || 'row-resize',
       },
     };
   }
@@ -279,50 +238,47 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
 
 export const defaultProps: Partial<SplitPaneResizerContextProps> = {
   orientation: 'vertical',
-  size: 'sm',
   opacity: 0.8,
+  size: 'sm',
   radius: 'xs',
-  knobColor: 'white',
-  knobHoverColor: 'white',
+  withKnob: false,
+  knobAlwaysOn: true,
   knobSize: 'sm',
   knobOpacity: 0.5,
   knobRadius: 'sm',
-  withKnob: false,
-  knobAlwaysOn: true,
+  knobColor: 'white',
+  knobHoverColor: 'white',
+  spacing: 'xs',
   step: 8,
   shiftStep: 64,
   cursorVertical: 'col-resize',
   cursorHorizontal: 'row-resize',
 };
 
-export const SplitPaneResizer = factory<SplitPaneResizerFactory>((props, ref) => {
+export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, _) => {
   const ctx = useSplitContext();
-
-  const { cursorVertical, cursorHorizontal, orientation, variant, step, shiftStep } = {
-    ...ctx,
-    ...props,
-  };
+  const props = useProps('SplitPaneResizer', { ...defaultProps, ...ctx }, _props);
 
   const {
-    size,
+    orientation,
     opacity,
+    size,
     radius,
-    hoverColor,
+    withKnob,
+    knobAlwaysOn,
     knobSize,
     knobOpacity,
     knobRadius,
     knobColor,
     knobHoverColor,
-    withKnob,
-    knobAlwaysOn,
     spacing,
-
-    color: _color,
-    variant: _variant,
-    step: _step,
-    shiftStep: _shiftStep,
-    cursorVertical: _cursorVertical,
-    cursorHorizontal: _cursorHorizontal,
+    step,
+    shiftStep,
+    cursorVertical,
+    cursorHorizontal,
+    color,
+    hoverColor,
+    variant,
 
     onResizeStart,
     onResizing,
@@ -338,7 +294,7 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((props, ref) =>
     unstyled,
     vars,
     mod,
-    ...others
+    ...rest
   } = props;
 
   const getStyles = useStyles<SplitPaneResizerFactory>({
@@ -780,7 +736,7 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((props, ref) =>
       onDoubleClick={handleDoubleClick}
       aria-label="Resize"
       {...getStyles('root', { variant: variant || 'default' })}
-      {...others}
+      {...rest}
     />
   );
 });
