@@ -310,7 +310,7 @@ export function SimpleThreePercentage(p: SplitProps) {
   );
 }
 
-export function Styling(p: SplitProps) {
+export function Styling() {
   return (
     <div style={{ padding: 40 }}>
       <Split radius={256}>
@@ -354,7 +354,7 @@ export function Grow(p: SplitProps) {
   );
 }
 
-export function ThreePanel(p: SplitProps) {
+export function ThreePanel() {
   return (
     <Box p={40} style={{ border: '1px solid red' }}>
       <Split style={{ border: '1px solid blue' }}>
@@ -425,7 +425,14 @@ export function Inline(p: SplitProps) {
 export function ChangeWidth(p: SplitProps) {
   const [initialWidth, setInitialWidth] = React.useState(300);
 
+  /**
+   * Callback function for handling resize events.
+   *
+   * @param {Object} params - The parameters object
+   * @param {string|number} params.width - The width value from the resize event
+   */
   const handleResize = ({ width }) => {
+    // eslint-disable-next-line no-console
     console.log('!!!!!!', { width });
 
     setInitialWidth(parseInt(width, 10));
@@ -438,6 +445,7 @@ export function ChangeWidth(p: SplitProps) {
           <Split.Pane
             initialWidth={initialWidth}
             onResizeEnd={handleResize}
+            // eslint-disable-next-line no-console
             onResizing={(size) => console.log('onResizing', { size })}
           >
             <Paper withBorder>
@@ -568,7 +576,7 @@ export function Nested(p: SplitProps) {
   );
 }
 
-export function Accessibility(p: SplitProps) {
+export function Accessibility() {
   return (
     <div style={{ padding: 40 }}>
       <Split step={1} shiftStep={128}>
@@ -591,17 +599,24 @@ export function Accessibility(p: SplitProps) {
   );
 }
 
-export function DoubleClick(p: SplitProps) {
-  const [initialWidth, setInitialWidth] = React.useState(300);
+export function DoubleClick() {
+  const [initialWidth] = React.useState(300);
 
   return (
     <div style={{ padding: 40 }}>
       <Split>
-        <Split.Pane initialWidth={initialWidth} onResetInitialSize={() => console.log('reset')}>
+        <Split.Pane
+          initialWidth={initialWidth}
+          // eslint-disable-next-line no-console
+          onResetInitialSize={() => console.log('reset')}
+        >
           <h1>Pane 1</h1>
         </Split.Pane>
 
-        <Split.Resizer onDoubleClick={() => console.log('double click')} />
+        <Split.Resizer
+          // eslint-disable-next-line no-console
+          onDoubleClick={() => console.log('double click')}
+        />
 
         <Split.Pane>
           <h1>Pane 2</h1>
@@ -611,33 +626,45 @@ export function DoubleClick(p: SplitProps) {
   );
 }
 
-export function Events(p: SplitProps) {
-  const [initialWidth, setInitialWidth] = React.useState(300);
+export function Events() {
+  const [initialWidth] = React.useState(300);
 
   return (
     <div style={{ padding: 40 }}>
       <Split>
         <Split.Pane
           initialWidth={initialWidth}
+          // eslint-disable-next-line no-console
           onResizeStart={() => console.log('PANE before: resize start')}
+          // eslint-disable-next-line no-console
           onResizing={(s) => console.log('PANE before: resizing', s)}
+          // eslint-disable-next-line no-console
           onResizeEnd={(s) => console.log('PANE before: resize end', s)}
+          // eslint-disable-next-line no-console
           onResetInitialSize={() => console.log('PANE before: reset')}
         >
           <h1>Pane 1</h1>
         </Split.Pane>
 
         <Split.Resizer
+          // eslint-disable-next-line no-console
           onResizeStart={() => console.log('Resizer: resize start')}
+          // eslint-disable-next-line no-console
           onResizing={(s) => console.log('Resizer: resizing', s)}
+          // eslint-disable-next-line no-console
           onResizeEnd={(s) => console.log('Resizer: resize end', s)}
+          // eslint-disable-next-line no-console
           onDoubleClick={() => console.log('Resizer:double click')}
         />
 
         <Split.Pane
+          // eslint-disable-next-line no-console
           onResizeStart={() => console.log('PANE after: resize start')}
+          // eslint-disable-next-line no-console
           onResizing={(s) => console.log('PANE after: resizing', s)}
+          // eslint-disable-next-line no-console
           onResizeEnd={(s) => console.log('PANE after: resize end', s)}
+          // eslint-disable-next-line no-console
           onResetInitialSize={() => console.log('PANE after: reset')}
         >
           <h1>Pane 2</h1>

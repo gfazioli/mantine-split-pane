@@ -50,7 +50,7 @@
   touch-action: none;
 
   /* Knob */
-  &:after {
+  &::after {
     content: '';
     position: absolute;
     background-color: var(--split-resizer-knob-color);
@@ -64,7 +64,7 @@
     background: var(--split-resizer-hover-color);
 
     /* Knob */
-    &:after {
+    &::after {
       opacity: var(--split-resizer-knob-hover-opacity);
       background-color: var(--split-resizer-knob-hover-color);
     }
@@ -81,7 +81,7 @@
     right: 0;
 
     /* Knob */
-    &:after {
+    &::after {
       top: calc(50% - var(--split-resizer-knob-size) / 2);
       left: calc(50% - calc(var(--split-resizer-size) / 4));
       width: calc(var(--split-resizer-size) / 2);
@@ -100,7 +100,7 @@
     right: 0;
 
     /* Knob */
-    &:after {
+    &::after {
       left: calc(50% - var(--split-resizer-knob-size) / 2);
       top: calc(50% - calc(var(--split-resizer-size) / 4));
       width: var(--split-resizer-knob-size);
@@ -125,7 +125,7 @@
   border: none;
   border-radius: 0;
 
-  &:after {
+  &::after {
     content: '';
     opacity: 1;
     display: flex;
@@ -135,7 +135,7 @@
   }
 
   &[data-orientation='vertical'] {
-    &:after {
+    &::after {
       width: 2px;
       left: calc(var(--split-resizer-size) - calc(var(--split-resizer-size) / 2) - 2px);
       border: none;
@@ -144,7 +144,7 @@
   }
 
   &[data-orientation='horizontal'] {
-    &:after {
+    &::after {
       top: calc(var(--split-resizer-size) - calc(var(--split-resizer-size) / 2) - 2px);
       height: 2px;
       border: none;
@@ -155,7 +155,7 @@
   &:hover {
     background-color: transparent;
 
-    &:after {
+    &::after {
       display: block;
       border-color: var(--split-resizer-hover-color);
       background-color: transparent;
@@ -165,13 +165,13 @@
 
 .root--dashed {
   &[data-orientation='vertical'] {
-    &:after {
+    &::after {
       border-right-style: dashed;
     }
   }
 
   &[data-orientation='horizontal'] {
-    &:after {
+    &::after {
       border-bottom-style: dashed;
     }
   }

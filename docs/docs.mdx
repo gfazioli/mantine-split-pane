@@ -116,13 +116,21 @@ export type SPLIT_PANE_RESIZE_SIZES = {
 The events released are therefore:
 
 ```tsx
-onResizeStart?: () => void; // Same release as the Split.Pane component
+export interface SplitPaneResizerProps {
+  /** Event called when resizer is double clicked */
+  onDoubleClick?: (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => void;
 
-/** Event called when pane size changes */
-onResizing?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
+  /** Event called when pane size starts changing */
+  onResizeStart?: () => void;
 
-/** Event called when pane size changes */
-onResizeEnd?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
+  /** Event called when pane size changes */
+  onResizing?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
+
+  /** Event called when pane size changes */
+  onResizeEnd?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
+}
 ```
 
 <Demo data={demos.resizerEvents} />
@@ -187,14 +195,21 @@ export type SPLIT_PANE_SIZE = {
 The events released are therefore:
 
 ```tsx
-/** Event called when pane size starts changing */
-onResizeStart?: () => void; // Same release as the Split.Resizer component
+export interface SplitPaneProps {
+  /** Event called when pane size starts changing */
+  onResizeStart?: () => void;
 
-/** Event called when pane size changes */
-onResizing?: (size: SPLIT_PANE_SIZE) => void;
+  /** Event called when pane size changes */
+  onResizing?: (size: SPLIT_PANE_SIZE) => void;
 
-/** Event called when pane size changes */
-onResizeEnd?: (size: SPLIT_PANE_SIZE) => void;
+  /** Event called when pane size changes */
+  onResizeEnd?: (size: SPLIT_PANE_SIZE) => void;
+
+  /** Event called to reset initial size */
+  onResetInitialSize?: (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => void;
+}
 ```
 
 <Demo data={demos.events} />
@@ -294,19 +309,19 @@ Now you can appreciate the flexibility of the `Split` component, which allows yo
 >
 > ```tsx
 > <Split orientation="horizontal" radius={256} spacing={16}>
->  <Split.Pane initialHeight={200}>
->    <Paper {...paperProps}>
->      <Title>Pane 2</Title>
->    </Paper>
->  </Split.Pane>
+>   <Split.Pane initialHeight={200}>
+>     <Paper {...paperProps}>
+>       <Title>Pane 2</Title>
+>     </Paper>
+>   </Split.Pane>
 >
->  <Split.Resizer color="red.3" hoverColor="blue.7" >size="xl" />
+>   <Split.Resizer color="red.3" hoverColor="blue.7" size="xl" />
 >
->  <Split.Pane initialHeight={300}>
->    <Paper {...paperProps}>
->      <Title>Pane 3</Title>
->    </Paper>
->  </Split.Pane>
+>   <Split.Pane initialHeight={300}>
+>     <Paper {...paperProps}>
+>       <Title>Pane 3</Title>
+>     </Paper>
+>   </Split.Pane>
 > </Split>
 > ```
 >
@@ -359,9 +374,8 @@ Keeping the <Kbd>SHIFT</Kbd> key pressed while using the `Arrow` keys will resiz
 > The `step` and `shiftStep` props are accessible both for the `Split` and `Split.Resizer` components. Obviously, the `step` and `shiftStep` props of the `Split.Resizer` component will override the `step` and `shiftStep` props of the `Split` component.
 >
 > ```tsx
-> ...
 > <Split step={16} shiftStep={128}>
->   <Split.Pane >
+>   <Split.Pane>
 >     <h1>Pane 1</h1>
 >   </Split.Pane>
 >
@@ -377,7 +391,6 @@ Keeping the <Kbd>SHIFT</Kbd> key pressed while using the `Arrow` keys will resiz
 >     <h1>Pane 3</h1>
 >   </Split.Pane>
 > </Split>
-> ...
 > ```
 >
 > In the above example, the resizer between the **Pane 1** and **Pane 2** will resize the panes by `32` pixel, and the resizer between the **Pane 2** and **Pane 3** will resize the panes by `16` pixel. The `SHIFT` key will resize the panes by `256` pixel between the **Pane 1** and **Pane 2** and by `128` pixel between the **Pane 2** and **Pane 3**.

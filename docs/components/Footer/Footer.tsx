@@ -137,7 +137,7 @@ export const Footer: React.FC<FooterProps> = () => {
             height="32"
             width="114"
             style={{ border: 0, borderRadius: '6px' }}
-          ></iframe>
+          />
 
           <Group justify="right">
             <Text fz={12} inline>
@@ -148,10 +148,10 @@ export const Footer: React.FC<FooterProps> = () => {
             </Text>
             <Divider orientation="vertical" />
             <Text fz={12} inline>
-              <Group gap={4} component={'span'}>
+              <Group gap={4} component="span">
                 Hosted on{' '}
                 <Anchor fz={13} href="https://github.com/">
-                  <Group gap={4} component={'span'}>
+                  <Group gap={4} component="span">
                     <IconBrandGithubFilled size={16} /> GitHub.com
                   </Group>
                 </Anchor>
@@ -159,10 +159,10 @@ export const Footer: React.FC<FooterProps> = () => {
             </Text>
             <Divider orientation="vertical" />
             <Text fz={12} inline>
-              <Group gap={4} component={'span'} justify="flex-start">
+              <Group gap={4} component="span" justify="flex-start">
                 Built with{' '}
                 <Anchor fz={13} href="https://github.com/mantinedev/extension-template">
-                  <Group gap={4} component={'span'}>
+                  <Group gap={4} component="span">
                     <IconBrandMantine size={16} /> Mantine Extension Template
                   </Group>
                 </Anchor>
