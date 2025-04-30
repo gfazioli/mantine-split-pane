@@ -69,6 +69,8 @@ function Demo() {
         </Paper>
       </Split.Pane>
 
+      <Split.Resizer />
+
       <Split.Pane>
         <Paper withBorder>
           <h1>Pane 2</h1>
