@@ -2,7 +2,7 @@ import React from 'react';
 import { render, tests } from '@mantine-tests/core';
 import { Split, SplitProps, SplitStylesNames } from './Split';
 
-const defaultProps: SplitProps = {};
+const defaultProps: SplitProps = { children: <div>Test</div> };
 
 describe('SplitPane', () => {
   tests.itSupportsSystemProps<SplitProps, SplitStylesNames>({
@@ -18,7 +18,7 @@ describe('SplitPane', () => {
   });
 
   it('supports perspective prop', () => {
-    const { container } = render(<Split />);
+    const { container } = render(<Split>{<div>Test</div>}</Split>);
     expect(container.querySelector('.mantine-SplitPane-root')).toHaveStyle({
       perspective: '500px',
     });
