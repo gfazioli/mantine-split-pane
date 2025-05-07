@@ -2,8 +2,9 @@
 
 <div align="center">
 
-  ![Image](https://github.com/gfazioli/mantine-split-pane/assets/432181/638a5ca0-040c-4114-a08f-67ce7b24dec5)
+  [![Image]()](https://github.com/user-attachments/assets/2e45af2b-60c7-4cb3-9b9a-6cf0e710af1c)
 
+  
 </div>
 
 ---
