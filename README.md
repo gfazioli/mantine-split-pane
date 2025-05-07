@@ -2,8 +2,7 @@
 
 <div align="center">
 
-  [![Image]()](https://github.com/user-attachments/assets/2e45af2b-60c7-4cb3-9b9a-6cf0e710af1c)
-
+  https://github.com/user-attachments/assets/2e45af2b-60c7-4cb3-9b9a-6cf0e710af1c
   
 </div>
 
