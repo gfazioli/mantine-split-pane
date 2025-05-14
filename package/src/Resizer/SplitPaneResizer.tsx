@@ -4,14 +4,16 @@ import {
   createVarsResolver,
   Factory,
   factory,
+  getGradient,
   getRadius,
   getSize,
   MantineColor,
+  MantineGradient,
   MantineRadius,
   MantineSize,
   MantineSpacing,
+  MantineTheme,
   parseThemeColor,
-  rgba,
   StyleProp,
   StylesApiProps,
   UnstyledButton,
@@ -29,6 +31,7 @@ export type SplitPaneResizerVariant =
   | 'filled'
   | 'outline'
   | 'transparent'
+  | 'gradient'
   | 'dotted'
   | 'dashed';
 
@@ -36,10 +39,7 @@ export type SplitPaneResizerCssVariables = {
   root:
     | '--split-resizer-size'
     | '--split-resizer-color'
-    | '--split-resizer-color-light'
-    | '--split-resizer-color-dark'
-    | '--split-resizer-hover-color-light'
-    | '--split-resizer-hover-color-dark'
+    | '--split-resizer-hover-color'
     | '--split-resizer-radius'
     | '--split-resizer-knob-size'
     | '--split-resizer-knob-opacity'
@@ -105,6 +105,12 @@ export interface SplitPaneResizerContextProps {
 
   /** The CSS cursor property for horizontal orientation */
   cursorHorizontal?: CSSProperties['cursor'];
+
+  /** Gradient configuration used when `variant="gradient"`, default value is `theme.defaultGradient` */
+  gradient?: MantineGradient;
+
+  /** Gradient configuration used when `variant="gradient"` and `hover` is set, default value is `theme.defaultGradient` */
+  hoverGradient?: MantineGradient;
 }
 
 export type SPLIT_PANE_RESIZE_SIZES = {
@@ -177,57 +183,38 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
       variant,
       cursorVertical,
       cursorHorizontal,
+      gradient,
+      hoverGradient,
     }
   ) => {
-    const colorDarkParsed = parseThemeColor({
-      color: color || 'dark.5',
-      theme,
-    });
-
-    const colorLightParsed = parseThemeColor({
-      color: color || 'gray.3',
-      theme,
-    });
-
-    const hoverColorDarkParsed = parseThemeColor({
-      color: hoverColor || theme.primaryColor,
-      theme,
-    });
-
-    const hoverColorLightParsed = parseThemeColor({
-      color: hoverColor || theme.primaryColor,
-      theme,
-    });
-
-    const knobColorParsed = parseThemeColor({
-      color: knobColor || theme.primaryColor,
-      theme,
-    });
-
-    const knobHoverColorParsed = parseThemeColor({
-      color: knobHoverColor || 'white',
-      theme,
-    });
-
     const knobVariant = variant === 'dotted' || variant === 'dashed';
+
     const forceKnobOpacityValue =
       withKnob && knobAlwaysOn && !knobVariant ? (knobOpacity as string) : '0';
+
+    const colors = variantColorResolver({
+      color,
+      hover: hoverColor,
+      knob: knobColor,
+      hoverKnob: knobHoverColor,
+      theme,
+      gradient,
+      hoverGradient,
+      variant: variant || 'filled',
+    });
 
     return {
       root: {
         '--split-resizer-size': getSize(size, 'split-resizer-size'),
-        '--split-resizer-color': rgba(colorLightParsed.value, Number(opacity)),
-        '--split-resizer-color-light': rgba(colorLightParsed.value, Number(opacity)),
-        '--split-resizer-color-dark': rgba(colorDarkParsed.value, Number(opacity)),
-        '--split-resizer-hover-color-light': rgba(hoverColorLightParsed.value, 1),
-        '--split-resizer-hover-color-dark': rgba(hoverColorDarkParsed.value, 1),
+        '--split-resizer-color': colors.color,
+        '--split-resizer-hover-color': colors.hover,
         '--split-resizer-radius': getRadius(radius),
         '--split-resizer-knob-size': getSize(knobSize, 'split-resizer-knob-size'),
         '--split-resizer-knob-opacity': forceKnobOpacityValue,
         '--split-resizer-knob-hover-opacity': withKnob || knobVariant ? '1' : '0',
         '--split-resizer-knob-radius': getRadius(knobRadius),
-        '--split-resizer-knob-color': rgba(knobColorParsed.value, Number(forceKnobOpacityValue)),
-        '--split-resizer-knob-hover-color': rgba(knobHoverColorParsed.value, 1),
+        '--split-resizer-knob-color': colors.knob,
+        '--split-resizer-knob-hover-color': colors.hoverKnob,
         '--split-resizer-spacing': getSize(spacing, 'split-resizer-spacing'),
         '--split-resizer-cursor-vertical': cursorVertical || 'col-resize',
         '--split-resizer-cursor-horizontal': cursorHorizontal || 'row-resize',
@@ -235,6 +222,63 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
     };
   }
 );
+
+interface SplitPaneResizerVariantColorsResolverInput {
+  color: MantineColor | undefined;
+  hover: MantineColor | undefined;
+  knob: MantineColor | undefined;
+  hoverKnob: MantineColor | undefined;
+  theme: MantineTheme;
+  variant: string;
+  gradient?: MantineGradient;
+  hoverGradient?: MantineGradient;
+  autoContrast?: boolean;
+}
+
+interface SplitPaneResizerVariantColorResolverResult {
+  color: string;
+  hover: string;
+  knob: string;
+  hoverKnob?: string;
+  border?: string;
+}
+
+type SplitPaneResizerVariantColorsResolver = (
+  input: SplitPaneResizerVariantColorsResolverInput
+) => SplitPaneResizerVariantColorResolverResult;
+
+const variantColorResolver: SplitPaneResizerVariantColorsResolver = ({
+  color,
+  hover,
+  knob,
+  hoverKnob,
+  theme,
+  variant,
+  gradient,
+  hoverGradient,
+  autoContrast,
+}: SplitPaneResizerVariantColorsResolverInput): SplitPaneResizerVariantColorResolverResult => {
+  const parsedColor = color ? parseThemeColor({ color, theme }).value : undefined;
+  const parsedHover = hover ? parseThemeColor({ color: hover, theme }).value : undefined;
+  const parsedKnob = knob ? parseThemeColor({ color: knob, theme }).value : undefined;
+  const parsedHoverKnob = hoverKnob
+    ? parseThemeColor({ color: hoverKnob, theme }).value
+    : undefined;
+
+  const colors = {
+    color: parsedColor,
+    hover: parsedHover,
+    knob: parsedKnob,
+    hoverKnob: parsedHoverKnob,
+  };
+
+  if (variant === 'gradient') {
+    colors.color = getGradient(gradient, theme);
+    colors.hover = getGradient(hoverGradient || gradient, theme);
+  }
+
+  return colors;
+};
 
 export const defaultProps: Partial<SplitPaneResizerContextProps> = {
   orientation: 'vertical',

@@ -20,27 +20,19 @@
   --split-resizer-spacing-xl: rem(24px);
   --split-resizer-spacing: var(--split-resizer-spacing-xs);
 
-  @mixin where-light {
-    --split-resizer-color: var(--split-resizer-color-light);
-  }
+  --split-resizer-color: var(--mantine-color-gray-1);
+  --split-resizer-hover-color: var(--mantine-primary-color-filled);
 
-  @mixin where-dark {
-    --split-resizer-color: var(--split-resizer-color-dark);
-  }
-
-  @mixin where-light {
-    --split-resizer-hover-color: var(--split-resizer-hover-color-light);
-  }
-
-  @mixin where-dark {
-    --split-resizer-hover-color: var(--split-resizer-hover-color-dark);
+  @mixin dark {
+    --split-resizer-color: var(--mantine-color-dark-5);
   }
 
   position: relative;
-  background-color: var(--split-resizer-color);
+  background: var(--split-resizer-color);
   transition:
     color 0.5s ease,
     background-color 0.5s ease,
+    background-image 0.5s ease,
     opacity 0.5s ease;
 
   border-radius: var(--split-resizer-radius, var(--mantine-radius-xl));
@@ -53,7 +45,7 @@
   &::after {
     content: '';
     position: absolute;
-    background-color: var(--split-resizer-knob-color);
+    background: var(--split-resizer-knob-color);
     opacity: var(--split-resizer-knob-opacity, 1);
     border-radius: var(--split-resizer-knob-radius, var(--mantine-radius-default));
     z-index: 1;
@@ -66,7 +58,7 @@
     /* Knob */
     &::after {
       opacity: var(--split-resizer-knob-hover-opacity);
-      background-color: var(--split-resizer-knob-hover-color);
+      background: var(--split-resizer-knob-hover-color);
     }
   }
 
@@ -110,18 +102,18 @@
 }
 
 .root--outline {
-  border: 1px solid var(--split-resizer-hover-color);
-  background-color: transparent;
+  border: 1px solid var(--split-resizer-color);
+  background: transparent;
 }
 
 .root--transparent {
-  background-color: transparent;
+  background: transparent;
   border-color: transparent;
 }
 
 .root--dotted,
 .root--dashed {
-  background-color: transparent;
+  background: transparent;
   border: none;
   border-radius: 0;
 
@@ -130,7 +122,7 @@
     opacity: 1;
     display: flex;
     border: none;
-    background-color: transparent;
+    background: transparent;
     border-radius: 0;
   }
 
@@ -153,12 +145,12 @@
   }
 
   &:hover {
-    background-color: transparent;
+    background: transparent;
 
     &::after {
       display: block;
       border-color: var(--split-resizer-hover-color);
-      background-color: transparent;
+      background: transparent;
     }
   }
 }
