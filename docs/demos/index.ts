@@ -2,6 +2,7 @@ export { accessibility } from './Split.demo.accessibility';
 export { configurator } from './Split.demo.configurator';
 export { doubleclick } from './Split.demo.doubleclick';
 export { events } from './Split.demo.events';
+export { gradient } from './Split.demo.gradient';
 export { growFirst, growHorizontal, growSecond, growThreePanes } from './Split.demo.grow';
 export { initials } from './Split.demo.initials';
 export { inline } from './Split.demo.inline';

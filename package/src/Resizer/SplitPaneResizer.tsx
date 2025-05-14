@@ -41,6 +41,7 @@ export type SplitPaneResizerCssVariables = {
     | '--split-resizer-color'
     | '--split-resizer-hover-color'
     | '--split-resizer-radius'
+    | '--split-resizer-opacity'
     | '--split-resizer-knob-size'
     | '--split-resizer-knob-opacity'
     | '--split-resizer-knob-radius'
@@ -209,6 +210,7 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
         '--split-resizer-color': colors.color,
         '--split-resizer-hover-color': colors.hover,
         '--split-resizer-radius': getRadius(radius),
+        '--split-resizer-opacity': opacity ? (opacity as string) : '1',
         '--split-resizer-knob-size': getSize(knobSize, 'split-resizer-knob-size'),
         '--split-resizer-knob-opacity': forceKnobOpacityValue,
         '--split-resizer-knob-hover-opacity': withKnob || knobVariant ? '1' : '0',
@@ -232,7 +234,6 @@ interface SplitPaneResizerVariantColorsResolverInput {
   variant: string;
   gradient?: MantineGradient;
   hoverGradient?: MantineGradient;
-  autoContrast?: boolean;
 }
 
 interface SplitPaneResizerVariantColorResolverResult {
@@ -256,7 +257,6 @@ const variantColorResolver: SplitPaneResizerVariantColorsResolver = ({
   variant,
   gradient,
   hoverGradient,
-  autoContrast,
 }: SplitPaneResizerVariantColorsResolverInput): SplitPaneResizerVariantColorResolverResult => {
   const parsedColor = color ? parseThemeColor({ color, theme }).value : undefined;
   const parsedHover = hover ? parseThemeColor({ color: hover, theme }).value : undefined;
