@@ -10,10 +10,8 @@ export const SplitPaneResizerStylesApi: StylesApiData<SplitPaneResizerFactory> =
     root: {
       '--split-resizer-size': 'Controls resizer size',
       '--split-resizer-color': 'Controls resizer color',
-      '--split-resizer-color-light': 'Controls resizer color in light mode',
-      '--split-resizer-color-dark': 'Controls resizer color in dark mode',
-      '--split-resizer-hover-color-light': 'Controls resizer hover color in light mode',
-      '--split-resizer-hover-color-dark': 'Controls resizer hover color in dark mode',
+      '--split-resizer-hover-color': 'Controls resizer color',
+      '--split-resizer-opacity': 'Controls resizer opacity',
       '--split-resizer-radius': 'Controls resizer border-radius',
       '--split-resizer-knob-size': 'Controls resizer knob size',
       '--split-resizer-knob-opacity': 'Controls resizer knob opacity',
