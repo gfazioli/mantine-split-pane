@@ -210,7 +210,7 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
         '--split-resizer-color': colors.color,
         '--split-resizer-hover-color': colors.hover,
         '--split-resizer-radius': getRadius(radius),
-        '--split-resizer-opacity': opacity ? (opacity as string) : '1',
+        '--split-resizer-opacity': opacity !== undefined ? (opacity as string) : '1',
         '--split-resizer-knob-size': getSize(knobSize, 'split-resizer-knob-size'),
         '--split-resizer-knob-opacity': forceKnobOpacityValue,
         '--split-resizer-knob-hover-opacity': withKnob || knobVariant ? '1' : '0',
@@ -621,17 +621,17 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, _) => 
     const computedStyle = window.getComputedStyle(containerRef.current);
 
     if (orientation === 'vertical') {
-      const margin = parseFloat(computedStyle.getPropertyValue('margin-right')) - 1;
+      const size = parseFloat(computedStyle.getPropertyValue('width'));
       const clientX = 'clientX' in event ? event.clientX : event.touches[0].clientX;
-      const deltaX = clientX - containerRef.current.getBoundingClientRect().left - margin;
+      const deltaX = clientX - containerRef.current.getBoundingClientRect().left - size / 2;
 
       return processVerticalSize(deltaX);
     }
 
     if (orientation === 'horizontal') {
-      const margin = parseFloat(computedStyle.getPropertyValue('margin-bottom')) - 1;
+      const size = parseFloat(computedStyle.getPropertyValue('height'));
       const clientY = 'clientY' in event ? event.clientY : event.touches[0].clientY;
-      const deltaY = clientY - containerRef.current.getBoundingClientRect().top - margin;
+      const deltaY = clientY - containerRef.current.getBoundingClientRect().top - size / 2;
 
       return processHorizontalSize(deltaY);
     }
