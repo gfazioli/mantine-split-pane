@@ -122,3 +122,14 @@ export function NoProps() {
     </Flex>
   );
 }
+export function Gradient() {
+  return (
+    <Flex w={100} h={100}>
+      <SplitPaneResizer
+        variant="gradient"
+        gradient={{ from: 'blue', to: 'cyan', deg: 0 }}
+        hoverGradient={{ from: 'red', to: 'transparent', deg: 0 }}
+      />
+    </Flex>
+  );
+}
