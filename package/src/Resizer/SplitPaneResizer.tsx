@@ -323,6 +323,8 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, _) => 
     color,
     hoverColor,
     variant,
+    gradient,
+    hoverGradient,
 
     onResizeStart,
     onResizing,

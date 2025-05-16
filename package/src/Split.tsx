@@ -86,6 +86,8 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     color,
     hoverColor,
     variant,
+    gradient,
+    hoverGradient,
 
     classNames,
     style,
@@ -162,6 +164,8 @@ export const Split = factory<SplitFactory>((_props, ref) => {
         shiftStep,
         cursorVertical,
         cursorHorizontal,
+        gradient,
+        hoverGradient,
       }}
     >
       <Box ref={ref} mod={{ orientation }} {...getStyles('root')} {...others}>

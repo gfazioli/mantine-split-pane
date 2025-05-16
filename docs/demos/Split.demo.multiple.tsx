@@ -4,7 +4,11 @@ import { MantineDemo } from '@mantinex/demo';
 
 function Demo() {
   return (
-    <Split>
+    <Split
+      variant="gradient"
+      gradient={{ from: 'white', to: 'lime', deg: 0 }}
+      hoverGradient={{ from: 'white', to: 'lime', deg: 180 }}
+    >
       <Split.Pane>
         <Paper withBorder>
           <Title>Pane 1</Title>
@@ -28,7 +32,7 @@ function Demo() {
         </Paper>
       </Split.Pane>
 
-      <Split.Resizer color="red" />
+      <Split.Resizer variant="filled" color="red" />
 
       <Split.Pane>
         <Paper withBorder>
@@ -45,7 +49,11 @@ import { Code, Paper } from '@mantine/core';
 
 function Demo() {
   return (
-    <Split>
+    <Split
+      variant="gradient"
+      gradient={{ from: 'white', to: 'lime', deg: 0 }}
+      hoverGradient={{ from: 'white', to: 'lime', deg: 180 }}
+    >
       <Split.Pane>
         <Paper withBorder>
           <Title>Pane 1</Title>
@@ -69,7 +77,7 @@ function Demo() {
         </Paper>
       </Split.Pane>
 
-      <Split.Resizer color="red" />
+      <Split.Resizer variant="filled" color="red" />
 
       <Split.Pane>
         <Paper withBorder>
