@@ -81,5 +81,8 @@ function Demo() {
 }
 ```
 
+<div align="center">
+  
 [![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-split-pane&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-split-pane&Timeline)
 
+</div>
