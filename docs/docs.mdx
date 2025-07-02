@@ -88,9 +88,9 @@ By default, each `Split` is displayed using `flex`, but in case you want to disp
 
 ## Gradient variant
 
-When `variant` prop is set to `gradient`, you can control gradient with `gradient` prop, it accepts an object with `from`, `to` and `deg` properties. If the `gradient` prop is not set, `SplitPaneResizer` will use `theme.defaultGradient` which can be configured on the `theme` object. `gradient` prop is ignored when variant is not gradient.
+When `variant` prop is set to `gradient`, you can control gradient with `gradient` prop, it accepts an object with `from`, `to` and `deg` properties. If the `gradient` prop is not set, `Split.Resizer` will use `theme.defaultGradient` which can be configured on the `theme` object. `gradient` prop is ignored when variant is not gradient.
 
-Note that `variant="gradient"` supports only linear gradients with two colors. If you need a more complex gradient, then use Styles API to modify `SplitPaneResizer` styles.
+Note that `variant="gradient"` supports only linear gradients with two colors. If you need a more complex gradient, then use Styles API to modify `Split.Resizer` styles.
 
 <Demo data={demos.gradient} />
 
@@ -124,7 +124,7 @@ export type SPLIT_PANE_RESIZE_SIZES = {
 The events released are therefore:
 
 ```tsx
-export interface SplitPaneResizerProps {
+export interface SplitResizerProps {
   /** Event called when resizer is double clicked */
   onDoubleClick?: (
     event: React.MouseEvent<HTMLButtonElement>

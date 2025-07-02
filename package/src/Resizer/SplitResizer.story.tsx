@@ -1,9 +1,9 @@
 import React from 'react';
 import { Flex } from '@mantine/core';
-import { SplitPaneResizer, type SplitPaneResizerProps } from './SplitPaneResizer';
+import { SplitResizer, type SplitResizerProps } from './SplitResizer';
 
 export default {
-  title: 'SplitPaneResizer',
+  title: 'SplitResizer',
   args: {
     orientation: 'vertical',
     variant: 'default',
@@ -107,10 +107,10 @@ export default {
   },
 };
 
-export function Usage(props: SplitPaneResizerProps) {
+export function Usage(props: SplitResizerProps) {
   return (
     <Flex w={100} h={100}>
-      <SplitPaneResizer {...props} />
+      <SplitResizer {...props} />
     </Flex>
   );
 }
@@ -118,14 +118,14 @@ export function Usage(props: SplitPaneResizerProps) {
 export function NoProps() {
   return (
     <Flex w={100} h={100}>
-      <SplitPaneResizer />
+      <SplitResizer />
     </Flex>
   );
 }
 export function Gradient() {
   return (
     <Flex w={100} h={100}>
-      <SplitPaneResizer
+      <SplitResizer
         variant="gradient"
         gradient={{ from: 'blue', to: 'cyan', deg: 0 }}
         hoverGradient={{ from: 'red', to: 'transparent', deg: 0 }}

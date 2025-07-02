@@ -1,2 +1,2 @@
-export { SplitPaneResizer } from './SplitPaneResizer';
-export type { SplitPaneResizerProps } from './SplitPaneResizer';
+export { SplitResizer } from './SplitResizer';
+export type { SplitResizerProps } from './SplitResizer';

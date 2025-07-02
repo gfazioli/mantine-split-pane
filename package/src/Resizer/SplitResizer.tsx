@@ -22,11 +22,11 @@ import {
 } from '@mantine/core';
 import { SplitPaneHandlers } from '../Pane/SplitPane';
 import { useSplitContext } from '../Split.context';
-import classes from './SplitPaneResizer.module.css';
+import classes from './SplitResizer.module.css';
 
-export type SplitPaneResizerStylesNames = 'root';
+export type SplitResizerStylesNames = 'root';
 
-export type SplitPaneResizerVariant =
+export type SplitResizerVariant =
   | 'default'
   | 'filled'
   | 'outline'
@@ -35,7 +35,7 @@ export type SplitPaneResizerVariant =
   | 'dotted'
   | 'dashed';
 
-export type SplitPaneResizerCssVariables = {
+export type SplitResizerCssVariables = {
   root:
     | '--split-resizer-size'
     | '--split-resizer-color'
@@ -52,7 +52,7 @@ export type SplitPaneResizerCssVariables = {
     | '--split-resizer-cursor-horizontal';
 };
 
-export interface SplitPaneResizerContextProps {
+export interface SplitResizerContextProps {
   /** Split orientation, `'vertical'` by default */
   orientation?: 'horizontal' | 'vertical';
 
@@ -125,7 +125,7 @@ export type SPLIT_PANE_RESIZE_SIZES = {
   };
 };
 
-export interface SplitPaneResizerBaseProps extends SplitPaneResizerContextProps {
+export interface SplitResizerBaseProps extends SplitResizerContextProps {
   /** Event called when resizer is double clicked */
   onDoubleClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 
@@ -139,10 +139,10 @@ export interface SplitPaneResizerBaseProps extends SplitPaneResizerContextProps 
   onResizeEnd?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
 }
 
-export interface SplitPaneResizerProps
+export interface SplitResizerProps
   extends BoxProps,
-    SplitPaneResizerBaseProps,
-    StylesApiProps<SplitPaneResizerFactory> {
+    SplitResizerBaseProps,
+    StylesApiProps<SplitResizerFactory> {
   /**
    * The before (left | up) componentRef
    * @access private
@@ -156,15 +156,15 @@ export interface SplitPaneResizerProps
   __afterRef?: React.RefObject<HTMLDivElement & SplitPaneHandlers>;
 }
 
-export type SplitPaneResizerFactory = Factory<{
-  props: SplitPaneResizerProps;
+export type SplitResizerFactory = Factory<{
+  props: SplitResizerProps;
   ref: HTMLButtonElement;
-  stylesNames: SplitPaneResizerStylesNames;
-  vars: SplitPaneResizerCssVariables;
-  variant: SplitPaneResizerVariant;
+  stylesNames: SplitResizerStylesNames;
+  vars: SplitResizerCssVariables;
+  variant: SplitResizerVariant;
 }>;
 
-const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
+const varsResolver = createVarsResolver<SplitResizerFactory>(
   (
     theme,
     {
@@ -225,7 +225,7 @@ const varsResolver = createVarsResolver<SplitPaneResizerFactory>(
   }
 );
 
-interface SplitPaneResizerVariantColorsResolverInput {
+interface SplitResizerVariantColorsResolverInput {
   color: MantineColor | undefined;
   hover: MantineColor | undefined;
   knob: MantineColor | undefined;
@@ -236,7 +236,7 @@ interface SplitPaneResizerVariantColorsResolverInput {
   hoverGradient?: MantineGradient;
 }
 
-interface SplitPaneResizerVariantColorResolverResult {
+interface SplitResizerVariantColorResolverResult {
   color: string;
   hover: string;
   knob: string;
@@ -244,11 +244,11 @@ interface SplitPaneResizerVariantColorResolverResult {
   border?: string;
 }
 
-type SplitPaneResizerVariantColorsResolver = (
-  input: SplitPaneResizerVariantColorsResolverInput
-) => SplitPaneResizerVariantColorResolverResult;
+type SplitResizerVariantColorsResolver = (
+  input: SplitResizerVariantColorsResolverInput
+) => SplitResizerVariantColorResolverResult;
 
-const variantColorResolver: SplitPaneResizerVariantColorsResolver = ({
+const variantColorResolver: SplitResizerVariantColorsResolver = ({
   color,
   hover,
   knob,
@@ -257,7 +257,7 @@ const variantColorResolver: SplitPaneResizerVariantColorsResolver = ({
   variant,
   gradient,
   hoverGradient,
-}: SplitPaneResizerVariantColorsResolverInput): SplitPaneResizerVariantColorResolverResult => {
+}: SplitResizerVariantColorsResolverInput): SplitResizerVariantColorResolverResult => {
   const parsedColor = color ? parseThemeColor({ color, theme }).value : undefined;
   const parsedHover = hover ? parseThemeColor({ color: hover, theme }).value : undefined;
   const parsedKnob = knob ? parseThemeColor({ color: knob, theme }).value : undefined;
@@ -280,7 +280,7 @@ const variantColorResolver: SplitPaneResizerVariantColorsResolver = ({
   return colors;
 };
 
-export const defaultProps: Partial<SplitPaneResizerContextProps> = {
+export const defaultProps: Partial<SplitResizerContextProps> = {
   orientation: 'vertical',
   opacity: 0.8,
   size: 'sm',
@@ -299,9 +299,9 @@ export const defaultProps: Partial<SplitPaneResizerContextProps> = {
   cursorHorizontal: 'row-resize',
 };
 
-export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, _) => {
+export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   const ctx = useSplitContext();
-  const props = useProps('SplitPaneResizer', { ...defaultProps, ...ctx }, _props);
+  const props = useProps('SplitResizer', { ...defaultProps, ...ctx }, _props);
 
   const {
     orientation,
@@ -343,8 +343,8 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, _) => 
     ...rest
   } = props;
 
-  const getStyles = useStyles<SplitPaneResizerFactory>({
-    name: 'SplitPaneResizer',
+  const getStyles = useStyles<SplitResizerFactory>({
+    name: 'SplitResizer',
     classes,
     props,
     className,
@@ -787,5 +787,5 @@ export const SplitPaneResizer = factory<SplitPaneResizerFactory>((_props, _) => 
   );
 });
 
-SplitPaneResizer.classes = classes;
-SplitPaneResizer.displayName = 'SplitPaneResizer';
+SplitResizer.classes = classes;
+SplitResizer.displayName = 'SplitResizer';

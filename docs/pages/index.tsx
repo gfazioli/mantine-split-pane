@@ -12,8 +12,8 @@ export default function HomePage() {
       <PageHeader data={PACKAGE_DATA} />
       <DocsTabs
         docgen={docgen}
-        componentsProps={['Split', 'SplitPane', 'SplitPaneResizer']}
-        componentsStyles={['Split', 'SplitPane', 'SplitPaneResizer']}
+        componentsProps={['Split', 'SplitPane', 'SplitResizer']}
+        componentsStyles={['Split', 'SplitPane', 'SplitResizer']}
         componentPrefix="Split"
         stylesApiData={STYLES_API_DATA}
       >

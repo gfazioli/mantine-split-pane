@@ -11,24 +11,24 @@ import {
 } from '@mantine/core';
 import { SplitPane, type SplitPaneProps } from './Pane/SplitPane';
 import {
-  SplitPaneResizer,
   defaultProps as splitPaneResizerDefaultProps,
-  type SplitPaneResizerContextProps,
-  type SplitPaneResizerProps,
-  type SplitPaneResizerVariant,
-} from './Resizer/SplitPaneResizer';
+  SplitResizer,
+  type SplitResizerContextProps,
+  type SplitResizerProps,
+  type SplitResizerVariant,
+} from './Resizer/SplitResizer';
 import { SplitContextProvider } from './Split.context';
 import classes from './Split.module.css';
 
 export type SplitStylesNames = 'root';
 
-export type SplitVariant = SplitPaneResizerVariant;
+export type SplitVariant = SplitResizerVariant;
 
 export type SplitCssVariables = {
   root: '--split-inline';
 };
 
-export interface SplitBaseProps extends SplitPaneResizerContextProps {
+export interface SplitBaseProps extends SplitResizerContextProps {
   /** Make main split container inline */
   inline?: boolean;
 
@@ -47,7 +47,7 @@ export type SplitFactory = Factory<{
   variant: SplitVariant;
   staticComponents: {
     Pane: typeof SplitPane;
-    Resizer: typeof SplitPaneResizer;
+    Resizer: typeof SplitResizer;
   };
 }>;
 
@@ -113,19 +113,17 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     varsResolver,
   });
 
-  type ChildrenType =
-    | React.ReactElement<SplitPaneProps>
-    | React.ReactElement<SplitPaneResizerProps>;
+  type ChildrenType = React.ReactElement<SplitPaneProps> | React.ReactElement<SplitResizerProps>;
 
   const childRefs = React.Children.map(children, () => useRef<HTMLDivElement>(null));
 
   const clonedChildren = React.Children.map(children, (child: ChildrenType, index) => {
     if (isValidElement(child)) {
-      if (child.type === SplitPaneResizer) {
+      if (child.type === SplitResizer) {
         const beforeRef = childRefs[index - 1];
         const afterRef = childRefs[index + 1];
 
-        return cloneElement(child as React.ReactElement<SplitPaneResizerProps>, {
+        return cloneElement(child as React.ReactElement<SplitResizerProps>, {
           __beforeRef: beforeRef,
           __afterRef: afterRef,
         });
@@ -156,7 +154,7 @@ export const Split = factory<SplitFactory>((_props, ref) => {
         knobRadius,
         knobColor,
         knobHoverColor,
-        variant: variant as SplitPaneResizerVariant,
+        variant: variant as SplitResizerVariant,
         withKnob,
         knobAlwaysOn,
         spacing,
@@ -178,4 +176,4 @@ export const Split = factory<SplitFactory>((_props, ref) => {
 Split.classes = classes;
 Split.displayName = 'Split';
 Split.Pane = SplitPane;
-Split.Resizer = SplitPaneResizer;
+Split.Resizer = SplitResizer;

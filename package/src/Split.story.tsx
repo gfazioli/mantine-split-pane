@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, Code, Paper, Space, Stack, Title } from '@mantine/core';
-import { SPLIT_PANE_RESIZE_SIZES } from './Resizer/SplitPaneResizer';
+import { SPLIT_PANE_RESIZE_SIZES } from './Resizer/SplitResizer';
 import { Split, type SplitProps } from './Split';
 
 export default {

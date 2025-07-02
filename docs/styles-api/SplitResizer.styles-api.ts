@@ -1,7 +1,7 @@
-import type { SplitPaneResizerFactory } from '@gfazioli/mantine-split-pane';
+import type { SplitResizerFactory } from '@gfazioli/mantine-split-pane';
 import type { StylesApiData } from '../components/styles-api.types';
 
-export const SplitPaneResizerStylesApi: StylesApiData<SplitPaneResizerFactory> = {
+export const SplitResizerStylesApi: StylesApiData<SplitResizerFactory> = {
   selectors: {
     root: 'Root element',
   },

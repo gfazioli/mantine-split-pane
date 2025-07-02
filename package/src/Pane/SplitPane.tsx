@@ -9,13 +9,13 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import { SplitPaneResizerVariant } from '../Resizer/SplitPaneResizer';
+import { SplitResizerVariant } from '../Resizer/SplitResizer';
 import { useSplitContext } from '../Split.context';
 import classes from './SplitPane.module.css';
 
 export type SplitPaneStylesNames = 'root';
 
-export type SplitPaneVariant = SplitPaneResizerVariant;
+export type SplitPaneVariant = SplitResizerVariant;
 
 export type SplitPaneCssVariables = {};
 

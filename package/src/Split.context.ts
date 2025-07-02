@@ -1,9 +1,9 @@
 import { createOptionalContext, MantineSpacing } from '@mantine/core';
-import { SplitPaneResizerContextProps, SplitPaneResizerVariant } from './Resizer/SplitPaneResizer';
+import { SplitResizerContextProps, SplitResizerVariant } from './Resizer/SplitResizer';
 
-interface SplitContext extends SplitPaneResizerContextProps {
+interface SplitContext extends SplitResizerContextProps {
   /** Resizer Variant */
-  variant?: SplitPaneResizerVariant;
+  variant?: SplitResizerVariant;
 
   /** Spacing between resizer and pane */
   spacing?: MantineSpacing;
