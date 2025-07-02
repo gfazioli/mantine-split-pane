@@ -1300,10 +1300,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.30.0, @eslint/js@npm:^9.30.0":
-  version: 9.30.0
-  resolution: "@eslint/js@npm:9.30.0"
-  checksum: 10c0/aec2df7f4e4e884d693dc27dbf4713c1a48afa327bfadac25ebd0e61a2797ce906f2f2a9be0d7d922acb68ccd68cc88779737811f9769eb4933d1f5e574c469e
+"@eslint/js@npm:9.30.1, @eslint/js@npm:^9.30.1":
+  version: 9.30.1
+  resolution: "@eslint/js@npm:9.30.1"
+  checksum: 10c0/17fc382a0deafdb1cadac1269d9c2f2464f025bde6e4d12fc4f4775eb9886b41340d4650b72e85a53423644fdc89bf59c987a852f27379ad25feecf2c5bbc1c9
   languageName: node
   linkType: hard
 
@@ -3527,12 +3527,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.15.34":
-  version: 22.15.34
-  resolution: "@types/node@npm:22.15.34"
+"@types/node@npm:^22.16.0":
+  version: 22.16.0
+  resolution: "@types/node@npm:22.16.0"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/fb6a6b36daaa1b484aaba3d33b4d1e7b37ea993e29f20b7a676affa76ed6ff6acd2ded4d5003469bc8dbc815b3d224533b4560896037ef6d5b5d552721ab7d57
+  checksum: 10c0/6219b521062f6c38d4d85ebd25807bd7f2bc703a5acba24e2c6716938d9d6cefd6fafd7b5156f61580eb58a0d82e8921751b778655675389631d813e5f261c03
   languageName: node
   linkType: hard
 
@@ -6673,9 +6673,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.30.0":
-  version: 9.30.0
-  resolution: "eslint@npm:9.30.0"
+"eslint@npm:^9.30.1":
+  version: 9.30.1
+  resolution: "eslint@npm:9.30.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.2.0"
     "@eslint-community/regexpp": "npm:^4.12.1"
@@ -6683,7 +6683,7 @@ __metadata:
     "@eslint/config-helpers": "npm:^0.3.0"
     "@eslint/core": "npm:^0.14.0"
     "@eslint/eslintrc": "npm:^3.3.1"
-    "@eslint/js": "npm:9.30.0"
+    "@eslint/js": "npm:9.30.1"
     "@eslint/plugin-kit": "npm:^0.3.1"
     "@humanfs/node": "npm:^0.16.6"
     "@humanwhocodes/module-importer": "npm:^1.0.1"
@@ -6719,7 +6719,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/ebc4b17cfd96f308ebaeb12dfab133a551eb03200c80109ecf663fbeb9af83c4eb3c143407c1b04522d23b5f5844fe9a629b00d409adfc460c1aadf5108da86a
+  checksum: 10c0/5a5867078e03ea56a1b6d1ee1548659abc38a6d5136c7ef94e21c5dbeb28e3ed50b15d2e0da25fce85600f6cf7ea7715eae650c41e8ae826c34490e9ec73d5d6
   languageName: node
   linkType: hard
 
@@ -6992,7 +6992,7 @@ __metadata:
     "@next/mdx": "npm:^15.3.4"
     "@tabler/icons-react": "npm:^3.34.0"
     "@types/mdx": "npm:^2.0.13"
-    "@types/node": "npm:^22.15.34"
+    "@types/node": "npm:^22.16.0"
     "@types/react": "npm:^19.1.8"
     "@types/react-dom": "npm:^19.1.6"
     next: "npm:15.3.4"
@@ -10204,7 +10204,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "m-90d2bb8@workspace:."
   dependencies:
-    "@eslint/js": "npm:^9.30.0"
+    "@eslint/js": "npm:^9.30.1"
     "@ianvs/prettier-plugin-sort-imports": "npm:^4.4.2"
     "@mantine-tests/core": "npm:^1.1.0"
     "@mantine/core": "npm:8.1.2"
@@ -10223,7 +10223,7 @@ __metadata:
     "@types/fs-extra": "npm:^11.0.4"
     "@types/identity-obj-proxy": "npm:^3.0.2"
     "@types/jest": "npm:^29.5.14"
-    "@types/node": "npm:^22.15.34"
+    "@types/node": "npm:^22.16.0"
     "@types/react": "npm:^19.1.8"
     "@types/react-dom": "npm:^19.1.6"
     "@types/signale": "npm:^1.4.7"
@@ -10231,7 +10231,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.6.0"
     esbuild: "npm:^0.25.5"
     esbuild-jest: "npm:^0.5.0"
-    eslint: "npm:^9.30.0"
+    eslint: "npm:^9.30.1"
     eslint-config-mantine: "npm:^4.0.3"
     eslint-plugin-jsx-a11y: "npm:^6.10.2"
     eslint-plugin-react: "npm:^7.37.5"
@@ -10269,7 +10269,7 @@ __metadata:
     version-next: "npm:^1.0.2"
     vite: "npm:^6.3.5"
     yargs: "npm:^17.7.2"
-    zx: "npm:^8.6.0"
+    zx: "npm:^8.6.1"
   languageName: unknown
   linkType: soft
 
@@ -16207,11 +16207,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zx@npm:^8.6.0":
-  version: 8.6.0
-  resolution: "zx@npm:8.6.0"
+"zx@npm:^8.6.1":
+  version: 8.6.1
+  resolution: "zx@npm:8.6.1"
   bin:
     zx: build/cli.js
-  checksum: 10c0/e43f0acb6572455c47c0ed4c402f73ed66ced2a8d3565adbdffaf0b5c6a7728e2f6aae271b9ebe7f480d6e63b75c8288575a7aa642508320bfc1dd8ef33e9a80
+  checksum: 10c0/ab22dd803e064a3bc3b96ee89049b473df8d1399f72681da6faf55590d68d155f2fbdfe752520ccd5e82f7cb6c3e52810818d4f75ae38aff7bba6898752d96ca
   languageName: node
   linkType: hard
