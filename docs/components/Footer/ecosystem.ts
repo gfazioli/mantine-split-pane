@@ -6,6 +6,12 @@ export const ecosystem = [
     newWindow: true,
   },
   {
+    key: 'mantine-list-view-table',
+    title: 'Mantine List View Table',
+    href: 'https://gfazioli.github.io/mantine-list-view-table',
+    newWindow: true,
+  },
+  {
     key: 'mantine-marquee',
     title: 'Mantine Marquee',
     href: 'https://gfazioli.github.io/mantine-marquee',
