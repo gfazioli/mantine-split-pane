@@ -1,7 +1,7 @@
+import { CodeHighlight } from '@mantine/code-highlight';
 import { Group, Tabs } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { NpmIcon, YarnIcon } from '@mantinex/dev-icons';
-import { CodeHighlight } from '@mantinex/shiki';
 import classes from './MdxNpmScript.module.css';
 
 interface MdxNpmScriptProps {
@@ -10,10 +10,7 @@ interface MdxNpmScriptProps {
 }
 
 export function MdxNpmScript({ yarnScript, npmScript }: MdxNpmScriptProps) {
-  const [tab, setTab] = useLocalStorage({
-    key: 'script-tab-value',
-    defaultValue: 'yarn',
-  });
+  const [tab, setTab] = useLocalStorage({ key: 'script-tab-value', defaultValue: 'yarn' });
 
   return (
     <Tabs value={tab} onChange={(val) => setTab(val!)} variant="pills" classNames={classes}>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { IconSearch } from '@tabler/icons-react';
 import { TextInput, Title } from '@mantine/core';
 import { getComponentName } from './getComponentName';

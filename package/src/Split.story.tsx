@@ -673,3 +673,15 @@ export function Events() {
     </div>
   );
 }
+
+export function ResizeWindow() {
+  return (
+    <Split w={100}>
+      <Split.Pane initialWidth={200}>Left</Split.Pane>
+
+      <Split.Resizer />
+
+      <Split.Pane grow>Right</Split.Pane>
+    </Split>
+  );
+}

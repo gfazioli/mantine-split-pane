@@ -1,9 +1,9 @@
 import React from 'react';
 import cx from 'clsx';
 import type { MDXComponents } from 'mdx/types';
+import { CodeHighlight } from '@mantine/code-highlight';
 import { Anchor, Code, Image, Title } from '@mantine/core';
 import { Demo } from '@mantinex/demo';
-import { CodeHighlight } from '@mantinex/shiki';
 import { MdxInfo } from '../MdxInfo/MdxInfo';
 import classes from './MdxElements.module.css';
 
