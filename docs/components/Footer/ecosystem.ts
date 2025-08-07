@@ -18,7 +18,6 @@ export const ecosystem = [
     href: 'https://gfazioli.github.io/mantine-list-view-table',
     newWindow: true,
   },
-
   {
     key: 'mantine-marquee',
     title: 'Mantine Marquee',
