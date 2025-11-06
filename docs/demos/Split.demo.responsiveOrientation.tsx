@@ -35,6 +35,8 @@ import { Split } from '@gfazioli/mantine-split-pane';
 import { Paper, Stack, Text, Title } from '@mantine/core';
 
 function Demo() {
+  const paperProps = { withBorder: true, w: '100%', h: '100%' };
+
   return (
     <Stack>
       <Split w="100%" h={320} orientation={{ base: 'horizontal', md: 'vertical' }}>
