@@ -86,6 +86,12 @@ By default, each `Split` is displayed using `flex`, but in case you want to disp
 
 <Demo data={demos.inline} />
 
+## Responsive Orientation
+
+You can set the `orientation` prop to be responsive by passing an object with breakpoints as keys and orientations as values. E.g `{ base: 'horizontal', md: 'vertical' }`. Resize the browser window to see the orientation of the split panes change based on the viewport size.
+
+<Demo data={demos.responsiveOrientation} />
+
 ## Gradient variant
 
 When `variant` prop is set to `gradient`, you can control gradient with `gradient` prop, it accepts an object with `from`, `to` and `deg` properties. If the `gradient` prop is not set, `Split.Resizer` will use `theme.defaultGradient` which can be configured on the `theme` object. `gradient` prop is ignored when variant is not gradient.

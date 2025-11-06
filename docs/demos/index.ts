@@ -14,4 +14,5 @@ export { pane } from './Split.demo.pane';
 export { reset } from './Split.demo.reset';
 export { resizer } from './Split.demo.resizer';
 export { resizerEvents } from './Split.demo.resizerEvents';
+export { responsiveOrientation } from './Split.demo.responsiveOrientation';
 export { store } from './Split.demo.store';

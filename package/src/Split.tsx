@@ -9,6 +9,7 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
+import { useSplitResizerOrientation } from './hooks/use-split-resizer-orientation';
 import { SplitPane, type SplitPaneProps } from './Pane/SplitPane';
 import {
   defaultProps as splitPaneResizerDefaultProps,
@@ -67,7 +68,7 @@ export const Split = factory<SplitFactory>((_props, ref) => {
   const {
     inline,
 
-    orientation,
+    orientation: propOrientation,
     opacity,
     size,
     radius,
@@ -99,6 +100,8 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     className,
     ...others
   } = props;
+
+  const orientation = useSplitResizerOrientation(propOrientation);
 
   const getStyles = useStyles<SplitFactory>({
     name: 'Split',
