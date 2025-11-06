@@ -132,7 +132,7 @@ export function SimpleUsage(p: SplitProps) {
   );
 }
 
-export function ResponsiveOrientation(p: SplitProps) {
+export function ResponsiveOrientation() {
   return (
     <div style={{ padding: 40 }}>
       <Split orientation={{ base: 'horizontal', sm: 'vertical' }}>
