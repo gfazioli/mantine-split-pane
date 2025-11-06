@@ -80,7 +80,7 @@ export const VerticalAfterGrow = (props: SplitPaneProps & Partial<SplitProps>) =
 };
 
 export const HorizontalBeforeGrow = (props: SplitPaneProps & Partial<SplitProps>) => {
-  const { orientation, ...others } = props;
+  const { orientation } = props;
 
   return (
     <div style={{ padding: 40, height: 400 }}>
