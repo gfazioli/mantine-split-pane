@@ -19,7 +19,9 @@ import {
   UnstyledButton,
   useProps,
   useStyles,
+  type MantineBreakpoint,
 } from '@mantine/core';
+import { useSplitResizerOrientation } from '../hooks/use-split-resizer-orientation';
 import { SplitPaneHandlers } from '../Pane/SplitPane';
 import { useSplitContext } from '../Split.context';
 import classes from './SplitResizer.module.css';
@@ -52,9 +54,15 @@ export type SplitResizerCssVariables = {
     | '--split-resizer-cursor-horizontal';
 };
 
+export type SplitResizerOrientationValue = 'horizontal' | 'vertical';
+
+export type SplitResizerOrientation =
+  | SplitResizerOrientationValue
+  | Partial<Record<MantineBreakpoint | (string & {}), SplitResizerOrientationValue>>;
+
 export interface SplitResizerContextProps {
   /** Split orientation, `'vertical'` by default */
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: SplitResizerOrientation;
 
   /** Resizer opacity */
   opacity?: StyleProp<React.CSSProperties['opacity']>;
@@ -304,7 +312,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   const props = useProps('SplitResizer', { ...defaultProps, ...ctx }, _props);
 
   const {
-    orientation,
+    orientation: propOrientation,
     opacity,
     size,
     radius,
@@ -342,6 +350,8 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     mod,
     ...rest
   } = props;
+
+  const orientation = useSplitResizerOrientation(propOrientation);
 
   const getStyles = useStyles<SplitResizerFactory>({
     name: 'SplitResizer',

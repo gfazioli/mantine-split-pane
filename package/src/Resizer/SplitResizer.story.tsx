@@ -122,6 +122,7 @@ export function NoProps() {
     </Flex>
   );
 }
+
 export function Gradient() {
   return (
     <Flex w={100} h={100}>
@@ -130,6 +131,14 @@ export function Gradient() {
         gradient={{ from: 'blue', to: 'cyan', deg: 0 }}
         hoverGradient={{ from: 'red', to: 'transparent', deg: 0 }}
       />
+    </Flex>
+  );
+}
+
+export function ResponsiveOrientation() {
+  return (
+    <Flex w={100} h={100}>
+      <SplitResizer orientation={{ base: 'horizontal', sm: 'vertical' }} />
     </Flex>
   );
 }

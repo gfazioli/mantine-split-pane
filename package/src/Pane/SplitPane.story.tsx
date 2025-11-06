@@ -78,3 +78,27 @@ export const VerticalAfterGrow = (props: SplitPaneProps & Partial<SplitProps>) =
     </div>
   );
 };
+
+export const HorizontalBeforeGrow = (props: SplitPaneProps & Partial<SplitProps>) => {
+  const { orientation, ...others } = props;
+
+  return (
+    <div style={{ padding: 40, height: 400 }}>
+      <Split orientation={orientation}>
+        <Split.Pane>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+};

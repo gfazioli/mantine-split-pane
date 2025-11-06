@@ -132,6 +132,28 @@ export function SimpleUsage(p: SplitProps) {
   );
 }
 
+export function ResponsiveOrientation(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split orientation={{ base: 'horizontal', sm: 'vertical' }}>
+        <Split.Pane>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
 export function Initial(p: SplitProps) {
   return (
     <div style={{ padding: 40, height: 600, border: '1px solid red' }}>
@@ -676,7 +698,7 @@ export function Events() {
 
 export function ResizeWindow() {
   return (
-    <Split w={100}>
+    <Split w="100%">
       <Split.Pane initialWidth={200}>Left</Split.Pane>
 
       <Split.Resizer />
