@@ -1397,17 +1397,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.39.1":
+"@eslint/js@npm:9.39.1, @eslint/js@npm:^9.39.1":
   version: 9.39.1
   resolution: "@eslint/js@npm:9.39.1"
   checksum: 10c0/6f7f26f8cdb7ad6327bbf9741973b6278eb946f18f70e35406e88194b0d5c522d0547a34a02f2a208eec95c5d1388cdf7ccb20039efd2e4cb6655615247a50f1
-  languageName: node
-  linkType: hard
-
-"@eslint/js@npm:^9.39.0":
-  version: 9.39.0
-  resolution: "@eslint/js@npm:9.39.0"
-  checksum: 10c0/f0ac65784932f1a5d3b9c0db12eb1ff9dcb480dbd03da1045e5da820bd97a35875fb7790f1fbe652763270b1327b770c79a9ba0396e2ad91fbd97822493e67eb
   languageName: node
   linkType: hard
 
@@ -2231,23 +2224,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/code-highlight@npm:8.3.7":
-  version: 8.3.7
-  resolution: "@mantine/code-highlight@npm:8.3.7"
+"@mantine/code-highlight@npm:8.3.8":
+  version: 8.3.8
+  resolution: "@mantine/code-highlight@npm:8.3.8"
   dependencies:
     clsx: "npm:^2.1.1"
   peerDependencies:
-    "@mantine/core": 8.3.7
-    "@mantine/hooks": 8.3.7
+    "@mantine/core": 8.3.8
+    "@mantine/hooks": 8.3.8
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
-  checksum: 10c0/d6d62c51f78ff1300fefe5dfdea84bf03b1bd2dcd10e7db18647c87642688abf34505279f5577a3ec6279b30e07e8e7f2683481c2b20865548fdc05284f1007b
+  checksum: 10c0/7aba93dfa91422319a36eb6176929faacd9dc27b04fdcc463aae0cd6aaca66285e20e3b33ecfd70f8eb147be93ad634635e86d35807a824f37cedebc21acd14a
   languageName: node
   linkType: hard
 
-"@mantine/core@npm:8.3.7":
-  version: 8.3.7
-  resolution: "@mantine/core@npm:8.3.7"
+"@mantine/core@npm:8.3.8":
+  version: 8.3.8
+  resolution: "@mantine/core@npm:8.3.8"
   dependencies:
     "@floating-ui/react": "npm:^0.27.16"
     clsx: "npm:^2.1.1"
@@ -2256,34 +2249,19 @@ __metadata:
     react-textarea-autosize: "npm:8.5.9"
     type-fest: "npm:^4.41.0"
   peerDependencies:
-    "@mantine/hooks": 8.3.7
+    "@mantine/hooks": 8.3.8
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
-  checksum: 10c0/ff934716bddee62de63529b77dd60cac33a718d0151340621c74b38ca657640b5c6b9ace0f1161e45f2a011cc89c538fc892f991aec07fc8a021d1016a489ea1
+  checksum: 10c0/7027f8b632262b7fc2e29f61a7d8e6f6bc6426f7e5ea93baf031484cf915615e9e36e4799e849cc85d29a2eddc57557d041310c16286a537ed0779bca72cda92
   languageName: node
   linkType: hard
 
-"@mantine/dates@npm:^8.3.7":
-  version: 8.3.7
-  resolution: "@mantine/dates@npm:8.3.7"
-  dependencies:
-    clsx: "npm:^2.1.1"
-  peerDependencies:
-    "@mantine/core": 8.3.7
-    "@mantine/hooks": 8.3.7
-    dayjs: ">=1.0.0"
-    react: ^18.x || ^19.x
-    react-dom: ^18.x || ^19.x
-  checksum: 10c0/403160f1ca45b6e2eefe5057a0f354a3ea0db396c185875a313447de261105c0bef27d5cddc4e4d28034f8b18fd4c53c6b1da866f2a12340a95c433658deac3a
-  languageName: node
-  linkType: hard
-
-"@mantine/hooks@npm:8.3.7":
-  version: 8.3.7
-  resolution: "@mantine/hooks@npm:8.3.7"
+"@mantine/hooks@npm:8.3.8":
+  version: 8.3.8
+  resolution: "@mantine/hooks@npm:8.3.8"
   peerDependencies:
     react: ^18.x || ^19.x
-  checksum: 10c0/7f443f683740cc78d82b790ab84167236795fae488cf8c5214cfb7dbda7b1cc54c3485bfd5b0d6f91f74a1af66b717c7eee637f4c50e304e8a1bafdd195c3aec
+  checksum: 10c0/5b140aad8881b27b2930c82bc39886c8076ad88ca41ab7c177e3e5fc5d480564189c1449a2acee4a90bd7beeb21a0458e0c3952bb45be75ac2d2e16d27865238
   languageName: node
   linkType: hard
 
@@ -3783,12 +3761,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.2.4":
-  version: 19.2.4
-  resolution: "@types/react@npm:19.2.4"
+"@types/react@npm:^19.2.5":
+  version: 19.2.5
+  resolution: "@types/react@npm:19.2.5"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/c878262c4bce047e53a44ef644088fce359ebdfdca7060a4ac1717c8362563b9506a7ebae145977836e95d5948b8f8b426dcd516044c3a3c0563a6f1b60408ce
+  checksum: 10c0/1f9a92c73a5ea5b167f59cd0b5b9460fde65bd22b63b6d23bfaace8ad38537df127c97657418b4912a7a03a66e6451e82a41b84718d638ec1c8e4f0515d94793
   languageName: node
   linkType: hard
 
@@ -3873,12 +3851,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:^17.0.34":
-  version: 17.0.34
-  resolution: "@types/yargs@npm:17.0.34"
+"@types/yargs@npm:^17.0.35":
+  version: 17.0.35
+  resolution: "@types/yargs@npm:17.0.35"
   dependencies:
     "@types/yargs-parser": "npm:*"
-  checksum: 10c0/7d4c6a6bc2b8dd4c7deaf507633fe6fd91424873add76b63c8263479223ea7a061bea86e7e0f3ed28cbe897338a934f3c04d802e8f67b7d2d3874924c94468c5
+  checksum: 10c0/609557826a6b85e73ccf587923f6429850d6dc70e420b455bab4601b670bfadf684b09ae288bccedab042c48ba65f1666133cf375814204b544009f57d6eef63
   languageName: node
   linkType: hard
 
@@ -7232,10 +7210,9 @@ __metadata:
   resolution: "extension-template-docs@workspace:docs"
   dependencies:
     "@gfazioli/mantine-split-pane": "workspace:*"
-    "@mantine/code-highlight": "npm:8.3.7"
-    "@mantine/core": "npm:8.3.7"
-    "@mantine/dates": "npm:^8.3.7"
-    "@mantine/hooks": "npm:8.3.7"
+    "@mantine/code-highlight": "npm:8.3.8"
+    "@mantine/core": "npm:8.3.8"
+    "@mantine/hooks": "npm:8.3.8"
     "@mantinex/demo": "npm:^2.0.0"
     "@mantinex/dev-icons": "npm:^2.0.0"
     "@mantinex/mantine-header": "npm:^2.0.0"
@@ -7248,7 +7225,7 @@ __metadata:
     "@tabler/icons-react": "npm:^3.35.0"
     "@types/mdx": "npm:^2.0.13"
     "@types/node": "npm:^22.19.1"
-    "@types/react": "npm:^19.2.4"
+    "@types/react": "npm:^19.2.5"
     "@types/react-dom": "npm:^19.2.3"
     next: "npm:15.5.6"
     react: "npm:19.2.0"
@@ -10493,11 +10470,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "m-90d2bb8@workspace:."
   dependencies:
-    "@eslint/js": "npm:^9.39.0"
+    "@eslint/js": "npm:^9.39.1"
     "@ianvs/prettier-plugin-sort-imports": "npm:^4.7.0"
     "@mantine-tests/core": "npm:^2.0.0"
-    "@mantine/core": "npm:8.3.7"
-    "@mantine/hooks": "npm:8.3.7"
+    "@mantine/core": "npm:8.3.8"
+    "@mantine/hooks": "npm:8.3.8"
     "@rollup/plugin-node-resolve": "npm:^16.0.3"
     "@rollup/plugin-replace": "npm:^6.0.3"
     "@storybook/addon-essentials": "npm:^8.6.14"
@@ -10513,10 +10490,10 @@ __metadata:
     "@types/identity-obj-proxy": "npm:^3.0.2"
     "@types/jest": "npm:^29.5.14"
     "@types/node": "npm:^22.19.1"
-    "@types/react": "npm:^19.2.4"
+    "@types/react": "npm:^19.2.5"
     "@types/react-dom": "npm:^19.2.3"
     "@types/signale": "npm:^1.4.7"
-    "@types/yargs": "npm:^17.0.34"
+    "@types/yargs": "npm:^17.0.35"
     "@vitejs/plugin-react": "npm:^4.7.0"
     esbuild: "npm:^0.25.12"
     esbuild-jest: "npm:^0.5.0"
