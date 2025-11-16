@@ -10,10 +10,9 @@
   },
   "dependencies": {
     "@gfazioli/mantine-split-pane": "workspace:*",
-    "@mantine/code-highlight": "8.3.7",
-    "@mantine/core": "8.3.7",
-    "@mantine/dates": "^8.3.7",
-    "@mantine/hooks": "8.3.7",
+    "@mantine/code-highlight": "8.3.8",
+    "@mantine/core": "8.3.8",
+    "@mantine/hooks": "8.3.8",
     "@mantinex/demo": "^2.0.0",
     "@mantinex/dev-icons": "^2.0.0",
     "@mantinex/mantine-header": "^2.0.0",
@@ -34,7 +33,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.19.1",
-    "@types/react": "^19.2.4",
+    "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "typescript": "5.9.3"
   }
