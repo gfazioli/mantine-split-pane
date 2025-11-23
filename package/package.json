@@ -1,6 +1,6 @@
 {
   "name": "@gfazioli/mantine-split-pane",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "description": "A React component that manages split panes allows users to divide and resize content areas within a layout efficiently.",
   "homepage": "https://gfazioli.github.io/mantine-split-pane/",
   "packageManager": "yarn@4.0.1",
