@@ -16,7 +16,6 @@ export const ecosystem = [
     title: 'Mantine Json Tree',
     href: 'https://gfazioli.github.io/mantine-json-tree',
     newWindow: true,
-    new: true,
   },
   {
     key: 'mantine-list-view-table',
@@ -77,6 +76,13 @@ export const ecosystem = [
     title: 'Mantine Text Animate',
     href: 'https://gfazioli.github.io/mantine-text-animate',
     newWindow: true,
+  },
+  {
+    key: 'mantine-window',
+    title: 'Mantine Window',
+    href: 'https://gfazioli.github.io/mantine-window',
+    newWindow: true,
+    new: true,
   },
   {
     key: 'more',
