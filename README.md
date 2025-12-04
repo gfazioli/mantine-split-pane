@@ -1,6 +1,6 @@
 # Mantine Split Pane Component
 
-<img width="1376" height="768" alt="Gemini_Generated_Image_rra2lorra2lorra2" src="https://github.com/user-attachments/assets/30d739a4-46a7-41be-9e3a-0d64ee56f9cc" />
+<img width="2752" height="1536" alt="Mantine Split Pane" src="https://github.com/user-attachments/assets/e4577e9a-b301-49f7-b4d4-62568c1fd69c" />
 
 <div align="center">
 
@@ -79,13 +79,6 @@ function Demo() {
   
 [![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-split-pane&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-split-pane&Timeline)
 
----
-
-
-<div align="center">
-
-  https://github.com/user-attachments/assets/2e45af2b-60c7-4cb3-9b9a-6cf0e710af1c
-  
 </div>
 
-</div>
+https://github.com/user-attachments/assets/2e45af2b-60c7-4cb3-9b9a-6cf0e710af1c
