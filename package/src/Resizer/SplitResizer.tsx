@@ -148,9 +148,7 @@ export interface SplitResizerBaseProps extends SplitResizerContextProps {
 }
 
 export interface SplitResizerProps
-  extends BoxProps,
-    SplitResizerBaseProps,
-    StylesApiProps<SplitResizerFactory> {
+  extends BoxProps, SplitResizerBaseProps, StylesApiProps<SplitResizerFactory> {
   /**
    * The before (left | up) componentRef
    * @access private
