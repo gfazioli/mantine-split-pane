@@ -74,9 +74,7 @@ export interface SplitPaneBaseProps {
 }
 
 export interface SplitPaneProps
-  extends BoxProps,
-    SplitPaneBaseProps,
-    StylesApiProps<SplitPaneFactory> {
+  extends BoxProps, SplitPaneBaseProps, StylesApiProps<SplitPaneFactory> {
   /** Split pane content */
   children: React.ReactNode;
 
