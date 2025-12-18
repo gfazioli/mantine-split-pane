@@ -16,20 +16,16 @@
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
 
-[![Mantine UI Library](https://img.shields.io/badge/-MANTINE_UI_LIBRARY-blue?style=for-the-badge&labelColor=black&logo=mantine
-)](https://mantine.dev/)
 
-Utilizing Mantine UI, enables users to create a flexible layout with resizable split panes. It supports both vertical and horizontal splitting, allowing the arrangement of content in various configurations. The component seamlessly handles nested split panes, enabling complex layouts with ease.
-With intuitive resizing functionality, users can adjust the size of each pane effortlessly. This component provides a responsive and user-friendly interface for organizing and displaying content in a way that best suits the application's needs.
+[Mantine Split](https://gfazioli.github.io/mantine-split-pane/) extension for building flexible, resizable layouts composed of multiple panes. In v2, the architecture separates pane content (Split.Pane) from the resizing control (Split.Resizer), making the resizer a first-class, customizable element placed between panes. 
 
-[![Mantine Extensions](https://img.shields.io/badge/-Watch_the_Video-blue?style=for-the-badge&labelColor=black&logo=youtube
-)](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4)
-[![Demo and Documentation](https://img.shields.io/badge/-Demo_%26_Documentation-blue?style=for-the-badge&labelColor=black&logo=typescript
-)](https://gfazioli.github.io/mantine-split-pane/)
-[![Mantine Extensions HUB](https://img.shields.io/badge/-Mantine_Extensions_Hub-blue?style=for-the-badge&labelColor=blue
-)](https://mantine-extensions.vercel.app/)
+Developers can define initial sizes in pixels or percentages, enforce min/max constraints, and use the grow property to let specific panes expand to fill available space. Orientation supports horizontal and vertical layouts, including responsive breakpoints, while the resizer can inherit global props from Split or be configured per instance, including a gradient variant with hover styles. 
 
-👉 You can find more components on the [Mantine Extensions Hub](https://mantine-extensions.vercel.app/) library.
+The component exposes resize lifecycle events on both the pane and resizer—delivering current width/height for one or both adjacent panes—enabling persistence of layouts via localStorage and real‑time UI feedback. Accessibility is built in: the resizer is focusable and supports keyboard resizing with configurable step and shiftStep values. Overall, it offers a clear JSX structure and a robust API for multi‑pane, highly controllable split views in Mantine applications.
+
+> [!note]
+>
+> → [Demo and Documentation](https://gfazioli.github.io/mantine-split-pane/) → [Youtube Video](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4) → [More Mantine Components](https://mantine-extensions.vercel.app/)
 
 ## Installation
 
@@ -75,10 +71,8 @@ function Demo() {
 }
 ```
 
-<div align="center">
-  
-[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-split-pane&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-split-pane&Timeline)
-
-</div>
-
+---
 https://github.com/user-attachments/assets/2e45af2b-60c7-4cb3-9b9a-6cf0e710af1c
+
+---
+[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-split-pane&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-split-pane&Timeline)
