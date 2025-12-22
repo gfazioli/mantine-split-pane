@@ -16,7 +16,6 @@ export const ecosystem = [
     title: 'Mantine Compare',
     href: 'https://gfazioli.github.io/mantine-compare',
     newWindow: true,
-    new: true,
   },
   {
     key: 'mantine-flip',
@@ -41,6 +40,13 @@ export const ecosystem = [
     title: 'Mantine Marquee',
     href: 'https://gfazioli.github.io/mantine-marquee',
     newWindow: true,
+  },
+  {
+    key: 'mantine-mask',
+    title: 'Mantine Mask',
+    href: 'https://gfazioli.github.io/mantine-mask',
+    newWindow: true,
+    new: true,
   },
   {
     key: 'mantine-onboarding-tour',
