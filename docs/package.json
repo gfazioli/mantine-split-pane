@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@gfazioli/mantine-split-pane": "workspace:*",
-    "@mantine/code-highlight": "8.3.11",
-    "@mantine/core": "8.3.11",
-    "@mantine/hooks": "8.3.11",
+    "@mantine/code-highlight": "8.3.12",
+    "@mantine/core": "8.3.12",
+    "@mantine/hooks": "8.3.12",
     "@mantinex/demo": "^2.0.0",
     "@mantinex/dev-icons": "^2.0.0",
     "@mantinex/mantine-header": "^2.0.0",
@@ -28,12 +28,12 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remark-slug": "^7.0.1",
-    "shiki": "^3.20.0",
+    "shiki": "^3.21.0",
     "type-fest": "^4.41.0"
   },
   "devDependencies": {
-    "@types/node": "^22.19.3",
-    "@types/react": "^19.2.7",
+    "@types/node": "^22.19.7",
+    "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "typescript": "5.9.3"
   }
