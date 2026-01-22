@@ -34,7 +34,6 @@ export const ecosystem = [
     title: 'Mantine Led',
     href: 'https://gfazioli.github.io/mantine-led',
     newWindow: true,
-    new: true,
   },
   {
     key: 'mantine-list-view-table',
@@ -83,6 +82,13 @@ export const ecosystem = [
     title: 'Mantine Rings Progress',
     href: 'https://gfazioli.github.io/mantine-rings-progress',
     newWindow: true,
+  },
+  {
+    key: 'mantine-select-stepper',
+    title: 'Mantine Select Stepper',
+    href: 'https://gfazioli.github.io/mantine-select-stepper',
+    newWindow: true,
+    new: true,
   },
   {
     key: 'mantine-spinner',
