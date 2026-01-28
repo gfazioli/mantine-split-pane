@@ -52,6 +52,24 @@ import * as demos from './demos';
 </Split>
 ```
 
+> **Good news!**
+>
+> Starting from version 2.6, you can now use the `autoResizers` prop to automatically insert `Split.Resizer` components between panes, restoring a JSX structure similar to v1 without manually adding resizers. Simply set `autoResizers={true}` on the `Split` component:
+>
+> ```tsx
+> <Split autoResizers>
+>   <Split.Pane>
+>     <h1>Pane 1</h1>
+>   </Split.Pane>
+>
+>   <Split.Pane>
+>     <h1>Pane 2</h1>
+>   </Split.Pane>
+> </Split>
+> ```
+>
+> See the [Auto Resizers](#auto-resizers) section for more details.
+
 - In the `Split.Pane` component all props related to the resizer have been removed. Now you can use the `Split.Resizer` component to manage the resizer between the panes. Have a look at the [Props](/?t=props) section for more information.
 
 ## Installation
