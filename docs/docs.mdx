@@ -126,6 +126,12 @@ The `autoResizers` prop works seamlessly with both vertical and horizontal orien
 
 <Demo data={demos.autoResizersHorizontal} />
 
+### Auto Resizers with Custom Props
+
+When using `autoResizers`, all automatically inserted resizers inherit props from the parent `Split` component. In the example below, the `variant`, `size`, and `color` props are set on the `Split` component and automatically applied to all resizers.
+
+<Demo data={demos.autoResizersWithCustomProps} />
+
 > **Note well**
 >
 > When using `autoResizers`, the automatically inserted resizers inherit all props from the parent `Split` component (such as `variant`, `size`, `color`, etc.). If you need custom behavior for a specific resizer, you can still manually insert a `Split.Resizer` component at that position, and it will not be duplicated.
