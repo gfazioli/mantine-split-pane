@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Button, Code, Paper, Space, Stack, Title } from '@mantine/core';
+import React, { useMemo, useState, type ReactNode } from 'react';
+import { Box, Button, Code, Group, Paper, Space, Stack, Title } from '@mantine/core';
 import { SPLIT_PANE_RESIZE_SIZES } from './Resizer/SplitResizer';
 import { Split, type SplitProps } from './Split';
 
@@ -705,5 +705,243 @@ export function ResizeWindow() {
 
       <Split.Pane grow>Right</Split.Pane>
     </Split>
+  );
+}
+
+type PanePosition = 'left' | 'right';
+
+export function ConditionalRender() {
+  const PaperA = () => {
+    return (
+      <Paper withBorder w="100%" mih="100%">
+        <h1>Paper A</h1>
+      </Paper>
+    );
+  };
+
+  const PaperB = () => {
+    return (
+      <Paper withBorder w="100%" mih="100%">
+        <h1>Paper B</h1>
+      </Paper>
+    );
+  };
+
+  const [paperAPosition, setPaperAPosition] = useState<PanePosition>('left');
+  const [paperBPosition, setPaperBPosition] = useState<PanePosition>('right');
+
+  const layout = useMemo<Record<PanePosition, ReactNode[]>>(() => {
+    const result: Record<PanePosition, ReactNode[]> = {
+      left: [],
+      right: [],
+    };
+
+    result[paperAPosition].push(
+      <Split.Pane>
+        <PaperA />
+      </Split.Pane>
+    );
+    result[paperBPosition].push(
+      <Split.Pane>
+        <PaperB />
+      </Split.Pane>
+    );
+
+    return result;
+  }, [paperAPosition, paperBPosition]);
+
+  function movePaperA() {
+    setPaperAPosition((prev) => (prev === 'left' ? 'right' : 'left'));
+  }
+
+  function movePaperB() {
+    setPaperBPosition((prev) => (prev === 'left' ? 'right' : 'left'));
+  }
+
+  return (
+    <>
+      <Split>
+        {layout.left.map((pane) => (
+          <>
+            {pane}
+            <Split.Resizer />
+          </>
+        ))}
+
+        <Split.Pane grow>
+          <Paper withBorder w="100%" mih="100%">
+            <h1>Fixed center</h1>
+          </Paper>
+        </Split.Pane>
+
+        {layout.right.map((pane) => (
+          <>
+            <Split.Resizer />
+            {pane}
+          </>
+        ))}
+      </Split>
+
+      <Group mt="xs" justify="center">
+        <Button onClick={movePaperA}>Move Paper A</Button>
+        <Button onClick={movePaperB}>Move Paper B</Button>
+      </Group>
+    </>
+  );
+}
+
+// type PanePosition = 'left' | 'right';
+
+export function AnotherConditionalRender() {
+  const PaperA = () => {
+    return (
+      <Paper withBorder w="100%" mih="100%">
+        <h1>Paper A</h1>
+      </Paper>
+    );
+  };
+
+  const PaperB = () => {
+    return (
+      <Paper withBorder w="100%" mih="100%">
+        <h1>Paper B</h1>
+      </Paper>
+    );
+  };
+
+  const [paperAPosition, setPaperAPosition] = useState<PanePosition>('left');
+  const [paperBPosition, setPaperBPosition] = useState<PanePosition>('right');
+
+  const layout = useMemo<Record<PanePosition, ReactNode[]>>(() => {
+    const result: Record<PanePosition, ReactNode[]> = {
+      left: [],
+      right: [],
+    };
+
+    result[paperAPosition].push(
+      <Split.Pane key="paperA">
+        <PaperA />
+      </Split.Pane>
+    );
+    result[paperBPosition].push(
+      <Split.Pane key="paperB">
+        <PaperB />
+      </Split.Pane>
+    );
+
+    result.left = result.left.flatMap((pane, index) => [
+      pane,
+      <Split.Resizer key={`resizer-left-${index}`} />,
+    ]);
+    result.right = result.right.flatMap((pane, index) => [
+      <Split.Resizer key={`resizer-right-${index}`} />,
+      pane,
+    ]);
+
+    return result;
+  }, [paperAPosition, paperBPosition]);
+
+  function movePaperA() {
+    setPaperAPosition((prev) => (prev === 'left' ? 'right' : 'left'));
+  }
+
+  function movePaperB() {
+    setPaperBPosition((prev) => (prev === 'left' ? 'right' : 'left'));
+  }
+
+  return (
+    <>
+      <Split>
+        {layout.left}
+
+        <Split.Pane key="center" grow>
+          <Paper withBorder w="100%" mih="100%">
+            <h1>Fixed center</h1>
+          </Paper>
+        </Split.Pane>
+
+        {layout.right}
+      </Split>
+
+      <Group mt="xs" justify="center">
+        <Button onClick={movePaperA}>Move Paper A</Button>
+        <Button onClick={movePaperB}>Move Paper B</Button>
+      </Group>
+    </>
+  );
+}
+
+export function ImprovedConditionalRender() {
+  const [paperAPosition, setPaperAPosition] = useState<PanePosition>('left');
+  const [paperBPosition, setPaperBPosition] = useState<PanePosition>('right');
+
+  const renderContent = useMemo(() => {
+    const panes: Array<{ id: string; position: PanePosition; element: ReactNode }> = [
+      {
+        id: 'paperA',
+        position: paperAPosition,
+        element: (
+          <Paper withBorder w="100%" mih="100%">
+            <h1>Paper A</h1>
+          </Paper>
+        ),
+      },
+      {
+        id: 'paperB',
+        position: paperBPosition,
+        element: (
+          <Paper withBorder w="100%" mih="100%">
+            <h1>Paper B</h1>
+          </Paper>
+        ),
+      },
+    ];
+
+    const leftPanes = panes.filter((p) => p.position === 'left');
+    const rightPanes = panes.filter((p) => p.position === 'right');
+
+    const elements: ReactNode[] = [];
+
+    // Add panels on the left with a resizer
+    leftPanes.forEach((pane) => {
+      elements.push(
+        <Split.Pane key={pane.id}>{pane.element}</Split.Pane>,
+        <Split.Resizer key={`resizer-after-${pane.id}`} />
+      );
+    });
+
+    // Central panel
+    elements.push(
+      <Split.Pane key="center" grow>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Fixed center</h1>
+        </Paper>
+      </Split.Pane>
+    );
+
+    // Add panels on the right with a resizer
+    rightPanes.forEach((pane) => {
+      elements.push(
+        <Split.Resizer key={`resizer-before-${pane.id}`} />,
+        <Split.Pane key={pane.id}>{pane.element}</Split.Pane>
+      );
+    });
+
+    return elements;
+  }, [paperAPosition, paperBPosition]);
+
+  return (
+    <>
+      <Split>{renderContent}</Split>
+
+      <Group mt="xs" justify="center">
+        <Button onClick={() => setPaperAPosition((p) => (p === 'left' ? 'right' : 'left'))}>
+          Move Paper A
+        </Button>
+        <Button onClick={() => setPaperBPosition((p) => (p === 'left' ? 'right' : 'left'))}>
+          Move Paper B
+        </Button>
+      </Group>
+    </>
   );
 }
