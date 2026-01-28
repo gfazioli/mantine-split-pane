@@ -100,6 +100,30 @@ Note that `variant="gradient"` supports only linear gradients with two colors. I
 
 <Demo data={demos.gradient} />
 
+## Auto Resizers
+
+Starting from version 2.6, you can use the `autoResizers` prop to automatically insert `Split.Resizer` components between `Split.Pane` components. This simplifies the JSX structure and makes the code cleaner, especially when working with multiple panes or dynamic layouts.
+
+When `autoResizers` is set to `true`, you only need to define the `Split.Pane` components, and the resizers will be automatically inserted between them.
+
+<Demo data={demos.autoResizers} />
+
+### Auto Resizers with Multiple Panes
+
+The `autoResizers` prop is particularly useful when working with multiple panes. In the example below, five panes are defined without explicitly adding resizers between them.
+
+<Demo data={demos.autoResizersMultiple} />
+
+### Auto Resizers with Horizontal Orientation
+
+The `autoResizers` prop works seamlessly with both vertical and horizontal orientations. In the example below, the panes are arranged horizontally with automatic resizer insertion.
+
+<Demo data={demos.autoResizersHorizontal} />
+
+> **Note well**
+>
+> When using `autoResizers`, the automatically inserted resizers inherit all props from the parent `Split` component (such as `variant`, `size`, `color`, etc.). If you need custom behavior for a specific resizer, you can still manually insert a `Split.Resizer` component at that position, and it will not be duplicated.
+
 ## Split.Resizer component
 
 Starting from version 2, the `Split.Resizer` component is a child component of `Split` and allows setting some props for the resizer management. It is the component that will be used to resize the panes.

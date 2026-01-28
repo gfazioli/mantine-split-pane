@@ -1,4 +1,7 @@
 export { accessibility } from './Split.demo.accessibility';
+export { autoResizers } from './Split.demo.autoResizers';
+export { autoResizersHorizontal } from './Split.demo.autoResizersHorizontal';
+export { autoResizersMultiple } from './Split.demo.autoResizersMultiple';
 export { configurator } from './Split.demo.configurator';
 export { doubleclick } from './Split.demo.doubleclick';
 export { events } from './Split.demo.events';

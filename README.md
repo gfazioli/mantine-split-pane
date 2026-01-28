@@ -73,6 +73,40 @@ function Demo() {
   );
 }
 ```
+
+### Auto Resizers
+
+Starting from version 2.6, you can use the `autoResizers` prop to automatically insert resizers between panes:
+
+```tsx
+import { Split } from '@gfazioli/mantine-split-pane';
+import { Paper } from '@mantine/core';
+
+function Demo() {
+  return (
+    <Split autoResizers>
+      <Split.Pane>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 1</h1>
+        </Paper>
+      </Split.Pane>
+
+      <Split.Pane>
+        <Paper withBorder>
+          <h1>Pane 2</h1>
+        </Paper>
+      </Split.Pane>
+
+      <Split.Pane>
+        <Paper withBorder>
+          <h1>Pane 3</h1>
+        </Paper>
+      </Split.Pane>
+    </Split>
+  );
+}
+```
+
 ## Sponsor
 
 <div align="center">
