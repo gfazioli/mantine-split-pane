@@ -135,4 +135,5 @@ export const dynamicConditional: MantineDemo = {
   type: 'code',
   component: Demo,
   code,
+  defaultExpanded: false,
 };

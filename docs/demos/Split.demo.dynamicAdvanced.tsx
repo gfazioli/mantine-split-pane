@@ -93,4 +93,5 @@ export const dynamicAdvanced: MantineDemo = {
   type: 'code',
   component: Demo,
   code,
+  defaultExpanded: false,
 };
