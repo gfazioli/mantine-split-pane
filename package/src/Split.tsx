@@ -1,4 +1,4 @@
-import React, { cloneElement, isValidElement, useRef } from 'react';
+import React, { cloneElement, isValidElement, useMemo } from 'react';
 import {
   Box,
   BoxProps,
@@ -9,6 +9,7 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
+import { SplitDynamic } from './Dynamic';
 import { useSplitResizerOrientation } from './hooks/use-split-resizer-orientation';
 import { SplitPane, type SplitPaneProps } from './Pane/SplitPane';
 import {
@@ -52,6 +53,7 @@ export type SplitFactory = Factory<{
   staticComponents: {
     Pane: typeof SplitPane;
     Resizer: typeof SplitResizer;
+    Dynamic: typeof SplitDynamic;
   };
 }>;
 
@@ -123,7 +125,12 @@ export const Split = factory<SplitFactory>((_props, ref) => {
 
   type ChildrenType = React.ReactElement<SplitPaneProps> | React.ReactElement<SplitResizerProps>;
 
-  const childRefs = React.Children.map(children, () => useRef<HTMLDivElement>(null));
+  // Create refs based on children count using useMemo to avoid hook count mismatch
+  const childrenCount = React.Children.count(children);
+  const childRefs = useMemo(
+    () => Array.from({ length: childrenCount }, () => React.createRef<HTMLDivElement>()),
+    [childrenCount]
+  );
 
   let clonedChildren: React.ReactNode[];
 
@@ -232,3 +239,4 @@ Split.classes = classes;
 Split.displayName = 'Split';
 Split.Pane = SplitPane;
 Split.Resizer = SplitResizer;
+Split.Dynamic = SplitDynamic;

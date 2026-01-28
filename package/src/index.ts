@@ -10,3 +10,5 @@ export type {
   SplitResizerFactory,
   SplitResizerProps,
 } from './Resizer/SplitResizer';
+
+export type { PaneConfig, SplitDynamicProps } from './Dynamic';

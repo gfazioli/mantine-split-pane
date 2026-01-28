@@ -428,6 +428,52 @@ Try to change the layout and refresh the page to see the layout restored.
 
 As [previously explained](#onresizestart-onresizing-and-onresizeend-events), you can choose to use events from either the `Split.Pane` or the `Split.Resizer`. Here, the code uses events from the `Split.Pane`, but you can easily use events from the `Split.Resizer` and decide to store a specific pane or both panels.
 
+## Split.Dynamic
+
+Starting from version 2.7, the `Split.Dynamic` helper function provides a declarative way to create dynamic layouts using a configuration array. This is particularly useful when you need to manage panes programmatically, show/hide panes conditionally, or build complex layouts with dynamic content.
+
+### Basic Usage
+
+The `Split.Dynamic` function accepts a `PaneConfig` array that defines each pane's properties and content. Use it inside `Split` children as a function call (not as a JSX component):
+
+```tsx
+<Split>{Split.Dynamic({ panes })}</Split>
+```
+
+This approach is cleaner than manually managing conditional rendering with keys.
+
+<Demo data={demos.dynamic} />
+
+### Conditional Rendering
+
+Use the `filter` prop to conditionally show or hide panes. This is perfect for collapsible sidebars, panels that appear based on user actions, or responsive layouts.
+
+<Demo data={demos.dynamicConditional} />
+
+### Advanced Dynamic Layouts
+
+You can combine `Split.Dynamic` with state management to create fully dynamic layouts. In this example, panes can be added or removed dynamically, and each pane can have custom resizer props.
+
+<Demo data={demos.dynamicAdvanced} />
+
+> **Note well**
+>
+> The `PaneConfig` interface supports all props from `Split.Pane` (such as `initialWidth`, `grow`, `minWidth`, `maxWidth`, etc.) plus an optional `resizerProps` field to customize the resizer that appears after each pane. Each pane must have a unique `id` prop.
+>
+> ```tsx
+> interface PaneConfig {
+>   id: string;
+>   content: React.ReactNode;
+>   // All Split.Pane props
+>   initialWidth?: number | string;
+>   grow?: boolean;
+>   minWidth?: number | string;
+>   // ... other Split.Pane props
+>   // Optional custom resizer props
+>   resizerProps?: Omit<SplitResizerProps, 'beforeRef' | 'afterRef'>;
+> }
+> ```
+
 ## Accessibility
 
 You may also use the Keyboard to navigate through the panes. Use the `Tab` key to navigate through the resizer and the <Kbd>Arrow</Kbd> keys to resize the panes. You may use <Kbd>◀︎</Kbd> <Kbd>▶︎</Kbd> for horizontal panes and <Kbd>▼</Kbd> <Kbd>▲</Kbd> for vertical panes.
