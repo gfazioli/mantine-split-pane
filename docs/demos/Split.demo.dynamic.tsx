@@ -95,4 +95,5 @@ export const dynamic: MantineDemo = {
   type: 'code',
   component: Demo,
   code,
+  defaultExpanded: false,
 };
