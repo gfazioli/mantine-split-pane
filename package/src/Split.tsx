@@ -135,9 +135,9 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     const paneRefs: Array<React.RefObject<HTMLDivElement>> = [];
 
     // First pass: collect only panes and assign refs
-    React.Children.forEach(children, (child: ChildrenType) => {
+    React.Children.forEach(children, (child: ChildrenType, index) => {
       if (isValidElement(child) && child.type === SplitPane) {
-        const ref = childRefs[paneIndex];
+        const ref = childRefs[index];
         paneRefs.push(ref);
 
         elementsWithResizers.push(
@@ -184,8 +184,7 @@ export const Split = factory<SplitFactory>((_props, ref) => {
             __beforeRef: beforeRef,
             __afterRef: afterRef,
           });
-        }
-        if (child.type === SplitPane) {
+        } else if (child.type === SplitPane) {
           return cloneElement(child as React.ReactElement<SplitPaneProps>, {
             ref: childRefs[index],
           });
