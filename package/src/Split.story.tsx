@@ -1,5 +1,6 @@
 import React, { useMemo, useState, type ReactNode } from 'react';
 import { Box, Button, Code, Group, Paper, Space, Stack, Title } from '@mantine/core';
+import type { PaneConfig } from './Dynamic';
 import { SPLIT_PANE_RESIZE_SIZES } from './Resizer/SplitResizer';
 import { Split, type SplitProps } from './Split';
 
@@ -1060,5 +1061,154 @@ export function AutoResizersWithCustomProps(p: SplitProps) {
         </Split.Pane>
       </Split>
     </div>
+  );
+}
+
+export function Dynamic(p: SplitProps) {
+  const panes: PaneConfig[] = [
+    {
+      id: 'sidebar',
+      initialWidth: 200,
+      minWidth: 150,
+      content: (
+        <Paper withBorder w="100%" h="100%">
+          <h1>Sidebar</h1>
+          <p>Navigation menu</p>
+        </Paper>
+      ),
+    },
+    {
+      id: 'main',
+      grow: true,
+      content: (
+        <Paper withBorder w="100%" h="100%">
+          <h1>Main Content</h1>
+          <p>This pane grows to fill available space</p>
+        </Paper>
+      ),
+    },
+    {
+      id: 'info',
+      initialWidth: 250,
+      content: (
+        <Paper withBorder w="100%" h="100%">
+          <h1>Info Panel</h1>
+          <p>Additional information</p>
+        </Paper>
+      ),
+    },
+  ];
+
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} w="100%" h={400}>
+        {Split.Dynamic({ panes })}
+      </Split>
+    </div>
+  );
+}
+
+export function DynamicConditional(p: SplitProps) {
+  const [showSidebar, setShowSidebar] = useState(true);
+  const [showInfo, setShowInfo] = useState(true);
+
+  const panes: PaneConfig[] = [
+    {
+      id: 'sidebar',
+      initialWidth: 200,
+      content: (
+        <Paper withBorder w="100%" h="100%">
+          <h1>Sidebar</h1>
+          <p>Collapsible sidebar</p>
+        </Paper>
+      ),
+    },
+    {
+      id: 'main',
+      grow: true,
+      content: (
+        <Paper withBorder w="100%" h="100%">
+          <h1>Main Content</h1>
+          <p>This pane always visible</p>
+        </Paper>
+      ),
+    },
+    {
+      id: 'info',
+      initialWidth: 250,
+      content: (
+        <Paper withBorder w="100%" h="100%">
+          <h1>Info Panel</h1>
+          <p>Collapsible info panel</p>
+        </Paper>
+      ),
+    },
+  ];
+
+  const filter = (pane: PaneConfig) => {
+    if (pane.id === 'sidebar') {
+      return showSidebar;
+    }
+    if (pane.id === 'info') {
+      return showInfo;
+    }
+    return true;
+  };
+
+  return (
+    <>
+      <div style={{ padding: 40 }}>
+        <Split {...p} w="100%" h={400}>
+          {Split.Dynamic({ panes, filter })}
+        </Split>
+      </div>
+      <Group mt="xs" justify="center">
+        <Button onClick={() => setShowSidebar((s) => !s)}>
+          Toggle Sidebar ({showSidebar ? 'Hide' : 'Show'})
+        </Button>
+        <Button onClick={() => setShowInfo((s) => !s)}>
+          Toggle Info ({showInfo ? 'Hide' : 'Show'})
+        </Button>
+      </Group>
+    </>
+  );
+}
+
+export function DynamicAdvanced(p: SplitProps) {
+  const [paneCount, setPaneCount] = useState(3);
+
+  const panes: PaneConfig[] = Array.from({ length: 5 }, (_, i) => ({
+    id: `pane-${i + 1}`,
+    initialWidth: i === 2 ? undefined : 150,
+    grow: i === 2,
+    content: (
+      <Paper withBorder w="100%" h="100%">
+        <Title order={3}>Pane {i + 1}</Title>
+        <p>{i === 2 ? 'Growing pane' : 'Fixed width'}</p>
+      </Paper>
+    ),
+    resizerProps: i % 2 === 0 ? { variant: 'dotted' } : undefined,
+  }));
+
+  return (
+    <>
+      <div style={{ padding: 40 }}>
+        <Split {...p} w="100%" h={400}>
+          {Split.Dynamic({
+            panes,
+            filter: (pane) => parseInt(pane.id.split('-')[1], 10) <= paneCount,
+          })}
+        </Split>
+      </div>
+      <Group mt="xs" justify="center">
+        <Button onClick={() => setPaneCount((c) => Math.max(2, c - 1))} disabled={paneCount <= 2}>
+          Remove Pane
+        </Button>
+        <Code>Active Panes: {paneCount}</Code>
+        <Button onClick={() => setPaneCount((c) => Math.min(5, c + 1))} disabled={paneCount >= 5}>
+          Add Pane
+        </Button>
+      </Group>
+    </>
   );
 }
