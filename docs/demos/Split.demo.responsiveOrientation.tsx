@@ -32,7 +32,7 @@ function Demo() {
 
 const code = `
 import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper, Stack, Text, Title } from '@mantine/core';
+import { Paper, Stack, Title } from '@mantine/core';
 
 const paperProps = { withBorder: true, w: '100%', h: '100%' };
 
