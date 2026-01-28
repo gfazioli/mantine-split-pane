@@ -7,6 +7,7 @@ export default {
   title: 'Split',
   args: {
     inline: false,
+    autoResizers: false,
     spacing: 'xs',
 
     orientation: 'vertical',
@@ -29,6 +30,7 @@ export default {
   },
   argTypes: {
     inline: { control: { type: 'boolean' } },
+    autoResizers: { control: { type: 'boolean' } },
 
     orientation: {
       control: { type: 'inline-radio' },
@@ -943,5 +945,120 @@ export function ImprovedConditionalRender() {
         </Button>
       </Group>
     </>
+  );
+}
+
+export function AutoResizers(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} autoResizers w="100%" h={400}>
+        <Split.Pane initialWidth={200}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+            <p>First pane with fixed initial width</p>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane grow>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 2</h1>
+            <p>Growing pane that fills available space</p>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane initialWidth={200}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 3</h1>
+            <p>Third pane with fixed initial width</p>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function AutoResizersMultiple(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} autoResizers w="100%" h={500}>
+        <Split.Pane minWidth={100} initialWidth={150}>
+          <Paper withBorder w="100%" h="100%">
+            <Title order={3}>Pane 1</Title>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane minWidth={100} initialWidth={200}>
+          <Paper withBorder w="100%" h="100%">
+            <Title order={3}>Pane 2</Title>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane grow>
+          <Paper withBorder w="100%" h="100%">
+            <Title order={3}>Pane 3 (Grow)</Title>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane minWidth={100} initialWidth={180}>
+          <Paper withBorder w="100%" h="100%">
+            <Title order={3}>Pane 4</Title>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane minWidth={100} initialWidth={150}>
+          <Paper withBorder w="100%" h="100%">
+            <Title order={3}>Pane 5</Title>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function AutoResizersHorizontal(p: SplitProps) {
+  return (
+    <div style={{ padding: 40, height: 600 }}>
+      <Split {...p} autoResizers orientation="horizontal" h="100%">
+        <Split.Pane initialHeight={150}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Top Pane</h1>
+            <p>Fixed height pane at the top</p>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane grow>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Middle Pane</h1>
+            <p>Growing pane in the middle</p>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane initialHeight={150}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Bottom Pane</h1>
+            <p>Fixed height pane at the bottom</p>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function AutoResizersWithCustomProps(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} autoResizers variant="dotted" size="lg" color="blue" w="100%" h={400}>
+        <Split.Pane initialWidth="30%">
+          <Paper withBorder w="100%" h="100%">
+            <h1>Sidebar</h1>
+            <p>30% width pane</p>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane grow>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Main Content</h1>
+            <p>All resizers inherit dotted variant from Split component</p>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane initialWidth="25%">
+          <Paper withBorder w="100%" h="100%">
+            <h1>Info Panel</h1>
+            <p>25% width pane</p>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
   );
 }

@@ -33,6 +33,9 @@ export interface SplitBaseProps extends SplitResizerContextProps {
   /** Make main split container inline */
   inline?: boolean;
 
+  /** Automatically insert resizers between panes when not explicitly provided */
+  autoResizers?: boolean;
+
   /** Split children */
   children: React.ReactNode;
 }
@@ -54,6 +57,7 @@ export type SplitFactory = Factory<{
 
 const defaultProps: Partial<SplitProps> = {
   inline: false,
+  autoResizers: false,
   ...splitPaneResizerDefaultProps,
 };
 
@@ -67,6 +71,7 @@ export const Split = factory<SplitFactory>((_props, ref) => {
   const props = useProps('Split', defaultProps, _props);
   const {
     inline,
+    autoResizers,
 
     orientation: propOrientation,
     opacity,
@@ -120,28 +125,68 @@ export const Split = factory<SplitFactory>((_props, ref) => {
 
   const childRefs = React.Children.map(children, () => useRef<HTMLDivElement>(null));
 
-  const clonedChildren = React.Children.map(children, (child: ChildrenType, index) => {
-    if (isValidElement(child)) {
-      if (child.type === SplitResizer) {
-        const beforeRef = childRefs[index - 1];
-        const afterRef = childRefs[index + 1];
+  let clonedChildren: React.ReactNode[] = React.Children.map(
+    children,
+    (child: ChildrenType, index) => {
+      if (isValidElement(child)) {
+        if (child.type === SplitResizer) {
+          const beforeRef = childRefs[index - 1];
+          const afterRef = childRefs[index + 1];
 
-        return cloneElement(child as React.ReactElement<SplitResizerProps>, {
-          __beforeRef: beforeRef,
-          __afterRef: afterRef,
-        });
-      } else if (child.type === SplitPane) {
-        {
-          return cloneElement(child as React.ReactElement<SplitPaneProps>, {
-            ref: childRefs[index],
+          return cloneElement(child as React.ReactElement<SplitResizerProps>, {
+            __beforeRef: beforeRef,
+            __afterRef: afterRef,
           });
+        } else if (child.type === SplitPane) {
+          {
+            return cloneElement(child as React.ReactElement<SplitPaneProps>, {
+              ref: childRefs[index],
+            });
+          }
+        } else {
+          return child;
+        }
+      }
+      return child;
+    }
+  );
+
+  // Auto-insert resizers between panes
+  if (autoResizers) {
+    const elementsWithResizers: React.ReactNode[] = [];
+    let resizerIndex = 0;
+    const childrenArray = React.Children.toArray(clonedChildren);
+
+    childrenArray.forEach((child, index) => {
+      if (isValidElement(child) && child.type === SplitPane) {
+        // Add pane
+        elementsWithResizers.push(child);
+
+        // Add resizer after pane (except for last pane)
+        if (index < childrenArray.length - 1) {
+          const nextChild = childrenArray[index + 1];
+          // Only add if next child is also a pane (not already a resizer)
+          if (isValidElement(nextChild) && nextChild.type === SplitPane) {
+            const beforeRef = childRefs[elementsWithResizers.length - 1];
+            const afterRef = childRefs[index + 1];
+
+            elementsWithResizers.push(
+              <SplitResizer
+                key={`auto-resizer-${resizerIndex++}`}
+                __beforeRef={beforeRef}
+                __afterRef={afterRef}
+              />
+            );
+          }
         }
       } else {
-        return child;
+        // Keep existing resizers or other elements
+        elementsWithResizers.push(child);
       }
-    }
-    return child;
-  });
+    });
+
+    clonedChildren = elementsWithResizers;
+  }
 
   return (
     <SplitContextProvider

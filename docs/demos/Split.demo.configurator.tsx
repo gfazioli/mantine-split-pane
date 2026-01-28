@@ -61,6 +61,12 @@ export const configurator: MantineDemo = {
   code,
   controls: [
     {
+      prop: 'autoResizers',
+      type: 'boolean',
+      initialValue: false,
+      libraryValue: false,
+    },
+    {
       prop: 'orientation',
       type: 'segmented',
       data: [
