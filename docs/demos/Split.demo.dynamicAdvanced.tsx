@@ -29,7 +29,7 @@ function Demo() {
       <Split w="100%" h={400}>
         {Split.Dynamic({
           panes,
-          filter: (pane) => parseInt(pane.id.split('-')[1]) <= paneCount,
+          filter: (pane) => parseInt(pane.id.split('-')[1], 10) <= paneCount,
         })}
       </Split>
       <Group mt="md" justify="center">
