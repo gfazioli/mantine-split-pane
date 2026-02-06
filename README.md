@@ -107,6 +107,45 @@ function Demo() {
 }
 ```
 
+### Dynamic Panes
+
+You can also use `Split.Dynamic` to create panes from a configuration array:
+
+```tsx
+import { Split, PaneConfig } from '@gfazioli/mantine-split-pane';
+import { Paper } from '@mantine/core';
+
+function Demo() {
+  const panes: PaneConfig[] = [
+    {
+      id: 'sidebar',
+      initialWidth: 200,
+      minWidth: 150,
+      content: (
+        <Paper withBorder w="100%" h="100%">
+          <h1>Sidebar</h1>
+        </Paper>
+      ),
+    },
+    {
+      id: 'main',
+      grow: true,
+      content: (
+        <Paper withBorder w="100%" h="100%">
+          <h1>Main Content</h1>
+        </Paper>
+      ),
+    },
+  ];
+
+  return (
+    <Split>
+      {Split.Dynamic({ panes })}
+    </Split>
+  );
+}
+```
+
 ## Sponsor
 
 <div align="center">
