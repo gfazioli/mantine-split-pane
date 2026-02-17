@@ -7,7 +7,7 @@ export type { SPLIT_PANE_SIZE, SplitPane, SplitPaneFactory, SplitPaneProps } fro
 
 export type {
   SPLIT_PANE_RESIZE_SIZES,
-  SplitResizer
+  SplitResizer,
   SplitResizerFactory,
   SplitResizerProps,
 } from './Resizer/SplitResizer';
