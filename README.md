@@ -1,6 +1,6 @@
 # Mantine Split Pane Component
 
-<img alt="Mantine Split Pane" src="https://github.com/gfazioli/mantine-split-pane/blob/master/logo.png" />
+<img alt="Mantine Split Pane" src="https://github.com/gfazioli/mantine-split-pane/blob/master/logo.jpeg" />
 
 <div align="center">
 
