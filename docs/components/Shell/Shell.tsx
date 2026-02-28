@@ -6,6 +6,7 @@ import { ColorSchemeControl, HeaderControls } from '@mantinex/mantine-header';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { meta } from '@mantinex/mantine-meta';
 import { PACKAGE_DATA } from '../../data';
+import { Logo } from './Logo';
 import classes from './Shell.module.css';
 
 interface ShellProps {
@@ -35,7 +36,16 @@ export function Shell({ children }: ShellProps) {
             <Title order={2}>{packageName}</Title>
           </Group>
           <Group gap={10}>
-            <iframe src="https://github.com/sponsors/gfazioli/button" title="Sponsor gfazioli" height="34" width="114" className={classes.sponsor} />
+            <iframe
+              src="https://github.com/sponsors/gfazioli/button"
+              title="Sponsor gfazioli"
+              height="32"
+              width="114"
+              style={{ border: 0 }}
+              sandbox="allow-popups allow-forms allow-scripts"
+              className={classes.sponsor}
+            />
+
             <ActionIcon
               visibleFrom="sm"
               size={36}
@@ -48,7 +58,7 @@ export function Shell({ children }: ShellProps) {
               title="Undolog"
               variant="transparent"
             >
-              <img height={34} src="https://github.com/gfazioli/mantine-extensions-assets/blob/main/undolog/logo-256.png?raw=true" alt="Undolog" />
+              <Logo />
             </ActionIcon>
             <HeaderControls
               visibleFrom="sm"
