@@ -19,17 +19,32 @@ export type SplitPaneVariant = SplitResizerVariant;
 
 export type SplitPaneCssVariables = {};
 
+/**
+ * Imperative handlers exposed via ref on `Split.Pane`.
+ * Access them through `ref.current` after attaching a ref to a pane.
+ */
 export interface SplitPaneHandlers {
+  /** Reset the pane to its initial size (triggered on resizer double-click) */
   resetInitialSize?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  getMinWidth?: () => number;
-  getMinHeight?: () => number;
-  getMaxWidth?: () => number;
-  getMaxHeight?: () => number;
-  getInitialWidth?: () => number;
-  getInitialHeight?: () => number;
+  /** Returns the minimum width in pixels, or `undefined` if not set */
+  getMinWidth?: () => number | undefined;
+  /** Returns the minimum height in pixels, or `undefined` if not set */
+  getMinHeight?: () => number | undefined;
+  /** Returns the maximum width in pixels, or `undefined` if not set */
+  getMaxWidth?: () => number | undefined;
+  /** Returns the maximum height in pixels, or `undefined` if not set */
+  getMaxHeight?: () => number | undefined;
+  /** Returns the raw `initialWidth` prop value */
+  getInitialWidth?: () => number | string | undefined;
+  /** Returns the raw `initialHeight` prop value */
+  getInitialHeight?: () => number | string | undefined;
+  /** Notify the pane that a resize operation has started */
   onResizeStart?: () => void;
+  /** Notify the pane with its current dimensions during resize */
   onResizing?: (size: SPLIT_PANE_SIZE) => void;
+  /** Notify the pane with its final dimensions after resize */
   onResizeEnd?: (size: SPLIT_PANE_SIZE) => void;
+  /** Direct reference to the underlying pane DOM element */
   splitPane?: HTMLDivElement;
 }
 
@@ -79,7 +94,6 @@ export interface SplitPaneProps
   children: React.ReactNode;
 
   ref?: React.RefObject<HTMLDivElement & SplitPaneHandlers>;
-  // ref?: React.ForwardedRef<HTMLDivElement & SplitPaneHandlers>;
 }
 
 export type SplitPaneFactory = Factory<{
@@ -88,7 +102,6 @@ export type SplitPaneFactory = Factory<{
   stylesNames: SplitPaneStylesNames;
   vars: SplitPaneCssVariables;
   variant: SplitPaneVariant;
-  //defaultComponent: 'div';
 }>;
 
 const varsResolver = createVarsResolver<SplitPaneFactory>((_, { grow }) => {
@@ -150,70 +163,82 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     onResizeEnd: (size: SPLIT_PANE_SIZE) => onResizeEnd && onResizeEnd(size),
   }));
 
-  const initialWithRef = React.useRef<number | string>(null);
+  const initialWidthRef = React.useRef<number | string>(null);
   const initialHeightRef = React.useRef<number | string>(null);
 
+  // Capture the initial sizes and apply them to the DOM on mount
   useEffect(() => {
-    initialWithRef.current = getInitialVerticalSize();
+    initialWidthRef.current = getInitialVerticalSize();
     initialHeightRef.current = getInitialHorizontalSize();
 
     localRef.current.style.width = withPx(getInitialVerticalSize());
     localRef.current.style.height = withPx(getInitialHorizontalSize());
-  }, [localRef.current]);
+  }, []);
 
+  // Re-apply sizes when orientation or size-related props change
   useEffect(() => {
     localRef.current.style.width = withPx(getInitialVerticalSize());
     localRef.current.style.height = withPx(getInitialHorizontalSize());
-  }, [ctx.orientation]);
+  }, [ctx.orientation, initialWidth, initialHeight, minWidth, minHeight]);
 
   /**
-   * Returns the size of the pane based on the size and parent when the size is a percentage
+   * Converts a size value (number, "px" string, or "%" string) to pixels.
+   * Percentage values are resolved relative to the parent element's dimensions.
    *
-   * @param size
-   * @param parent
-   * @returns
+   * @param size - A numeric value, a pixel string (e.g. "200px"), or a percentage string (e.g. "50%")
+   * @returns The size in pixels, or `undefined` if the input is not provided
    */
-  const getSizeInPixel = (size?: number | string): number => {
+  const getSizeInPixel = (size?: number | string): number | undefined => {
     if (size) {
       if (typeof size === 'number') {
         return size;
       }
 
-      if (typeof size === 'string' && size.toString().includes('px')) {
-        const value = parseFloat(size.toString());
-        return value;
+      if (typeof size === 'string' && size.includes('px')) {
+        return parseFloat(size);
       }
 
-      if (typeof size === 'string' && size.toString().includes('%')) {
-        const value = parseFloat(size.toString());
-        const parent = ctx.orientation === 'vertical' ? 'width' : 'height';
-        const parentSize = localRef.current.parentElement.getBoundingClientRect()[parent];
+      if (typeof size === 'string' && size.includes('%')) {
+        const value = parseFloat(size);
+        const parentEl = localRef.current?.parentElement;
+
+        if (!parentEl) {
+          return undefined;
+        }
+
+        const dimension = ctx.orientation === 'vertical' ? 'width' : 'height';
+        const parentSize = parentEl.getBoundingClientRect()[dimension];
         return (parentSize * value) / 100;
       }
     }
+
+    return undefined;
   };
 
   /**
-   * Returns the size of the pane in pixels
-   * If the size is a number, it returns the size in pixels
-   * If the size is a string, it returns the size in pixels if it contains 'px'
+   * Ensures a size value is expressed as a CSS-compatible string.
+   * Numbers are suffixed with "px"; strings already containing "px" are returned as-is.
    *
-   * @param value
-   * @returns
+   * @param value - A numeric or string size value
+   * @returns A CSS-compatible size string (e.g. "200px", "auto")
    */
   function withPx(value: number | string) {
     if (typeof value === 'number') {
       return `${value}px`;
     }
 
-    if (typeof value === 'string') {
-      if (value.includes('px')) {
-        return value;
-      }
+    if (typeof value === 'string' && value.includes('px')) {
+      return value;
     }
+
     return value;
   }
 
+  /**
+   * Computes the initial width for vertical orientation.
+   * Returns the resolved pixel size based on `initialWidth` and `minWidth` props,
+   * falling back to the current rendered width. Returns `'auto'` for horizontal orientation.
+   */
   function getInitialVerticalSize() {
     if (ctx.orientation === 'vertical') {
       const currentWidth = localRef.current.getBoundingClientRect().width;
@@ -237,6 +262,11 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     return 'auto';
   }
 
+  /**
+   * Computes the initial height for horizontal orientation.
+   * Returns the resolved pixel size based on `initialHeight` and `minHeight` props,
+   * falling back to the current rendered height. Returns `'auto'` for vertical orientation.
+   */
   function getInitialHorizontalSize() {
     if (ctx.orientation === 'horizontal') {
       const currentHeight = localRef.current.getBoundingClientRect().height;
@@ -274,12 +304,10 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
   });
 
   /**
-   * Reset the initial size of the pane to its default value
-   * This is used when the user double clicks on the pane
-   * It will set the width or height of the pane to its initial value
-   * This is useful when the user wants to reset the size of the pane to its default value
-   * @param e - The event object
-   * @returns void
+   * Resets the pane to its initial size, restoring the width or height
+   * captured on mount. Triggered by double-clicking the adjacent resizer.
+   *
+   * @param e - The originating mouse event from the resizer double-click
    */
   const resetInitialSize = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -290,7 +318,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     }
 
     if (ctx.orientation === 'vertical') {
-      localRef.current.style.width = withPx(initialWithRef.current);
+      localRef.current.style.width = withPx(initialWidthRef.current);
     }
 
     if (ctx.orientation === 'horizontal') {
@@ -303,14 +331,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
   };
 
   return (
-    <Box
-      ref={localRef}
-      // w={ctx.orientation === 'vertical' ? initialWidth || minWidth : undefined}
-      // h={ctx.orientation === 'horizontal' ? initialHeight || minHeight : undefined}
-      mod={{ orientation: ctx.orientation }}
-      {...others}
-      {...getStyles('root')}
-    >
+    <Box ref={localRef} mod={{ orientation: ctx.orientation }} {...others} {...getStyles('root')}>
       {children}
     </Box>
   );
