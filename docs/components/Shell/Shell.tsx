@@ -1,6 +1,14 @@
 import React from 'react';
 import cx from 'clsx';
-import { ActionIcon, AppShell, Container, Group, RemoveScroll, Title, useMantineColorScheme } from '@mantine/core';
+import {
+  ActionIcon,
+  AppShell,
+  Container,
+  Group,
+  RemoveScroll,
+  Title,
+  useMantineColorScheme,
+} from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { ColorSchemeControl, HeaderControls } from '@mantinex/mantine-header';
 import { MantineLogo } from '@mantinex/mantine-logo';
@@ -30,7 +38,12 @@ export function Shell({ children }: ShellProps) {
       <AppShell.Header className={cx(RemoveScroll.classNames.zeroRight, classes.header)}>
         <Container size="lg" px="md" className={classes.inner}>
           <Group>
-            <a href="https://mantine.dev/" target="_blank" className={cx('mantine-focus-auto', classes.logo)} rel="noreferrer">
+            <a
+              href="https://mantine.dev/"
+              target="_blank"
+              className={cx('mantine-focus-auto', classes.logo)}
+              rel="noreferrer"
+            >
               <MantineLogo size={30} type="mark" />
             </a>
             <Title order={2}>{packageName}</Title>
