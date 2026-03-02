@@ -73,9 +73,9 @@ export const configurator: MantineDemo = {
     {
       prop: 'variant',
       type: 'select',
-      data: ['default', 'filled', 'outline', 'dotted', 'dashed', 'transparent'],
-      initialValue: 'vertical',
-      libraryValue: 'vertical',
+      data: ['default', 'filled', 'outline', 'dotted', 'dashed', 'transparent', 'gradient'],
+      initialValue: 'default',
+      libraryValue: 'default',
     },
     {
       prop: 'cursorVertical',
@@ -174,8 +174,8 @@ export const configurator: MantineDemo = {
     {
       prop: 'radius',
       type: 'size',
-      initialValue: 'sm',
-      libraryValue: 'sm',
+      initialValue: 'xs',
+      libraryValue: 'xs',
     },
     {
       prop: 'spacing',

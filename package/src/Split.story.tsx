@@ -39,7 +39,7 @@ export default {
     },
     variant: {
       control: { type: 'inline-radio' },
-      options: ['default', 'filled', 'outline', 'transparent', 'dotted', 'dashed'],
+      options: ['default', 'filled', 'outline', 'transparent', 'gradient', 'dotted', 'dashed'],
     },
     withKnob: { control: { type: 'boolean' } },
     knobAlwaysOn: { control: { type: 'boolean' } },
@@ -258,17 +258,16 @@ export function SimpleMinUsage(p: SplitProps) {
       <Stack gap={2}>
         <Code>Start: {start ? 'true' : 'false'}</Code>
         <Code>
-          End (beforePanePane 1): w={end?.beforePane.width} h={end?.beforePane.height}
+          End (beforePane): w={end?.beforePane.width} h={end?.beforePane.height}
         </Code>
         <Code>
-          End (afterPanePane 1): w={end?.afterPane.width} h={end?.afterPane.height}
+          End (afterPane): w={end?.afterPane.width} h={end?.afterPane.height}
         </Code>
         <Code>
-          Resizing (beforePanePane 1): w={resizing?.beforePane.width} h=
-          {resizing?.beforePane.height}
+          Resizing (beforePane): w={resizing?.beforePane.width} h={resizing?.beforePane.height}
         </Code>
         <Code>
-          Resizing (afterPanePane 1): w={resizing?.afterPane.width} h={resizing?.afterPane.height}
+          Resizing (afterPane): w={resizing?.afterPane.width} h={resizing?.afterPane.height}
         </Code>
       </Stack>
     </div>
