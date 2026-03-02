@@ -38,17 +38,16 @@ function Demo(props: SplitProps) {
       <Stack gap={2}>
         <Code>Start: {start ? 'true' : 'false'}</Code>
         <Code>
-          End (beforePanePane 1): w={end?.beforePane.width} h={end?.beforePane.height}
+          End (beforePane): w={end?.beforePane.width} h={end?.beforePane.height}
         </Code>
         <Code>
-          End (afterPanePane 1): w={end?.afterPane.width} h={end?.afterPane.height}
+          End (afterPane): w={end?.afterPane.width} h={end?.afterPane.height}
         </Code>
         <Code>
-          Resizing (beforePanePane 1): w={resizing?.beforePane.width} h=
-          {resizing?.beforePane.height}
+          Resizing (beforePane): w={resizing?.beforePane.width} h={resizing?.beforePane.height}
         </Code>
         <Code>
-          Resizing (afterPanePane 1): w={resizing?.afterPane.width} h={resizing?.afterPane.height}
+          Resizing (afterPane): w={resizing?.afterPane.width} h={resizing?.afterPane.height}
         </Code>
       </Stack>
     </Stack>
@@ -64,7 +63,7 @@ function Demo() {
   const [start, setStart] = useState(false);
   const [end, setEnd] = useState<SPLIT_PANE_RESIZE_SIZES>();
   const [resizing, setResizing] = useState<SPLIT_PANE_RESIZE_SIZES>();
-  
+
   return (
     <Stack>
       <Split{{props}}>
@@ -95,17 +94,16 @@ function Demo() {
       <Stack gap={2}>
         <Code>Start: {start ? 'true' : 'false'}</Code>
         <Code>
-          End (beforePanePane 1): w={end?.beforePane.width} h={end?.beforePane.height}
+          End (beforePane): w={end?.beforePane.width} h={end?.beforePane.height}
         </Code>
         <Code>
-          End (afterPanePane 1): w={end?.afterPane.width} h={end?.afterPane.height}
+          End (afterPane): w={end?.afterPane.width} h={end?.afterPane.height}
         </Code>
         <Code>
-          Resizing (beforePanePane 1): w={resizing?.beforePane.width} h=
-          {resizing?.beforePane.height}
+          Resizing (beforePane): w={resizing?.beforePane.width} h={resizing?.beforePane.height}
         </Code>
         <Code>
-          Resizing (afterPanePane 1): w={resizing?.afterPane.width} h={resizing?.afterPane.height}
+          Resizing (afterPane): w={resizing?.afterPane.width} h={resizing?.afterPane.height}
         </Code>
       </Stack>
     </Stack>

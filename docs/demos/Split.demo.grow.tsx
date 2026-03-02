@@ -131,7 +131,7 @@ function GrowThreePanes() {
 
       <Split.Pane>
         <Paper withBorder>
-          <Title>Pane 2</Title>
+          <Title>Pane 3</Title>
         </Paper>
       </Split.Pane>
     </Split>
@@ -163,7 +163,7 @@ function Demo() {
 
       <Split.Pane>
         <Paper withBorder>
-          <Title>Pane 2</Title>
+          <Title>Pane 3</Title>
         </Paper>
       </Split.Pane>
     </Split>

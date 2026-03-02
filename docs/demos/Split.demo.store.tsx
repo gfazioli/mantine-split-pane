@@ -30,15 +30,18 @@ function Demo() {
 
 const code = `
 import { Split } from '@gfazioli/mantine-split-pane';
-import { Paper } from '@mantine/core';
+import { Paper, Title } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
 function Demo() {
-  const [width, setWidth] = useLocalStorage({ key: 'split-width', defaultValue: 'auto' });
+  const [width, setWidth] = useLocalStorage({
+    key: 'split-width',
+    getInitialValueInEffect: true,
+  });
 
   return (
     <Split>
-      <Split.Pane initialWidth={width} onResizeEnd={({ width }) => setWidth(width.toString())}>
+      <Split.Pane initialWidth={+width} onResizeEnd={({ width }) => setWidth(width.toString())}>
         <Paper withBorder>
           <Title>Pane 1</Title>
         </Paper>
