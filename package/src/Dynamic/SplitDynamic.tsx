@@ -2,33 +2,43 @@ import React from 'react';
 import { SplitPane, type SplitPaneBaseProps } from '../Pane/SplitPane';
 import { SplitResizer, type SplitResizerProps } from '../Resizer/SplitResizer';
 
+/**
+ * Declarative configuration for a single pane inside `Split.Dynamic`.
+ * Extends all `Split.Pane` props (`initialWidth`, `grow`, `minWidth`, etc.)
+ * and adds an `id`, the pane `content`, and optional per-pane `resizerProps`.
+ */
 export interface PaneConfig extends SplitPaneBaseProps {
-  /** Unique identifier for the pane */
+  /** Unique identifier used as the React key for the pane and its resizer */
   id: string;
 
   /** Content to render inside the pane */
   content: React.ReactNode;
 
-  /** Custom resizer props for the resizer after this pane (optional) */
+  /** Props forwarded to the resizer inserted after this pane (ignored on the last visible pane) */
   resizerProps?: Omit<SplitResizerProps, 'beforeRef' | 'afterRef'>;
 }
 
+/** Props accepted by the `Split.Dynamic` helper function */
 export interface SplitDynamicProps {
-  /** Array of pane configurations */
+  /** Array of pane configurations defining the layout */
   panes: PaneConfig[];
 
-  /** Filter function to conditionally render panes */
+  /** Optional predicate to conditionally include/exclude panes from the layout */
   filter?: (pane: PaneConfig) => boolean;
 }
 
 /**
- * Helper function to generate Split.Pane and Split.Resizer elements from a PaneConfig array.
- * Use this inside Split children as a function call, not as a component:
+ * Generates an array of `Split.Pane` and `Split.Resizer` elements from a
+ * `PaneConfig[]` array. This is a helper function (not a component) — call it
+ * inside `<Split>` children:
  *
  * @example
  * <Split>
  *   {Split.Dynamic({ panes })}
  * </Split>
+ *
+ * @param props - The pane configurations and optional filter
+ * @returns An array of React elements ready to be rendered inside `<Split>`
  */
 export function SplitDynamic({ panes, filter }: SplitDynamicProps): React.ReactNode[] {
   const visiblePanes = filter ? panes.filter(filter) : panes;

@@ -61,11 +61,21 @@ yarn release:patch    # Bump version, publish to npm, deploy docs
 - CSS variables: `--split-{component}-{property}` (e.g., `--split-resizer-size`)
 - Props extend `BoxProps` + `StylesApiProps<TFactory>` from Mantine
 - Tests use `@mantine-tests/core` for rendering, live alongside components in `package/src/`
+- JSDoc on all public interfaces, exported types, and non-trivial internal functions — always in English
+
+## Docs Demos
+
+Each demo in `docs/demos/` exports a `MantineDemo` object consumed by `docs/docs.mdx`. Key points:
+
+- **Configurator demos** have a `controls` array with `initialValue` / `libraryValue` — these must match the actual component defaults in `SplitResizer.tsx:defaultProps`
+- **Code strings** (the `const code` template literals) are displayed to users as copyable examples — they must stay in sync with the actual component code above them
+- All 7 resizer variants must be listed wherever variant options appear: `default`, `filled`, `outline`, `transparent`, `gradient`, `dotted`, `dashed`
 
 ## Adding a Resizer Prop
 
 1. Add to `SplitResizerContextProps` in `package/src/Resizer/SplitResizer.tsx`
-2. Update `defaultProps`
+2. Update `defaultProps` in the same file
 3. Add CSS variable to `varsResolver` if styling-related
-4. Update context in `package/src/Split.context.ts` if it should cascade from Split
-5. Run `yarn docgen` to regenerate API docs
+4. Update context in `package/src/Split.context.ts` only if the prop is NOT already in `SplitResizerContextProps` (e.g., `variant` is added separately because it flows through the factory system)
+5. Destructure and pass through in `Split.tsx` (props + context provider value)
+6. Run `yarn docgen` to regenerate API docs
