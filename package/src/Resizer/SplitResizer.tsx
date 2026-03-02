@@ -122,11 +122,14 @@ export interface SplitResizerContextProps {
   hoverGradient?: MantineGradient;
 }
 
+/** Dimensions of both adjacent panes reported during and after a resize operation */
 export type SPLIT_PANE_RESIZE_SIZES = {
+  /** Dimensions of the pane before (left or top of) the resizer */
   beforePane: {
     width: number;
     height: number;
   };
+  /** Dimensions of the pane after (right or bottom of) the resizer */
   afterPane: {
     width: number;
     height: number;
@@ -134,16 +137,16 @@ export type SPLIT_PANE_RESIZE_SIZES = {
 };
 
 export interface SplitResizerBaseProps extends SplitResizerContextProps {
-  /** Event called when resizer is double clicked */
+  /** Event called when resizer is double-clicked */
   onDoubleClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 
-  /** Event called when pane size starts changing */
+  /** Event called when a resize operation begins (mouse down / touch start) */
   onResizeStart?: () => void;
 
-  /** Event called when pane size changes */
+  /** Event called continuously while panes are being resized (mouse move / touch move) */
   onResizing?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
 
-  /** Event called when pane size changes */
+  /** Event called when a resize operation ends (mouse up / touch end) */
   onResizeEnd?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
 }
 
@@ -367,13 +370,11 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   const containerRef = useRef(null);
 
   /**
-   * Process the logic for vertical resizing.
-   * This function is called when the user drags the resizer
-   * in the vertical direction. It's used also for the keyboard
-   * resizing.
+   * Applies a horizontal (left/right) delta to the two adjacent panes,
+   * enforcing min/max width constraints. Used by both mouse drag and
+   * keyboard arrow handlers when orientation is vertical.
    *
-   * @param deltaX
-   * @returns
+   * @param deltaX - The pixel offset to apply (positive = move right)
    */
   const processVerticalSize = (deltaX: number = 0) => {
     const minBeforeWidth = beforeRef.current.getMinWidth();
@@ -448,7 +449,6 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     if (!isBeforeWidthMaxExceeded && isAfterWidthNegative) {
       beforeWidth += afterWidth;
       afterWidth = 0;
-      // beforeWidth = containerRef.current.parentElement.getBoundingClientRect().width;
       return setVerticalSize();
     }
 
@@ -476,13 +476,11 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   };
 
   /**
-   * Process the logic for horizontal resizing.
-   * This function is called when the user drags the resizer
-   * in the horizontal direction. It's used also for the keyboard
-   * resizing.
+   * Applies a vertical (up/down) delta to the two adjacent panes,
+   * enforcing min/max height constraints. Used by both mouse drag and
+   * keyboard arrow handlers when orientation is horizontal.
    *
-   * @param deltaY
-   * @returns
+   * @param deltaY - The pixel offset to apply (positive = move down)
    */
   const processHorizontalSize = (deltaY: number = 0) => {
     const minBeforeHeight = beforeRef.current.getMinHeight();
@@ -558,7 +556,6 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     if (!isBeforeHeightMaxExceeded && isAfterHeightNegative) {
       beforeHeight += afterHeight;
       afterHeight = 0;
-      // beforeHeight = containerRef.current.parentElement.getBoundingClientRect().height;
       return setHorizontalSize();
     }
 
@@ -585,8 +582,11 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   };
 
   /**
-   * Start resizing
-   * @param event
+   * Initiates a resize operation. Disables text selection on the document,
+   * attaches the appropriate move/end listeners, fires `onResizeStart` on
+   * both the resizer and the adjacent panes, and overrides the body cursor.
+   *
+   * @param event - The originating mousedown or touchstart event
    */
   const handleStart = (
     event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
@@ -594,7 +594,6 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     event.preventDefault();
     event.stopPropagation();
 
-    // disable the userSelect by css starting from the entire document
     document.body.style.userSelect = 'none';
     document.body.style.webkitUserSelect = 'none';
 
@@ -616,13 +615,15 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   };
 
   /**
-   * Handle resizing
-   * @param event
-   * @returns
+   * Processes pointer movement during a resize, computing the delta from the
+   * resizer center and delegating to `processVerticalSize` or `processHorizontalSize`.
+   * Exits gracefully if adjacent pane refs are unavailable.
+   *
+   * @param event - The native mousemove or touchmove event
    */
   const handleMove = (event: MouseEvent | TouchEvent) => {
     if (!beforeRef.current || !afterRef.current) {
-      throw new Error('beforeRef or afterRef is not defined');
+      return;
     }
 
     event.preventDefault();
@@ -648,15 +649,15 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   };
 
   /**
-   * Stop resizing for mouse
-   * @returns
+   * Ends a mouse-initiated resize. Re-enables text selection, removes document
+   * listeners, resets the body cursor, and fires `onResizeEnd` on the resizer
+   * and both adjacent panes with their final dimensions.
    */
   const handleMouseUp = () => {
     if (!beforeRef.current || !afterRef.current) {
-      throw new Error('beforeRef or afterRef is not defined');
+      return;
     }
 
-    // reenable the userSelect by css starting from the entire document
     document.body.style.userSelect = 'initial';
     document.body.style.webkitUserSelect = 'initial';
 
@@ -687,12 +688,13 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   };
 
   /**
-   * Stop resizing for touch
-   * @returns
+   * Ends a touch-initiated resize. Removes document listeners, resets the body
+   * cursor, and fires `onResizeEnd` on the resizer and both adjacent panes
+   * with their final dimensions.
    */
   const handleTouchEnd = () => {
     if (!beforeRef.current || !afterRef.current) {
-      throw new Error('beforeRef or afterRef is not defined');
+      return;
     }
 
     document.removeEventListener('touchmove', handleMove);
@@ -722,11 +724,13 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   };
 
   /**
-   * Handle key up
-   * @param event
+   * Handles keyboard-driven resizing. Arrow Left/Right resize in vertical
+   * orientation, Arrow Up/Down in horizontal orientation. Holding Shift
+   * uses the larger `shiftStep` increment. Escape blurs the resizer.
+   *
+   * @param event - The React keyboard event
    */
   const handleKeyUp = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-    // check if containerRef has got the focus
     if (containerRef.current !== document.activeElement) {
       return;
     }
@@ -759,16 +763,15 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     if (code === 'Escape') {
       event.preventDefault();
       event.stopPropagation();
-
-      // remove focus from the containerRef
       containerRef.current.blur();
     }
   };
 
   /**
-   * Used to reset the initial size of the pane
+   * Resets both adjacent panes to their initial sizes and fires the
+   * `onDoubleClick` callback. Triggered by a double-click on the resizer.
    *
-   * @param e - The event object
+   * @param e - The originating double-click mouse event
    */
   const handleDoubleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
