@@ -24,20 +24,30 @@ import classes from './Split.module.css';
 
 export type SplitStylesNames = 'root';
 
+/** Variant type for `Split`, mirrors `SplitResizerVariant` */
 export type SplitVariant = SplitResizerVariant;
 
 export type SplitCssVariables = {
   root: '--split-inline';
 };
 
+/**
+ * Base props for the `Split` container. Extends `SplitResizerContextProps` so
+ * that resizer configuration (variant, color, knob, etc.) set on `<Split>` is
+ * automatically cascaded to all child `<Split.Resizer>` components via context.
+ */
 export interface SplitBaseProps extends SplitResizerContextProps {
-  /** Make main split container inline */
+  /** Render the split container as `inline-flex` instead of `flex` */
   inline?: boolean;
 
-  /** Automatically insert resizers between panes when not explicitly provided */
+  /**
+   * When `true`, `Split.Resizer` components are automatically inserted between
+   * consecutive `Split.Pane` children, removing the need to add them manually.
+   * Auto-inserted resizers inherit all resizer props from the parent `Split`.
+   */
   autoResizers?: boolean;
 
-  /** Split children */
+  /** Split children — typically `Split.Pane` and `Split.Resizer` elements */
   children: React.ReactNode;
 }
 
