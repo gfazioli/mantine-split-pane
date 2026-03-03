@@ -2,6 +2,82 @@ import { Kbd } from '@mantine/core';
 import { InstallScript } from './components/InstallScript/InstallScript';
 import * as demos from './demos';
 
+## Update to v3
+
+> **Note well**
+>
+> Version 3 introduces **responsive sizing** for pane and resizer props, enabling breakpoint-driven layouts that adapt to the viewport.
+> It also adds **container resize tracking**, where percentage-based pane sizes automatically recalculate when the parent container changes dimensions.
+> Some prop types have been widened to support responsive values, which may require TypeScript type updates in your code.
+>
+> ↓ Follow the instructions below to update your code ↓
+
+### Breaking changes
+
+- **Pane size props now accept `ResponsiveValue<T>`** — All `Split.Pane` sizing props (`initialWidth`, `initialHeight`, `minWidth`, `minHeight`, `maxWidth`, `maxHeight`) have changed their accepted type from `number | string` to `ResponsiveValue<number | string>`. Plain scalar values still work, but TypeScript consumers that explicitly type these props as `number | string` will need to update their types.
+
+- **Resizer props widened to `ResponsiveValue<T>`** — The `size`, `knobSize`, and `spacing` props on both `Split` and `Split.Resizer` now also accept responsive breakpoint maps instead of only scalar values.
+
+- **Imperative handler return types widened** — `getMinWidth()`, `getMaxWidth()`, `getMinHeight()`, `getMaxHeight()` now return `number | undefined` instead of `number`. Similarly, `getInitialWidth()` and `getInitialHeight()` return `number | string | undefined`. Code that uses these handlers without checking for `undefined` may break.
+
+- **`spacing` removed from `SplitContext` interface** — The redundant `spacing` field was removed from the internal `SplitContext` (it is inherited from `SplitResizerContextProps`). This only affects consumers who directly reference `SplitContext` types or mock the context in tests.
+
+### Migration from v2 to v3
+
+#### Step 1: Update TypeScript types for pane size props
+
+If you have wrapper components or utilities that explicitly type pane size props, update them:
+
+```tsx
+// Before (v2)
+interface MySidebarProps {
+  width: number | string;
+}
+
+// After (v3)
+import type { ResponsiveValue } from '@gfazioli/mantine-split-pane';
+
+interface MySidebarProps {
+  width: ResponsiveValue<number | string>;
+}
+```
+
+Plain `number` and `string` values continue to work without changes — no JSX updates needed unless you use responsive breakpoint maps.
+
+#### Step 2: Handle `undefined` returns from imperative handlers
+
+```tsx
+// Before (v2)
+const min = paneRef.current.getMinWidth(); // number
+
+// After (v3)
+const min = paneRef.current.getMinWidth(); // number | undefined
+if (min !== undefined) {
+  console.log('Min width:', min);
+}
+```
+
+#### Step 3: Use responsive values (new feature)
+
+You can now pass breakpoint maps to pane size props and resizer props:
+
+```tsx
+<Split size={{ base: 'sm', lg: 'md' }} spacing={{ base: 'xs', md: 'sm' }}>
+  <Split.Pane
+    initialWidth={{ base: '100%', md: '30%' }}
+    minWidth={{ base: 100, lg: 200 }}
+  >
+    <Sidebar />
+  </Split.Pane>
+
+  <Split.Resizer />
+
+  <Split.Pane grow>
+    <MainContent />
+  </Split.Pane>
+</Split>
+```
+
 ## Update to v2
 
 > **Note well**
