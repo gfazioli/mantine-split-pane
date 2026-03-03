@@ -259,8 +259,16 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
 
     if (ctx.orientation === 'vertical' && widthChanged) {
       if (hasBeenDraggedRef.current && dragRatioRef.current !== null) {
-        // Preserve the drag ratio on container resize
-        const newWidth = dragRatioRef.current * containerWidth;
+        // Preserve the drag ratio on container resize, clamped to min/max constraints
+        const minPx = getSizeInPixel(minWidth);
+        const maxPx = getSizeInPixel(maxWidth);
+        let newWidth = dragRatioRef.current * containerWidth;
+        if (minPx !== undefined) {
+          newWidth = Math.max(newWidth, minPx);
+        }
+        if (maxPx !== undefined) {
+          newWidth = Math.min(newWidth, maxPx);
+        }
         localRef.current.style.width = `${newWidth}px`;
       } else if (isPercentageValue(initialWidth)) {
         // Recalculate percentage-based size
@@ -282,8 +290,16 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
 
     if (ctx.orientation === 'horizontal' && heightChanged) {
       if (hasBeenDraggedRef.current && dragRatioRef.current !== null) {
-        // Preserve the drag ratio on container resize
-        const newHeight = dragRatioRef.current * containerHeight;
+        // Preserve the drag ratio on container resize, clamped to min/max constraints
+        const minPx = getSizeInPixel(minHeight);
+        const maxPx = getSizeInPixel(maxHeight);
+        let newHeight = dragRatioRef.current * containerHeight;
+        if (minPx !== undefined) {
+          newHeight = Math.max(newHeight, minPx);
+        }
+        if (maxPx !== undefined) {
+          newHeight = Math.min(newHeight, maxPx);
+        }
         localRef.current.style.height = `${newHeight}px`;
       } else if (isPercentageValue(initialHeight)) {
         // Recalculate percentage-based size
