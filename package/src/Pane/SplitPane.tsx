@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle } from 'react';
+import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import {
   Box,
   BoxProps,
@@ -9,8 +9,10 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
+import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { SplitResizerVariant } from '../Resizer/SplitResizer';
 import { useSplitContext } from '../Split.context';
+import type { ResponsiveValue } from '../types';
 import classes from './SplitPane.module.css';
 
 export type SplitPaneStylesNames = 'root';
@@ -57,23 +59,23 @@ export interface SplitPaneBaseProps {
   /** Grow pane to fill available space */
   grow?: boolean;
 
-  /** Initial width of the pane */
-  initialWidth?: number | string;
+  /** Initial width of the pane. Accepts a static value or a responsive breakpoint map. */
+  initialWidth?: ResponsiveValue<number | string>;
 
-  /** Initial height of the pane */
-  initialHeight?: number | string;
+  /** Initial height of the pane. Accepts a static value or a responsive breakpoint map. */
+  initialHeight?: ResponsiveValue<number | string>;
 
-  /** The minimum width of the pane when orientation is vertical */
-  minWidth?: number | string;
+  /** The minimum width of the pane when orientation is vertical. Accepts a static value or a responsive breakpoint map. */
+  minWidth?: ResponsiveValue<number | string>;
 
-  /** The minimum height of the pane when orientation is horizontal */
-  minHeight?: number | string;
+  /** The minimum height of the pane when orientation is horizontal. Accepts a static value or a responsive breakpoint map. */
+  minHeight?: ResponsiveValue<number | string>;
 
-  /** The maximum width of the pane when orientation is vertical */
-  maxWidth?: number | string;
+  /** The maximum width of the pane when orientation is vertical. Accepts a static value or a responsive breakpoint map. */
+  maxWidth?: ResponsiveValue<number | string>;
 
-  /** The maximum height of the pane when orientation is horizontal */
-  maxHeight?: number | string;
+  /** The maximum height of the pane when orientation is horizontal. Accepts a static value or a responsive breakpoint map. */
+  maxHeight?: ResponsiveValue<number | string>;
 
   /** Event called when pane size starts changing */
   onResizeStart?: () => void;
@@ -124,12 +126,12 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
   const {
     children,
     grow,
-    initialWidth,
-    initialHeight,
-    minWidth,
-    minHeight,
-    maxWidth,
-    maxHeight,
+    initialWidth: initialWidthProp,
+    initialHeight: initialHeightProp,
+    minWidth: minWidthProp,
+    minHeight: minHeightProp,
+    maxWidth: maxWidthProp,
+    maxHeight: maxHeightProp,
 
     onResizeStart,
     onResizing,
@@ -146,7 +148,22 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     ...others
   } = props;
 
-  const localRef = React.useRef<HTMLDivElement & SplitPaneHandlers>(null);
+  // Resolve responsive values to scalars for the current viewport
+  const initialWidth = useResponsiveValue<number | string>(initialWidthProp);
+  const initialHeight = useResponsiveValue<number | string>(initialHeightProp);
+  const minWidth = useResponsiveValue<number | string>(minWidthProp);
+  const minHeight = useResponsiveValue<number | string>(minHeightProp);
+  const maxWidth = useResponsiveValue<number | string>(maxWidthProp);
+  const maxHeight = useResponsiveValue<number | string>(maxHeightProp);
+
+  const localRef = useRef<HTMLDivElement & SplitPaneHandlers>(null);
+
+  // Track whether the pane has been manually dragged
+  const hasBeenDraggedRef = useRef(false);
+  // Store the ratio of the drag position relative to the container
+  const dragRatioRef = useRef<number | null>(null);
+  // Store the previous container size to detect changes
+  const prevContainerSizeRef = useRef<{ width: number; height: number } | null>(null);
 
   useImperativeHandle(ref, () => ({
     ...localRef.current,
@@ -160,11 +177,24 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     getInitialHeight: () => initialHeight,
     onResizeStart: () => onResizeStart && onResizeStart(),
     onResizing: (size: SPLIT_PANE_SIZE) => onResizing && onResizing(size),
-    onResizeEnd: (size: SPLIT_PANE_SIZE) => onResizeEnd && onResizeEnd(size),
+    onResizeEnd: (size: SPLIT_PANE_SIZE) => {
+      // Store drag ratio when resize ends
+      if (localRef.current && ctx.containerSize) {
+        const rect = localRef.current.getBoundingClientRect();
+        if (ctx.orientation === 'vertical' && ctx.containerSize.width > 0) {
+          dragRatioRef.current = rect.width / ctx.containerSize.width;
+          hasBeenDraggedRef.current = true;
+        } else if (ctx.orientation === 'horizontal' && ctx.containerSize.height > 0) {
+          dragRatioRef.current = rect.height / ctx.containerSize.height;
+          hasBeenDraggedRef.current = true;
+        }
+      }
+      onResizeEnd && onResizeEnd(size);
+    },
   }));
 
-  const initialWidthRef = React.useRef<number | string>(null);
-  const initialHeightRef = React.useRef<number | string>(null);
+  const initialWidthRef = useRef<number | string>(null);
+  const initialHeightRef = useRef<number | string>(null);
 
   // Capture the initial sizes and apply them to the DOM on mount
   useEffect(() => {
@@ -177,9 +207,108 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
 
   // Re-apply sizes when orientation or size-related props change
   useEffect(() => {
-    localRef.current.style.width = withPx(getInitialVerticalSize());
-    localRef.current.style.height = withPx(getInitialHorizontalSize());
+    // Reset drag state when props change (user changed breakpoint or prop values)
+    hasBeenDraggedRef.current = false;
+    dragRatioRef.current = null;
+
+    const newWidth = getInitialVerticalSize();
+    const newHeight = getInitialHorizontalSize();
+
+    initialWidthRef.current = newWidth;
+    initialHeightRef.current = newHeight;
+
+    localRef.current.style.width = withPx(newWidth);
+    localRef.current.style.height = withPx(newHeight);
   }, [ctx.orientation, initialWidth, initialHeight, minWidth, minHeight]);
+
+  // Container resize tracking: recalculate percentage-based sizes
+  useEffect(() => {
+    if (!ctx.containerSize || !localRef.current) {
+      return;
+    }
+
+    const { width: containerWidth, height: containerHeight } = ctx.containerSize;
+
+    // Skip if container hasn't actually been measured yet
+    if (containerWidth === 0 && containerHeight === 0) {
+      return;
+    }
+
+    // Skip the initial measurement (let the mount effect handle it)
+    if (!prevContainerSizeRef.current) {
+      prevContainerSizeRef.current = { width: containerWidth, height: containerHeight };
+      return;
+    }
+
+    // Skip if container size hasn't meaningfully changed (threshold of 1px)
+    const prevSize = prevContainerSizeRef.current;
+    const widthChanged = Math.abs(containerWidth - prevSize.width) > 1;
+    const heightChanged = Math.abs(containerHeight - prevSize.height) > 1;
+
+    if (!widthChanged && !heightChanged) {
+      return;
+    }
+
+    prevContainerSizeRef.current = { width: containerWidth, height: containerHeight };
+
+    // Don't recalculate for grow panes — they flex automatically
+    if (grow) {
+      return;
+    }
+
+    if (ctx.orientation === 'vertical' && widthChanged) {
+      if (hasBeenDraggedRef.current && dragRatioRef.current !== null) {
+        // Preserve the drag ratio on container resize
+        const newWidth = dragRatioRef.current * containerWidth;
+        localRef.current.style.width = `${newWidth}px`;
+      } else if (isPercentageValue(initialWidth)) {
+        // Recalculate percentage-based size
+        const newWidth = getSizeInPixel(initialWidth);
+        if (newWidth !== undefined) {
+          const minPx = getSizeInPixel(minWidth);
+          const maxPx = getSizeInPixel(maxWidth);
+          let finalWidth = newWidth;
+          if (minPx !== undefined) {
+            finalWidth = Math.max(finalWidth, minPx);
+          }
+          if (maxPx !== undefined) {
+            finalWidth = Math.min(finalWidth, maxPx);
+          }
+          localRef.current.style.width = `${finalWidth}px`;
+        }
+      }
+    }
+
+    if (ctx.orientation === 'horizontal' && heightChanged) {
+      if (hasBeenDraggedRef.current && dragRatioRef.current !== null) {
+        // Preserve the drag ratio on container resize
+        const newHeight = dragRatioRef.current * containerHeight;
+        localRef.current.style.height = `${newHeight}px`;
+      } else if (isPercentageValue(initialHeight)) {
+        // Recalculate percentage-based size
+        const newHeight = getSizeInPixel(initialHeight);
+        if (newHeight !== undefined) {
+          const minPx = getSizeInPixel(minHeight);
+          const maxPx = getSizeInPixel(maxHeight);
+          let finalHeight = newHeight;
+          if (minPx !== undefined) {
+            finalHeight = Math.max(finalHeight, minPx);
+          }
+          if (maxPx !== undefined) {
+            finalHeight = Math.min(finalHeight, maxPx);
+          }
+          localRef.current.style.height = `${finalHeight}px`;
+        }
+      }
+    }
+  }, [ctx.containerSize?.width, ctx.containerSize?.height]);
+
+  /**
+   * Returns true if the given size value is a percentage string (e.g. "50%").
+   */
+  function isPercentageValue(size?: number | string): boolean {
+    return typeof size === 'string' && size.includes('%');
+  }
 
   /**
    * Converts a size value (number, "px" string, or "%" string) to pixels.
@@ -317,12 +446,22 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
       return;
     }
 
+    // Clear drag state on reset
+    hasBeenDraggedRef.current = false;
+    dragRatioRef.current = null;
+
     if (ctx.orientation === 'vertical') {
-      localRef.current.style.width = withPx(initialWidthRef.current);
+      // Recalculate from current percentage if applicable
+      const newSize = getInitialVerticalSize();
+      initialWidthRef.current = newSize;
+      localRef.current.style.width = withPx(newSize);
     }
 
     if (ctx.orientation === 'horizontal') {
-      localRef.current.style.height = withPx(initialHeightRef.current);
+      // Recalculate from current percentage if applicable
+      const newSize = getInitialHorizontalSize();
+      initialHeightRef.current = newSize;
+      localRef.current.style.height = withPx(newSize);
     }
 
     if (onResetInitialSize) {

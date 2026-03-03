@@ -1,5 +1,8 @@
-import { useMatches } from '@mantine/core';
-import type { SplitResizerOrientation } from '../Resizer/SplitResizer';
+import type {
+  SplitResizerOrientation,
+  SplitResizerOrientationValue,
+} from '../Resizer/SplitResizer';
+import { useResponsiveValue } from './use-responsive-value';
 
 /**
  * Resolves the split orientation from either a static string (`'vertical'` / `'horizontal'`)
@@ -10,11 +13,8 @@ import type { SplitResizerOrientation } from '../Resizer/SplitResizer';
  * @param orientation - A static orientation string or a Mantine breakpoint map
  * @returns The resolved orientation for the current viewport
  */
-export function useSplitResizerOrientation(orientation: SplitResizerOrientation) {
-  const responsiveOrientation = useMatches(typeof orientation === 'string' ? {} : orientation);
-
-  if (typeof orientation === 'string') {
-    return orientation;
-  }
-  return responsiveOrientation;
+export function useSplitResizerOrientation(
+  orientation: SplitResizerOrientation
+): SplitResizerOrientationValue {
+  return useResponsiveValue<SplitResizerOrientationValue>(orientation, 'vertical');
 }

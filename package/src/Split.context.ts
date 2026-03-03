@@ -11,6 +11,9 @@ import { SplitResizerContextProps, SplitResizerVariant } from './Resizer/SplitRe
 interface SplitContext extends SplitResizerContextProps {
   /** Visual variant applied to all child resizers (e.g. `'filled'`, `'gradient'`) */
   variant?: SplitResizerVariant;
+
+  /** Current container dimensions, updated by ResizeObserver on the root `<Split>` element */
+  containerSize?: { width: number; height: number };
 }
 
 export const [SplitContextProvider, useSplitContext] = createOptionalContext<SplitContext>();
