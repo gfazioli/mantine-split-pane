@@ -6,6 +6,7 @@ import { MantineDemo } from '@mantinex/demo';
 function Demo() {
   const [width, setWidth] = useLocalStorage({
     key: 'split-width',
+    defaultValue: '200',
     getInitialValueInEffect: true,
   });
 
@@ -36,6 +37,7 @@ import { useLocalStorage } from '@mantine/hooks';
 function Demo() {
   const [width, setWidth] = useLocalStorage({
     key: 'split-width',
+    defaultValue: '200',
     getInitialValueInEffect: true,
   });
 
