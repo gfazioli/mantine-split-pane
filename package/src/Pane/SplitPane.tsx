@@ -37,9 +37,9 @@ export interface SplitPaneHandlers {
   getMaxWidth?: () => number | undefined;
   /** Returns the maximum height in pixels, or `undefined` if not set */
   getMaxHeight?: () => number | undefined;
-  /** Returns the raw `initialWidth` prop value */
+  /** Returns the resolved `initialWidth` value for the current breakpoint */
   getInitialWidth?: () => number | string | undefined;
-  /** Returns the raw `initialHeight` prop value */
+  /** Returns the resolved `initialHeight` value for the current breakpoint */
   getInitialHeight?: () => number | string | undefined;
   /** Notify the pane that a resize operation has started */
   onResizeStart?: () => void;
