@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(yarn typecheck:*)"
+      "Bash(yarn typecheck:*)",
+      "WebSearch",
+      "WebFetch(domain:mantine.dev)"
     ]
   }
 }

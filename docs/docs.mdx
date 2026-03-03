@@ -57,7 +57,15 @@ if (min !== undefined) {
 }
 ```
 
-#### Step 3: Use responsive values (new feature)
+#### Step 3: Use `rem` and `em` units (new in v3)
+
+Starting from v3, all size props (`initialWidth`, `initialHeight`, `minWidth`, `maxWidth`, `minHeight`, `maxHeight`) now support `rem` and `em` units in addition to `px` and `%`:
+
+```tsx
+<Split.Pane initialWidth="20rem" minWidth="10em" />
+```
+
+#### Step 4: Use responsive values (new feature)
 
 You can now pass breakpoint maps to pane size props and resizer props:
 
@@ -304,7 +312,7 @@ The `Split.Pane` component is a child component of `Split` and allows setting so
 
 ### initialWidth, initialHeight
 
-The initial size as well as the min and max size of the pane can be set using the `initialWidth`, `initialHeight`, `minWidth`, `maxWidth`, `minHeight`, and `maxHeight` props. You may use a numeric value or a string with a unit (px, %) for the size of the pane. The `initialWidth` and `initialHeight` props are used to set the initial size of the pane, while the `minWidth`, `maxWidth`, `minHeight`, and `maxHeight` props are used to set the minimum and maximum size of the pane.
+The initial size as well as the min and max size of the pane can be set using the `initialWidth`, `initialHeight`, `minWidth`, `maxWidth`, `minHeight`, and `maxHeight` props. You may use a numeric value or a string with a CSS unit (`px`, `%`, `rem`, `em`) for the size of the pane. The `initialWidth` and `initialHeight` props are used to set the initial size of the pane, while the `minWidth`, `maxWidth`, `minHeight`, and `maxHeight` props are used to set the minimum and maximum size of the pane.
 
 <Demo data={demos.initials} />
 
