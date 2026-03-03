@@ -318,7 +318,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
    * @returns The size in pixels, or `undefined` if the input is not provided
    */
   const getSizeInPixel = (size?: number | string): number | undefined => {
-    if (size) {
+    if (size !== undefined && size !== null) {
       if (typeof size === 'number') {
         return size;
       }
