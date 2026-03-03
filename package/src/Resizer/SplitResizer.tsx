@@ -358,10 +358,11 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
 
   const orientation = useSplitResizerOrientation(propOrientation);
 
-  // Resolve responsive values to scalars for the current viewport
-  const resolvedSize = useResponsiveValue(size);
-  const resolvedSpacing = useResponsiveValue(spacing);
-  const resolvedKnobSize = useResponsiveValue(knobSize);
+  // Resolve responsive values to scalars for the current viewport,
+  // falling back to default props if the responsive value is undefined
+  const resolvedSize = useResponsiveValue(size) ?? defaultProps.size;
+  const resolvedSpacing = useResponsiveValue(spacing) ?? defaultProps.spacing;
+  const resolvedKnobSize = useResponsiveValue(knobSize) ?? defaultProps.knobSize;
 
   // Create resolved props for useStyles/varsResolver (needs scalar values)
   const resolvedProps = {

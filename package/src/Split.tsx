@@ -122,10 +122,11 @@ export const Split = factory<SplitFactory>((_props, ref) => {
 
   const orientation = useSplitResizerOrientation(propOrientation);
 
-  // Resolve responsive resizer props to scalars before passing to context
-  const resolvedSize = useResponsiveValue(size);
-  const resolvedSpacing = useResponsiveValue(spacing);
-  const resolvedKnobSize = useResponsiveValue(knobSize);
+  // Resolve responsive resizer props to scalars before passing to context,
+  // falling back to SplitResizer default props if the responsive value is undefined
+  const resolvedSize = useResponsiveValue(size) ?? splitPaneResizerDefaultProps.size;
+  const resolvedSpacing = useResponsiveValue(spacing) ?? splitPaneResizerDefaultProps.spacing;
+  const resolvedKnobSize = useResponsiveValue(knobSize) ?? splitPaneResizerDefaultProps.knobSize;
 
   const [resizeObserverRef, containerRect] = useResizeObserver();
   const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({
