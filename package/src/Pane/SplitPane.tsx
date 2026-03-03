@@ -5,6 +5,7 @@ import {
   createVarsResolver,
   Factory,
   factory,
+  px,
   StylesApiProps,
   useProps,
   useStyles,
@@ -311,37 +312,35 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
   }
 
   /**
-   * Converts a size value (number, "px" string, or "%" string) to pixels.
+   * Converts a size value (number, "px" string, "rem" string, "em" string, or "%" string) to pixels.
    * Percentage values are resolved relative to the parent element's dimensions.
+   * Other units (number, px, rem, em) are delegated to Mantine's `px()` utility.
    *
-   * @param size - A numeric value, a pixel string (e.g. "200px"), or a percentage string (e.g. "50%")
-   * @returns The size in pixels, or `undefined` if the input is not provided
+   * @param size - A numeric value or a CSS size string (e.g. "200px", "2rem", "50%")
+   * @returns The size in pixels, or `undefined` if the input is not provided or not convertible
    */
   const getSizeInPixel = (size?: number | string): number | undefined => {
-    if (size !== undefined && size !== null) {
-      if (typeof size === 'number') {
-        return size;
-      }
-
-      if (typeof size === 'string' && size.includes('px')) {
-        return parseFloat(size);
-      }
-
-      if (typeof size === 'string' && size.includes('%')) {
-        const value = parseFloat(size);
-        const parentEl = localRef.current?.parentElement;
-
-        if (!parentEl) {
-          return undefined;
-        }
-
-        const dimension = ctx.orientation === 'vertical' ? 'width' : 'height';
-        const parentSize = parentEl.getBoundingClientRect()[dimension];
-        return (parentSize * value) / 100;
-      }
+    if (size === undefined || size === null) {
+      return undefined;
     }
 
-    return undefined;
+    // Handle percentage values (needs parent element measurement)
+    if (typeof size === 'string' && size.includes('%')) {
+      const value = parseFloat(size);
+      const parentEl = localRef.current?.parentElement;
+
+      if (!parentEl) {
+        return undefined;
+      }
+
+      const dimension = ctx.orientation === 'vertical' ? 'width' : 'height';
+      const parentSize = parentEl.getBoundingClientRect()[dimension];
+      return (parentSize * value) / 100;
+    }
+
+    // Delegate number, px, rem, em to Mantine's px() utility
+    const result = px(size);
+    return typeof result === 'number' && !Number.isNaN(result) ? result : undefined;
   };
 
   /**
