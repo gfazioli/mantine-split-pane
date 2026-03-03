@@ -1,4 +1,4 @@
-import React, { cloneElement, isValidElement, useMemo } from 'react';
+import React, { cloneElement, isValidElement, useMemo, useState } from 'react';
 import {
   Box,
   BoxProps,
@@ -9,7 +9,9 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
+import { useResizeObserver } from '@mantine/hooks';
 import { SplitDynamic } from './Dynamic';
+import { useResponsiveValue } from './hooks/use-responsive-value';
 import { useSplitResizerOrientation } from './hooks/use-split-resizer-orientation';
 import { SplitPane, type SplitPaneProps } from './Pane/SplitPane';
 import {
@@ -120,6 +122,37 @@ export const Split = factory<SplitFactory>((_props, ref) => {
 
   const orientation = useSplitResizerOrientation(propOrientation);
 
+  // Resolve responsive resizer props to scalars before passing to context
+  const resolvedSize = useResponsiveValue(size);
+  const resolvedSpacing = useResponsiveValue(spacing);
+  const resolvedKnobSize = useResponsiveValue(knobSize);
+
+  const [resizeObserverRef, containerRect] = useResizeObserver();
+  const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
+
+  // Update containerSize when the ResizeObserver reports a change
+  React.useEffect(() => {
+    if (containerRect.width > 0 || containerRect.height > 0) {
+      setContainerSize({ width: containerRect.width, height: containerRect.height });
+    }
+  }, [containerRect.width, containerRect.height]);
+
+  // Merge the external forwarded ref with the ResizeObserver ref
+  const mergedRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      resizeObserverRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      }
+    },
+    [ref, resizeObserverRef]
+  );
+
   const getStyles = useStyles<SplitFactory>({
     name: 'Split',
     props,
@@ -216,12 +249,12 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     <SplitContextProvider
       value={{
         orientation,
-        size,
+        size: resolvedSize,
         opacity,
         radius,
         color,
         hoverColor,
-        knobSize,
+        knobSize: resolvedKnobSize,
         knobOpacity,
         knobRadius,
         knobColor,
@@ -229,16 +262,17 @@ export const Split = factory<SplitFactory>((_props, ref) => {
         variant: variant as SplitResizerVariant,
         withKnob,
         knobAlwaysOn,
-        spacing,
+        spacing: resolvedSpacing,
         step,
         shiftStep,
         cursorVertical,
         cursorHorizontal,
         gradient,
         hoverGradient,
+        containerSize,
       }}
     >
-      <Box ref={ref} mod={{ orientation }} {...getStyles('root')} {...others}>
+      <Box ref={mergedRef} mod={{ orientation }} {...getStyles('root')} {...others}>
         {clonedChildren}
       </Box>
     </SplitContextProvider>

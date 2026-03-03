@@ -13,3 +13,5 @@ export type {
 
 export { SplitDynamic } from './Dynamic';
 export type { PaneConfig, SplitDynamicProps } from './Dynamic';
+
+export type { ResponsiveValue } from './types';

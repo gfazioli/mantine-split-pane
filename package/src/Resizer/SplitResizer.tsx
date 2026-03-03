@@ -21,9 +21,11 @@ import {
   useStyles,
   type MantineBreakpoint,
 } from '@mantine/core';
+import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { useSplitResizerOrientation } from '../hooks/use-split-resizer-orientation';
 import { SplitPaneHandlers } from '../Pane/SplitPane';
 import { useSplitContext } from '../Split.context';
+import type { ResponsiveValue } from '../types';
 import classes from './SplitResizer.module.css';
 
 export type SplitResizerStylesNames = 'root';
@@ -67,8 +69,8 @@ export interface SplitResizerContextProps {
   /** Resizer opacity */
   opacity?: StyleProp<React.CSSProperties['opacity']>;
 
-  /** Resizer size */
-  size?: MantineSize | number | (string & {});
+  /** Resizer size. Accepts a static value or a responsive breakpoint map. */
+  size?: ResponsiveValue<MantineSize | number | (string & {})>;
 
   /** Resizer radius */
   radius?: MantineRadius;
@@ -85,8 +87,8 @@ export interface SplitResizerContextProps {
   /** Always display knob */
   knobAlwaysOn?: boolean;
 
-  /** Knob size */
-  knobSize?: MantineSize | number | (string & {});
+  /** Knob size. Accepts a static value or a responsive breakpoint map. */
+  knobSize?: ResponsiveValue<MantineSize | number | (string & {})>;
 
   /** Knob opacity */
   knobOpacity?: number | string;
@@ -100,8 +102,8 @@ export interface SplitResizerContextProps {
   /** Knob hover color */
   knobHoverColor?: MantineColor;
 
-  /** Spacing between resizer and pane */
-  spacing?: MantineSpacing;
+  /** Spacing between resizer and pane. Accepts a static value or a responsive breakpoint map. */
+  spacing?: ResponsiveValue<MantineSpacing>;
 
   /** Keyboard step, default is 8 */
   step?: number;
@@ -310,7 +312,9 @@ export const defaultProps: Partial<SplitResizerContextProps> = {
 
 export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
   const ctx = useSplitContext();
-  const props = useProps('SplitResizer', { ...defaultProps, ...ctx }, _props);
+  // Omit context-only fields that should not leak to DOM via ...rest
+  const { containerSize: _containerSize, ...ctxResizerProps } = ctx || {};
+  const props = useProps('SplitResizer', { ...defaultProps, ...ctxResizerProps }, _props);
 
   const {
     orientation: propOrientation,
@@ -354,10 +358,23 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
 
   const orientation = useSplitResizerOrientation(propOrientation);
 
+  // Resolve responsive values to scalars for the current viewport
+  const resolvedSize = useResponsiveValue(size);
+  const resolvedSpacing = useResponsiveValue(spacing);
+  const resolvedKnobSize = useResponsiveValue(knobSize);
+
+  // Create resolved props for useStyles/varsResolver (needs scalar values)
+  const resolvedProps = {
+    ...props,
+    size: resolvedSize,
+    spacing: resolvedSpacing,
+    knobSize: resolvedKnobSize,
+  };
+
   const getStyles = useStyles<SplitResizerFactory>({
     name: 'SplitResizer',
     classes,
-    props,
+    props: resolvedProps as unknown as SplitResizerProps,
     className,
     style,
     classNames,

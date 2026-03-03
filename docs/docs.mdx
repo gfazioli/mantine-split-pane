@@ -110,6 +110,20 @@ You can set the `orientation` prop to be responsive by passing an object with br
 
 <Demo data={demos.responsiveOrientation} />
 
+## Responsive Sizing
+
+You can set pane size props (`initialWidth`, `initialHeight`, `minWidth`, `maxWidth`, `minHeight`, `maxHeight`) to be responsive by passing an object with breakpoints as keys. This uses the same pattern as `orientation`. Resize the browser window to see the pane sizes change based on the viewport size.
+
+Additionally, panes with percentage-based sizes (e.g. `initialWidth="50%"`) will automatically recalculate proportionally when the container is resized. If you manually drag a resizer and then resize the container, the drag position is preserved as a ratio and scales proportionally.
+
+<Demo data={demos.responsive} />
+
+## Container Resize
+
+Panes with percentage-based sizes (e.g. `initialWidth="30%"`) automatically recalculate proportionally when the container is resized. If you manually drag a resizer and then resize the container, the drag position is preserved as a ratio and scales proportionally. Resize the browser window to see this behavior in action.
+
+<Demo data={demos.containerResize} />
+
 ## Gradient variant
 
 When `variant` prop is set to `gradient`, you can control gradient with `gradient` prop, it accepts an object with `from`, `to` and `deg` properties. If the `gradient` prop is not set, `Split.Resizer` will use `theme.defaultGradient` which can be configured on the `theme` object. `gradient` prop is ignored when variant is not gradient.

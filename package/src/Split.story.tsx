@@ -710,6 +710,62 @@ export function ResizeWindow() {
   );
 }
 
+export function ResponsiveSizing() {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split w="100%" h={400}>
+        <Split.Pane initialWidth={{ base: '100%', md: '30%' }} minWidth={{ base: 100, lg: 200 }}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Sidebar</h1>
+            <p>Responsive initialWidth and minWidth</p>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane grow>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Main Content</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function ContainerResize() {
+  return (
+    <div style={{ padding: 40 }}>
+      <p>
+        Resize the browser window — panes with percentage sizes will recalculate proportionally.
+      </p>
+      <Split w="100%" h={400}>
+        <Split.Pane initialWidth="30%" minWidth={100}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>30% Pane</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane grow>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Growing Pane</h1>
+          </Paper>
+        </Split.Pane>
+
+        <Split.Resizer />
+
+        <Split.Pane initialWidth="20%" minWidth={80}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>20% Pane</h1>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
 type PanePosition = 'left' | 'right';
 
 export function ConditionalRender() {
