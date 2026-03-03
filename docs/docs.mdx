@@ -29,13 +29,13 @@ import * as demos from './demos';
 If you have wrapper components or utilities that explicitly type pane size props, update them:
 
 ```tsx
+// After (v3)
+import type { ResponsiveValue } from '@gfazioli/mantine-split-pane';
+
 // Before (v2)
 interface MySidebarProps {
   width: number | string;
 }
-
-// After (v3)
-import type { ResponsiveValue } from '@gfazioli/mantine-split-pane';
 
 interface MySidebarProps {
   width: ResponsiveValue<number | string>;
@@ -62,7 +62,10 @@ if (min !== undefined) {
 You can now pass breakpoint maps to pane size props and resizer props:
 
 ```tsx
-<Split size={{ base: 'sm', lg: 'md' }} spacing={{ base: 'xs', md: 'sm' }}>
+<Split
+  size={{ base: 'sm', lg: 'md' }}
+  spacing={{ base: 'xs', md: 'sm' }}
+>
   <Split.Pane
     initialWidth={{ base: '100%', md: '30%' }}
     minWidth={{ base: 100, lg: 200 }}
