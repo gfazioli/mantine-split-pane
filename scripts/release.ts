@@ -43,9 +43,7 @@ async function release() {
   });
 
   signale.info(
-    `Publishing next ${chalk.cyan(versionIncrement)} version of ${chalk.cyan(
-      packageJson.name
-    )} to npm.`
+    `Publishing next ${chalk.cyan(versionIncrement)} version of ${chalk.cyan(packageJson.name)} to npm.`
   );
 
   signale.info(
