@@ -11,17 +11,19 @@ import type { ResponsiveValue } from '../types';
  * @param defaultValue - Fallback returned when `value` is `undefined`
  * @returns The resolved scalar value for the current viewport
  */
-export function useResponsiveValue<T>(value: ResponsiveValue<T> | undefined, defaultValue?: T): T {
+export function useResponsiveValue<T>(value: ResponsiveValue<T> | undefined, defaultValue: T): T;
+export function useResponsiveValue<T>(value: ResponsiveValue<T> | undefined): T | undefined;
+export function useResponsiveValue<T>(value: ResponsiveValue<T> | undefined, defaultValue?: T) {
   const isBreakpointMap = value !== null && value !== undefined && typeof value === 'object';
   const matched = useMatches(isBreakpointMap ? (value as Record<string, T>) : {});
 
   if (value === undefined || value === null) {
-    return defaultValue as T;
+    return defaultValue;
   }
 
   if (isBreakpointMap) {
     return matched ?? defaultValue;
   }
 
-  return value as T;
+  return value;
 }
