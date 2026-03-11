@@ -1,3 +1,5 @@
+.claude/
+
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
