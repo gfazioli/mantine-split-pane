@@ -88,6 +88,12 @@ export const ecosystem = [
     title: 'Mantine Select Stepper',
     href: 'https://gfazioli.github.io/mantine-select-stepper',
     newWindow: true,
+  },
+  {
+    key: 'mantine-scene',
+    title: 'Mantine Scene',
+    href: 'https://gfazioli.github.io/mantine-scene',
+    newWindow: true,
     new: true,
   },
   {
