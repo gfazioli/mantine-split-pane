@@ -1,5 +1,3 @@
-.claude/
-
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -152,3 +150,7 @@ docs/docgen.json
 
 CHANGELOG.md
 POST.md
+
+# Claude Code (local settings and memory are personal, settings.json is shared)
+.claude/settings.local.json
+.claude/memory/
