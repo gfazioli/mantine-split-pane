@@ -248,9 +248,9 @@ interface SplitResizerVariantColorsResolverInput {
 }
 
 interface SplitResizerVariantColorResolverResult {
-  color: string;
-  hover: string;
-  knob: string;
+  color?: string;
+  hover?: string;
+  knob?: string;
   hoverKnob?: string;
   border?: string;
 }
@@ -277,9 +277,9 @@ const variantColorResolver: SplitResizerVariantColorsResolver = ({
     : undefined;
 
   const colors = {
-    color: parsedColor ?? '',
-    hover: parsedHover ?? '',
-    knob: parsedKnob ?? '',
+    color: parsedColor,
+    hover: parsedHover,
+    knob: parsedKnob,
     hoverKnob: parsedHoverKnob,
   };
 

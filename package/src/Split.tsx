@@ -184,7 +184,7 @@ export const Split = factory<SplitFactory>((_props) => {
 
         elementsWithResizers.push(
           cloneElement(child as React.ReactElement<any>, {
-            key: child.key || `pane-${paneIndex}`,
+            key: child.key ?? `pane-${paneIndex}`,
             ref,
           })
         );
