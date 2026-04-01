@@ -1,4 +1,4 @@
-import React, { CSSProperties, useRef } from 'react';
+import React, { CSSProperties, useMemo, useRef } from 'react';
 import {
   BoxProps,
   createVarsResolver,
@@ -25,7 +25,7 @@ import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { useSplitResizerOrientation } from '../hooks/use-split-resizer-orientation';
 import { SplitPaneHandlers } from '../Pane/SplitPane';
 import { useSplitContext } from '../Split.context';
-import { calculateSnappedPaneSizes } from './snap';
+import { calculateSnappedPaneSizes, normalizeSnapPoints } from './snap';
 import type { ResponsiveValue } from '../types';
 import classes from './SplitResizer.module.css';
 
@@ -374,6 +374,10 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
   const resolvedSize = useResponsiveValue(size) ?? defaultProps.size;
   const resolvedSpacing = useResponsiveValue(spacing) ?? defaultProps.spacing;
   const resolvedKnobSize = useResponsiveValue(knobSize) ?? defaultProps.knobSize;
+  const normalizedSnap = useMemo(
+    () => normalizeSnapPoints({ snapPoints, snapTolerance }),
+    [snapPoints, snapTolerance]
+  );
 
   // Create resolved props for useStyles/varsResolver (needs scalar values)
   const resolvedProps = {
@@ -432,8 +436,8 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
       maxBeforeSize: maxBeforeWidth,
       minAfterSize: minAfterWidth,
       maxAfterSize: maxAfterWidth,
-      snapPoints,
-      snapTolerance,
+      snapPoints: normalizedSnap.snapPoints,
+      snapTolerance: normalizedSnap.snapTolerance,
     });
 
     function setVerticalSize() {
@@ -497,8 +501,8 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
       maxBeforeSize: maxBeforeHeight,
       minAfterSize: minAfterHeight,
       maxAfterSize: maxAfterHeight,
-      snapPoints,
-      snapTolerance,
+      snapPoints: normalizedSnap.snapPoints,
+      snapTolerance: normalizedSnap.snapTolerance,
     });
 
     function setHorizontalSize() {
