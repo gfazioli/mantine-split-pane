@@ -10,6 +10,8 @@ export default {
     inline: false,
     autoResizers: false,
     spacing: 'xs',
+    snapPoints: undefined,
+    snapTolerance: 10,
 
     orientation: 'vertical',
     variant: 'default',
@@ -43,6 +45,8 @@ export default {
     },
     withKnob: { control: { type: 'boolean' } },
     knobAlwaysOn: { control: { type: 'boolean' } },
+    snapPoints: { control: { type: 'object' } },
+    snapTolerance: { control: { type: 'number' } },
 
     size: {
       control: { type: 'inline-radio' },

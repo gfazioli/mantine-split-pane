@@ -265,6 +265,18 @@ In the example below, the first instance shows the `Split.Resizer` component inh
 
 <Demo data={demos.resizer} />
 
+### Snap points
+
+You can make a resizer snap to common pane sizes by setting `snapPoints` and `snapTolerance`. These props are available on both `Split` and `Split.Resizer`.
+
+- `Split` provides default snap behavior to all child resizers.
+- `Split.Resizer` can override those values for a specific divider.
+- When using `autoResizers`, the generated resizers inherit `snapPoints` and `snapTolerance` from `Split`.
+
+Snap points are always interpreted as the size in pixels of the pane before the resizer: the left pane in vertical mode and the top pane in horizontal mode.
+
+<Demo data={demos.snap} />
+
 ### onResizeStart, onResizing, and onResizeEnd events
 
 The `Split.Resizer` provides the same events `onResizeStart`, `onResizing`, and `onResizeEnd` that are [available](#onresizestart-onresizing-and-onresizeend-events-1) in the `Split.Pane`. However, pay attention to the difference in the parameter found in `onResizing` and `onResizeEnd`. In the case of the `Split.Resizer`, the parameter is an object with the properties `width` and `height` for both panes; the one on the left (or top) `beforePane` and the one on the right (or bottom) `afterPane`.
