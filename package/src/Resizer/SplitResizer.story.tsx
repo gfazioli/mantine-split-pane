@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex } from '@mantine/core';
+import { Split } from '../Split';
 import { SplitResizer, type SplitResizerProps } from './SplitResizer';
 
 export default {
@@ -109,36 +109,44 @@ export default {
 
 export function Usage(props: SplitResizerProps) {
   return (
-    <Flex w={100} h={100}>
+    <Split h={200}>
+      <Split.Pane>Pane 1</Split.Pane>
       <SplitResizer {...props} />
-    </Flex>
+      <Split.Pane>Pane 2</Split.Pane>
+    </Split>
   );
 }
 
 export function NoProps() {
   return (
-    <Flex w={100} h={100}>
+    <Split h={200}>
+      <Split.Pane>Pane 1</Split.Pane>
       <SplitResizer />
-    </Flex>
+      <Split.Pane>Pane 2</Split.Pane>
+    </Split>
   );
 }
 
 export function Gradient() {
   return (
-    <Flex w={100} h={100}>
+    <Split h={200}>
+      <Split.Pane>Pane 1</Split.Pane>
       <SplitResizer
         variant="gradient"
         gradient={{ from: 'blue', to: 'cyan', deg: 0 }}
         hoverGradient={{ from: 'red', to: 'transparent', deg: 0 }}
       />
-    </Flex>
+      <Split.Pane>Pane 2</Split.Pane>
+    </Split>
   );
 }
 
 export function ResponsiveOrientation() {
   return (
-    <Flex w={100} h={100}>
-      <SplitResizer orientation={{ base: 'horizontal', sm: 'vertical' }} />
-    </Flex>
+    <Split h={200} orientation={{ base: 'horizontal', sm: 'vertical' }}>
+      <Split.Pane>Pane 1</Split.Pane>
+      <SplitResizer />
+      <Split.Pane>Pane 2</Split.Pane>
+    </Split>
   );
 }

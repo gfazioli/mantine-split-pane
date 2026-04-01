@@ -455,11 +455,11 @@ export function ChangeWidth(p: SplitProps) {
    * @param {Object} params - The parameters object
    * @param {string|number} params.width - The width value from the resize event
    */
-  const handleResize = ({ width }) => {
+  const handleResize = ({ width }: { width: string | number }) => {
     // eslint-disable-next-line no-console
     console.log('!!!!!!', { width });
 
-    setInitialWidth(parseInt(width, 10));
+    setInitialWidth(typeof width === 'number' ? width : parseInt(width, 10));
   };
 
   return (
