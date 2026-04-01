@@ -20,8 +20,8 @@ export interface CalculateSnappedPaneSizesInput {
   maxBeforeSize?: number;
   minAfterSize?: number;
   maxAfterSize?: number;
-  snapPoints?: number[];
-  snapTolerance?: number;
+  snapPoints: number[];
+  snapTolerance: number;
 }
 
 export interface CalculateSnappedPaneSizesResult {
@@ -87,19 +87,14 @@ export function calculateSnappedPaneSizes({
     return { beforeSize, afterSize };
   }
 
-  const normalizedSnap = normalizeSnapPoints({ snapPoints, snapTolerance });
   let nextBeforeSize = clamp(beforeSize + delta, minAllowedBeforeSize, maxAllowedBeforeSize);
 
-  if (normalizedSnap.snapPoints.length > 0) {
-    const availableSnapPoints = normalizedSnap.snapPoints.filter(
+  if (snapPoints.length > 0) {
+    const availableSnapPoints = snapPoints.filter(
       (point) => point >= minAllowedBeforeSize && point <= maxAllowedBeforeSize
     );
 
-    nextBeforeSize = snapToNearestPoint(
-      nextBeforeSize,
-      availableSnapPoints,
-      normalizedSnap.snapTolerance
-    );
+    nextBeforeSize = snapToNearestPoint(nextBeforeSize, availableSnapPoints, snapTolerance);
   }
 
   return {

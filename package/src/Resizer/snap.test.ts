@@ -23,6 +23,11 @@ describe('split resizer snap helpers', () => {
   });
 
   it('keeps snapped sizes within adjacent pane constraints', () => {
+    const normalizedSnap = normalizeSnapPoints({
+      snapPoints: [200, 450, 500],
+      snapTolerance: 20,
+    });
+
     expect(
       calculateSnappedPaneSizes({
         beforeSize: 300,
@@ -32,8 +37,8 @@ describe('split resizer snap helpers', () => {
         maxBeforeSize: 450,
         minAfterSize: 600,
         maxAfterSize: 900,
-        snapPoints: [200, 450, 500],
-        snapTolerance: 20,
+        snapPoints: normalizedSnap.snapPoints,
+        snapTolerance: normalizedSnap.snapTolerance,
       })
     ).toEqual({
       beforeSize: 400,
@@ -42,6 +47,11 @@ describe('split resizer snap helpers', () => {
   });
 
   it('ignores snap points that would violate adjacent pane constraints', () => {
+    const normalizedSnap = normalizeSnapPoints({
+      snapPoints: [200, 450, 500],
+      snapTolerance: 10,
+    });
+
     expect(
       calculateSnappedPaneSizes({
         beforeSize: 300,
@@ -51,8 +61,8 @@ describe('split resizer snap helpers', () => {
         maxBeforeSize: 450,
         minAfterSize: 600,
         maxAfterSize: 900,
-        snapPoints: [200, 450, 500],
-        snapTolerance: 10,
+        snapPoints: normalizedSnap.snapPoints,
+        snapTolerance: normalizedSnap.snapTolerance,
       })
     ).toEqual({
       beforeSize: 400,
