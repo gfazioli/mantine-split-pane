@@ -1,4 +1,4 @@
-import { createOptionalContext } from '@mantine/core';
+import { createSafeContext } from '@mantine/core';
 import { SplitResizerContextProps, SplitResizerVariant } from './Resizer/SplitResizer';
 
 /**
@@ -16,4 +16,6 @@ interface SplitContext extends SplitResizerContextProps {
   containerSize?: { width: number; height: number };
 }
 
-export const [SplitContextProvider, useSplitContext] = createOptionalContext<SplitContext>();
+export const [SplitContextProvider, useSplitContext] = createSafeContext<SplitContext>(
+  'Split component was not found in tree'
+);

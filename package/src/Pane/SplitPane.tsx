@@ -119,8 +119,9 @@ const defaultProps: Partial<SplitPaneProps> = {
   grow: false,
 };
 
-export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
-  const props = useProps('Pane', defaultProps, _props);
+export const SplitPane = factory<SplitPaneFactory>((_props) => {
+  const { ref, ...restProps } = _props as typeof _props & { ref?: React.Ref<any> };
+  const props = useProps('Pane', defaultProps, restProps);
 
   const ctx = useSplitContext();
 
@@ -194,16 +195,18 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     },
   }));
 
-  const initialWidthRef = useRef<number | string>(null);
-  const initialHeightRef = useRef<number | string>(null);
+  const initialWidthRef = useRef<number | string | null>(null);
+  const initialHeightRef = useRef<number | string | null>(null);
 
   // Capture the initial sizes and apply them to the DOM on mount
   useEffect(() => {
-    initialWidthRef.current = getInitialVerticalSize();
-    initialHeightRef.current = getInitialHorizontalSize();
+    initialWidthRef.current = getInitialVerticalSize() ?? null;
+    initialHeightRef.current = getInitialHorizontalSize() ?? null;
 
-    localRef.current.style.width = withPx(getInitialVerticalSize());
-    localRef.current.style.height = withPx(getInitialHorizontalSize());
+    if (localRef.current) {
+      localRef.current.style.width = withPx(getInitialVerticalSize() ?? 'auto');
+      localRef.current.style.height = withPx(getInitialHorizontalSize() ?? 'auto');
+    }
   }, []);
 
   // Re-apply sizes when orientation or size-related props change
@@ -215,11 +218,13 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     const newWidth = getInitialVerticalSize();
     const newHeight = getInitialHorizontalSize();
 
-    initialWidthRef.current = newWidth;
-    initialHeightRef.current = newHeight;
+    initialWidthRef.current = newWidth ?? null;
+    initialHeightRef.current = newHeight ?? null;
 
-    localRef.current.style.width = withPx(newWidth);
-    localRef.current.style.height = withPx(newHeight);
+    if (localRef.current) {
+      localRef.current.style.width = withPx(newWidth ?? 'auto');
+      localRef.current.style.height = withPx(newHeight ?? 'auto');
+    }
   }, [ctx.orientation, initialWidth, initialHeight, minWidth, minHeight]);
 
   // Container resize tracking: recalculate percentage-based sizes
@@ -385,7 +390,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
    */
   function getInitialVerticalSize() {
     if (ctx.orientation === 'vertical') {
-      const currentWidth = localRef.current.getBoundingClientRect().width;
+      const currentWidth = localRef.current?.getBoundingClientRect().width ?? 0;
 
       if (!initialWidth && !minWidth) {
         return currentWidth;
@@ -396,11 +401,11 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
       }
 
       if (!initialWidth && minWidth) {
-        return getSizeInPixel(minWidth);
+        return getSizeInPixel(minWidth!);
       }
 
       if (initialWidth && minWidth) {
-        return Math.max(getSizeInPixel(initialWidth), getSizeInPixel(minWidth));
+        return Math.max(getSizeInPixel(initialWidth) ?? 0, getSizeInPixel(minWidth!) ?? 0);
       }
     }
     return 'auto';
@@ -413,7 +418,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
    */
   function getInitialHorizontalSize() {
     if (ctx.orientation === 'horizontal') {
-      const currentHeight = localRef.current.getBoundingClientRect().height;
+      const currentHeight = localRef.current?.getBoundingClientRect().height ?? 0;
 
       if (!initialHeight && !minHeight) {
         return currentHeight;
@@ -424,11 +429,11 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
       }
 
       if (!initialHeight && minHeight) {
-        return getSizeInPixel(minHeight);
+        return getSizeInPixel(minHeight!);
       }
 
       if (initialHeight && minHeight) {
-        return Math.max(getSizeInPixel(initialHeight), getSizeInPixel(minHeight));
+        return Math.max(getSizeInPixel(initialHeight) ?? 0, getSizeInPixel(minHeight!) ?? 0);
       }
     }
     return 'auto';
@@ -468,15 +473,15 @@ export const SplitPane = factory<SplitPaneFactory>((_props, ref) => {
     if (ctx.orientation === 'vertical') {
       // Recalculate from current percentage if applicable
       const newSize = getInitialVerticalSize();
-      initialWidthRef.current = newSize;
-      localRef.current.style.width = withPx(newSize);
+      initialWidthRef.current = newSize ?? null;
+      localRef.current.style.width = withPx(newSize ?? 'auto');
     }
 
     if (ctx.orientation === 'horizontal') {
       // Recalculate from current percentage if applicable
       const newSize = getInitialHorizontalSize();
-      initialHeightRef.current = newSize;
-      localRef.current.style.height = withPx(newSize);
+      initialHeightRef.current = newSize ?? null;
+      localRef.current.style.height = withPx(newSize ?? 'auto');
     }
 
     if (onResetInitialSize) {

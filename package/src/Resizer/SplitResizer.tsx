@@ -158,13 +158,13 @@ export interface SplitResizerProps
    * The before (left | up) componentRef
    * @access private
    * */
-  __beforeRef?: React.RefObject<HTMLDivElement & SplitPaneHandlers>;
+  __beforeRef?: React.RefObject<(HTMLDivElement & SplitPaneHandlers) | null>;
 
   /**
    * The after (right | down) componentRef
    * @access private
    * */
-  __afterRef?: React.RefObject<HTMLDivElement & SplitPaneHandlers>;
+  __afterRef?: React.RefObject<(HTMLDivElement & SplitPaneHandlers) | null>;
 }
 
 export type SplitResizerFactory = Factory<{
@@ -277,9 +277,9 @@ const variantColorResolver: SplitResizerVariantColorsResolver = ({
     : undefined;
 
   const colors = {
-    color: parsedColor,
-    hover: parsedHover,
-    knob: parsedKnob,
+    color: parsedColor ?? '',
+    hover: parsedHover ?? '',
+    knob: parsedKnob ?? '',
     hoverKnob: parsedHoverKnob,
   };
 
@@ -310,7 +310,7 @@ export const defaultProps: Partial<SplitResizerContextProps> = {
   cursorHorizontal: 'row-resize',
 };
 
-export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
+export const SplitResizer = factory<SplitResizerFactory>((_props) => {
   const ctx = useSplitContext();
   // Omit context-only fields that should not leak to DOM via ...rest
   const { containerSize: _containerSize, ...ctxResizerProps } = ctx || {};
@@ -356,7 +356,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     ...rest
   } = props;
 
-  const orientation = useSplitResizerOrientation(propOrientation);
+  const orientation = useSplitResizerOrientation(propOrientation ?? 'vertical');
 
   // Resolve responsive values to scalars for the current viewport,
   // falling back to default props if the responsive value is undefined
@@ -385,7 +385,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     varsResolver,
   });
 
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLButtonElement>(null);
 
   /**
    * Applies a horizontal (left/right) delta to the two adjacent panes,
@@ -395,17 +395,24 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
    * @param deltaX - The pixel offset to apply (positive = move right)
    */
   const processVerticalSize = (deltaX: number = 0) => {
-    const minBeforeWidth = beforeRef.current.getMinWidth();
-    const maxBeforeWidth = beforeRef.current.getMaxWidth();
+    if (!beforeRef?.current || !afterRef?.current) {
+      return;
+    }
 
-    const minAfterWidth = afterRef.current.getMinWidth();
-    const maxAfterWidth = afterRef.current.getMaxWidth();
+    const minBeforeWidth = beforeRef.current.getMinWidth?.();
+    const maxBeforeWidth = beforeRef.current.getMaxWidth?.();
 
-    const beforePane = beforeRef.current.splitPane;
-    const afterPane = afterRef.current.splitPane;
+    const minAfterWidth = afterRef.current.getMinWidth?.();
+    const maxAfterWidth = afterRef.current.getMaxWidth?.();
 
-    let beforeWidth = beforePane.getBoundingClientRect().width;
-    let afterWidth = afterPane.getBoundingClientRect().width;
+    const beforePane = beforeRef!.current!.splitPane;
+    const afterPane = afterRef!.current!.splitPane;
+    if (!beforePane || !afterPane) {
+      return;
+    }
+
+    let beforeWidth = beforePane!.getBoundingClientRect().width;
+    let afterWidth = afterPane!.getBoundingClientRect().width;
 
     const isBeforeWidthMaxExceeded = maxBeforeWidth && beforeWidth + deltaX > maxBeforeWidth;
     const isAfterWidthMaxExceeded = maxAfterWidth && afterWidth - deltaX > maxAfterWidth;
@@ -420,22 +427,22 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
 
       const beforePaneSizes = {
         width: beforeWidth,
-        height: beforePane.getBoundingClientRect().height,
+        height: beforePane!.getBoundingClientRect().height,
       };
       const afterPaneSizes = {
         width: afterWidth,
-        height: afterPane.getBoundingClientRect().height,
+        height: afterPane!.getBoundingClientRect().height,
       };
-      beforeRef.current.onResizing?.(beforePaneSizes);
-      afterRef.current.onResizing?.(afterPaneSizes);
+      beforeRef?.current?.onResizing?.(beforePaneSizes);
+      afterRef?.current?.onResizing?.(afterPaneSizes);
 
       onResizing?.({
         beforePane: beforePaneSizes,
         afterPane: afterPaneSizes,
       });
 
-      beforePane.style.width = beforeWidthString;
-      afterPane.style.width = afterWidthString;
+      beforePane!.style.width = beforeWidthString;
+      afterPane!.style.width = afterWidthString;
     }
 
     // Before
@@ -501,17 +508,24 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
    * @param deltaY - The pixel offset to apply (positive = move down)
    */
   const processHorizontalSize = (deltaY: number = 0) => {
-    const minBeforeHeight = beforeRef.current.getMinHeight();
-    const maxBeforeHeight = beforeRef.current.getMaxHeight();
+    if (!beforeRef?.current || !afterRef?.current) {
+      return;
+    }
 
-    const minAfterHeight = afterRef.current.getMinHeight();
-    const maxAfterHeight = afterRef.current.getMaxHeight();
+    const minBeforeHeight = beforeRef.current.getMinHeight?.();
+    const maxBeforeHeight = beforeRef.current.getMaxHeight?.();
 
-    const beforePane = beforeRef.current.splitPane;
-    const afterPane = afterRef.current.splitPane;
+    const minAfterHeight = afterRef.current.getMinHeight?.();
+    const maxAfterHeight = afterRef.current.getMaxHeight?.();
 
-    let beforeHeight = beforePane.getBoundingClientRect().height;
-    let afterHeight = afterPane.getBoundingClientRect().height;
+    const beforePane = beforeRef!.current!.splitPane;
+    const afterPane = afterRef!.current!.splitPane;
+    if (!beforePane || !afterPane) {
+      return;
+    }
+
+    let beforeHeight = beforePane!.getBoundingClientRect().height;
+    let afterHeight = afterPane!.getBoundingClientRect().height;
 
     const isBeforeHeightMaxExceeded = maxBeforeHeight && beforeHeight + deltaY > maxBeforeHeight;
     const isAfterHeightMaxExceeded = maxAfterHeight && afterHeight - deltaY > maxAfterHeight;
@@ -525,11 +539,11 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
       const afterHeightString = `${afterHeight}px`;
 
       const beforePaneSizes = {
-        width: beforePane.getBoundingClientRect().width,
+        width: beforePane!.getBoundingClientRect().width,
         height: beforeHeight,
       };
       const afterPaneSizes = {
-        width: afterPane.getBoundingClientRect().width,
+        width: afterPane!.getBoundingClientRect().width,
         height: afterHeight,
       };
 
@@ -538,11 +552,11 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
         afterPane: afterPaneSizes,
       });
 
-      beforeRef.current.onResizing?.(beforePaneSizes);
-      afterRef.current.onResizing?.(afterPaneSizes);
+      beforeRef?.current?.onResizing?.(beforePaneSizes);
+      afterRef?.current?.onResizing?.(afterPaneSizes);
 
-      beforePane.style.height = beforeHeightString;
-      afterPane.style.height = afterHeightString;
+      beforePane!.style.height = beforeHeightString;
+      afterPane!.style.height = afterHeightString;
     }
 
     // Before
@@ -626,10 +640,11 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     }
 
     onResizeStart?.();
-    beforeRef.current.onResizeStart?.();
-    afterRef.current.onResizeStart?.();
+    beforeRef?.current?.onResizeStart?.();
+    afterRef?.current?.onResizeStart?.();
 
-    document.body.style.cursor = orientation === 'vertical' ? cursorVertical : cursorHorizontal;
+    document.body.style.cursor =
+      (orientation === 'vertical' ? cursorVertical : cursorHorizontal) ?? '';
   };
 
   /**
@@ -640,19 +655,19 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
    * @param event - The native mousemove or touchmove event
    */
   const handleMove = (event: MouseEvent | TouchEvent) => {
-    if (!beforeRef.current || !afterRef.current) {
+    if (!beforeRef?.current || !afterRef?.current) {
       return;
     }
 
     event.preventDefault();
     event.stopPropagation();
 
-    const computedStyle = window.getComputedStyle(containerRef.current);
+    const computedStyle = window.getComputedStyle(containerRef.current!);
 
     if (orientation === 'vertical') {
       const size = parseFloat(computedStyle.getPropertyValue('width'));
       const clientX = 'clientX' in event ? event.clientX : event.touches[0].clientX;
-      const deltaX = clientX - containerRef.current.getBoundingClientRect().left - size / 2;
+      const deltaX = clientX - containerRef.current!.getBoundingClientRect().left - size / 2;
 
       return processVerticalSize(deltaX);
     }
@@ -660,7 +675,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     if (orientation === 'horizontal') {
       const size = parseFloat(computedStyle.getPropertyValue('height'));
       const clientY = 'clientY' in event ? event.clientY : event.touches[0].clientY;
-      const deltaY = clientY - containerRef.current.getBoundingClientRect().top - size / 2;
+      const deltaY = clientY - containerRef.current!.getBoundingClientRect().top - size / 2;
 
       return processHorizontalSize(deltaY);
     }
@@ -672,7 +687,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
    * and both adjacent panes with their final dimensions.
    */
   const handleMouseUp = () => {
-    if (!beforeRef.current || !afterRef.current) {
+    if (!beforeRef?.current || !afterRef?.current) {
       return;
     }
 
@@ -684,16 +699,16 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
 
     document.body.style.cursor = 'initial';
 
-    const beforePane = beforeRef.current.splitPane;
-    const afterPane = afterRef.current.splitPane;
+    const beforePane = beforeRef!.current!.splitPane;
+    const afterPane = afterRef!.current!.splitPane;
 
     const beforePaneSizes = {
-      width: beforePane.getBoundingClientRect().width,
-      height: beforePane.getBoundingClientRect().height,
+      width: beforePane!.getBoundingClientRect().width,
+      height: beforePane!.getBoundingClientRect().height,
     };
     const afterPaneSizes = {
-      width: afterPane.getBoundingClientRect().width,
-      height: afterPane.getBoundingClientRect().height,
+      width: afterPane!.getBoundingClientRect().width,
+      height: afterPane!.getBoundingClientRect().height,
     };
 
     onResizeEnd?.({
@@ -701,8 +716,8 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
       afterPane: afterPaneSizes,
     });
 
-    beforeRef.current.onResizeEnd?.(beforePaneSizes);
-    afterRef.current.onResizeEnd?.(afterPaneSizes);
+    beforeRef?.current?.onResizeEnd?.(beforePaneSizes);
+    afterRef?.current?.onResizeEnd?.(afterPaneSizes);
   };
 
   /**
@@ -711,7 +726,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
    * with their final dimensions.
    */
   const handleTouchEnd = () => {
-    if (!beforeRef.current || !afterRef.current) {
+    if (!beforeRef?.current || !afterRef?.current) {
       return;
     }
 
@@ -720,16 +735,16 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
 
     document.body.style.cursor = 'initial';
 
-    const beforePane = beforeRef.current.splitPane;
-    const afterPane = afterRef.current.splitPane;
+    const beforePane = beforeRef!.current!.splitPane;
+    const afterPane = afterRef!.current!.splitPane;
 
     const beforePaneSizes = {
-      width: beforePane.getBoundingClientRect().width,
-      height: beforePane.getBoundingClientRect().height,
+      width: beforePane!.getBoundingClientRect().width,
+      height: beforePane!.getBoundingClientRect().height,
     };
     const afterPaneSizes = {
-      width: afterPane.getBoundingClientRect().width,
-      height: afterPane.getBoundingClientRect().height,
+      width: afterPane!.getBoundingClientRect().width,
+      height: afterPane!.getBoundingClientRect().height,
     };
 
     onResizeEnd?.({
@@ -737,8 +752,8 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
       afterPane: afterPaneSizes,
     });
 
-    beforeRef.current.onResizeEnd?.(beforePaneSizes);
-    afterRef.current.onResizeEnd?.(afterPaneSizes);
+    beforeRef?.current?.onResizeEnd?.(beforePaneSizes);
+    afterRef?.current?.onResizeEnd?.(afterPaneSizes);
   };
 
   /**
@@ -758,7 +773,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     const arrowLeftRight = code === 'ArrowRight' || code === 'ArrowLeft';
     const arrowUpDown = code === 'ArrowUp' || code === 'ArrowDown';
 
-    const delta = event.shiftKey ? shiftStep : step;
+    const delta = (event.shiftKey ? shiftStep : step) ?? 8;
 
     if (orientation === 'vertical' && arrowLeftRight) {
       event.preventDefault();
@@ -781,7 +796,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     if (code === 'Escape') {
       event.preventDefault();
       event.stopPropagation();
-      containerRef.current.blur();
+      containerRef.current?.blur();
     }
   };
 
@@ -795,8 +810,8 @@ export const SplitResizer = factory<SplitResizerFactory>((_props, _) => {
     e.preventDefault();
     e.stopPropagation();
 
-    beforeRef.current.resetInitialSize(e);
-    afterRef.current.resetInitialSize(e);
+    beforeRef?.current?.resetInitialSize?.(e);
+    afterRef?.current?.resetInitialSize?.(e);
 
     onDoubleClick?.(e);
   };

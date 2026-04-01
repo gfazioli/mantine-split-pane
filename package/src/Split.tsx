@@ -9,16 +9,15 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import { useResizeObserver } from '@mantine/hooks';
+import { useMergedRef, useResizeObserver } from '@mantine/hooks';
 import { SplitDynamic } from './Dynamic';
 import { useResponsiveValue } from './hooks/use-responsive-value';
 import { useSplitResizerOrientation } from './hooks/use-split-resizer-orientation';
-import { SplitPane, type SplitPaneProps } from './Pane/SplitPane';
+import { SplitPane, type SplitPaneHandlers } from './Pane/SplitPane';
 import {
   defaultProps as splitPaneResizerDefaultProps,
   SplitResizer,
   type SplitResizerContextProps,
-  type SplitResizerProps,
   type SplitResizerVariant,
 } from './Resizer/SplitResizer';
 import { SplitContextProvider } from './Split.context';
@@ -81,8 +80,9 @@ const varsResolver = createVarsResolver<SplitFactory>((_, { inline }) => ({
   },
 }));
 
-export const Split = factory<SplitFactory>((_props, ref) => {
-  const props = useProps('Split', defaultProps, _props);
+export const Split = factory<SplitFactory>((_props) => {
+  const { ref, ...restProps } = _props as typeof _props & { ref?: React.Ref<HTMLDivElement> };
+  const props = useProps('Split', defaultProps, restProps);
   const {
     inline,
     autoResizers,
@@ -120,7 +120,7 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     ...others
   } = props;
 
-  const orientation = useSplitResizerOrientation(propOrientation);
+  const orientation = useSplitResizerOrientation(propOrientation ?? 'vertical');
 
   // Resolve responsive resizer props to scalars before passing to context,
   // falling back to SplitResizer default props if the responsive value is undefined
@@ -142,17 +142,7 @@ export const Split = factory<SplitFactory>((_props, ref) => {
   }, [containerRect.width, containerRect.height]);
 
   // Merge the external forwarded ref with the ResizeObserver ref
-  const mergedRef = React.useCallback(
-    (node: HTMLDivElement | null) => {
-      resizeObserverRef.current = node;
-      if (typeof ref === 'function') {
-        ref(node);
-      } else if (ref) {
-        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-      }
-    },
-    [ref, resizeObserverRef]
-  );
+  const mergedRef = useMergedRef(ref as React.Ref<HTMLDivElement>, resizeObserverRef);
 
   const getStyles = useStyles<SplitFactory>({
     name: 'Split',
@@ -167,12 +157,13 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     varsResolver,
   });
 
-  type ChildrenType = React.ReactElement<SplitPaneProps> | React.ReactElement<SplitResizerProps>;
-
   // Create refs based on children count using useMemo to avoid hook count mismatch
   const childrenCount = React.Children.count(children);
   const childRefs = useMemo(
-    () => Array.from({ length: childrenCount }, () => React.createRef<HTMLDivElement>()),
+    () =>
+      Array.from({ length: childrenCount }, () =>
+        React.createRef<HTMLDivElement & SplitPaneHandlers>()
+      ),
     [childrenCount]
   );
 
@@ -183,16 +174,16 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     const elementsWithResizers: React.ReactNode[] = [];
     let resizerIndex = 0;
     let paneIndex = 0;
-    const paneRefs: Array<React.RefObject<HTMLDivElement>> = [];
+    const paneRefs: Array<React.RefObject<(HTMLDivElement & SplitPaneHandlers) | null>> = [];
 
     // First pass: collect only panes and assign refs
-    React.Children.forEach(children, (child: ChildrenType, index) => {
+    React.Children.forEach(children as React.ReactNode[], (child, index) => {
       if (isValidElement(child) && child.type === SplitPane) {
         const ref = childRefs[index];
         paneRefs.push(ref);
 
         elementsWithResizers.push(
-          cloneElement(child as React.ReactElement<SplitPaneProps>, {
+          cloneElement(child as React.ReactElement<any>, {
             key: child.key || `pane-${paneIndex}`,
             ref,
           })
@@ -225,25 +216,25 @@ export const Split = factory<SplitFactory>((_props, ref) => {
     clonedChildren = finalElements;
   } else {
     // Normal mode: manual resizers
-    clonedChildren = React.Children.map(children, (child: ChildrenType, index) => {
+    clonedChildren = (React.Children.map(children as React.ReactNode[], (child, index) => {
       if (isValidElement(child)) {
         if (child.type === SplitResizer) {
           const beforeRef = childRefs[index - 1];
           const afterRef = childRefs[index + 1];
 
-          return cloneElement(child as React.ReactElement<SplitResizerProps>, {
+          return cloneElement(child as React.ReactElement<any>, {
             __beforeRef: beforeRef,
             __afterRef: afterRef,
           });
         } else if (child.type === SplitPane) {
-          return cloneElement(child as React.ReactElement<SplitPaneProps>, {
+          return cloneElement(child as React.ReactElement<any>, {
             ref: childRefs[index],
           });
         }
         return child;
       }
       return child;
-    });
+    }) ?? []) as React.ReactNode[];
   }
 
   return (
