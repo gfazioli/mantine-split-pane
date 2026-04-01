@@ -120,7 +120,7 @@ const defaultProps: Partial<SplitPaneProps> = {
 };
 
 export const SplitPane = factory<SplitPaneFactory>((_props) => {
-  const { ref, ...restProps } = _props as typeof _props & { ref?: React.Ref<any> };
+  const { ref, ...restProps } = _props as typeof _props & { ref?: React.Ref<unknown> };
   const props = useProps('Pane', defaultProps, restProps);
 
   const ctx = useSplitContext();
