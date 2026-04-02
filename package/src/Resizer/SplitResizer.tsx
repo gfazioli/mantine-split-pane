@@ -25,7 +25,7 @@ import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { useSplitResizerOrientation } from '../hooks/use-split-resizer-orientation';
 import { SplitPaneHandlers } from '../Pane/SplitPane';
 import { useSplitContext } from '../Split.context';
-import { calculateSnappedPaneSizes, normalizeSnapPoints } from './snap';
+import { calculateSnappedPaneSizes, DEFAULT_SNAP_TOLERANCE, normalizeSnapPoints } from './snap';
 import type { ResponsiveValue } from '../types';
 import classes from './SplitResizer.module.css';
 
@@ -314,7 +314,7 @@ export const defaultProps: Partial<SplitResizerContextProps> = {
   step: 8,
   shiftStep: 64,
   snapPoints: [],
-  snapTolerance: 10,
+  snapTolerance: DEFAULT_SNAP_TOLERANCE,
   cursorVertical: 'col-resize',
   cursorHorizontal: 'row-resize',
 };

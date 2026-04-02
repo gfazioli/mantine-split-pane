@@ -2,6 +2,8 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
+export const DEFAULT_SNAP_TOLERANCE = 10;
+
 export interface NormalizeSnapPointsInput {
   snapPoints?: number[];
   snapTolerance?: number;
@@ -33,7 +35,7 @@ export function normalizeSnapPoints({
   snapPoints,
   snapTolerance,
 }: NormalizeSnapPointsInput): NormalizeSnapPointsResult {
-  const normalizedTolerance = Math.max(0, snapTolerance ?? 0);
+  const normalizedTolerance = Math.max(0, snapTolerance ?? DEFAULT_SNAP_TOLERANCE);
   const normalizedPoints = Array.from(
     new Set((snapPoints ?? []).filter((point) => Number.isFinite(point)))
   ).sort((a, b) => a - b);
