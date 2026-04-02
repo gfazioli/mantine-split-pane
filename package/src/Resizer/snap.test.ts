@@ -1,4 +1,9 @@
-import { calculateSnappedPaneSizes, normalizeSnapPoints, snapToNearestPoint } from './snap';
+import {
+  calculateSnappedPaneSizes,
+  DEFAULT_SNAP_TOLERANCE,
+  normalizeSnapPoints,
+  snapToNearestPoint,
+} from './snap';
 
 describe('split resizer snap helpers', () => {
   it('normalizes snap points and tolerance', () => {
@@ -10,6 +15,17 @@ describe('split resizer snap helpers', () => {
     ).toEqual({
       snapPoints: [200, 400, 600],
       snapTolerance: 0,
+    });
+  });
+
+  it('defaults snap tolerance when it is undefined', () => {
+    expect(
+      normalizeSnapPoints({
+        snapPoints: [400, 200, 600],
+      })
+    ).toEqual({
+      snapPoints: [200, 400, 600],
+      snapTolerance: DEFAULT_SNAP_TOLERANCE,
     });
   });
 
