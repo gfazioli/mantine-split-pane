@@ -1,20 +1,25 @@
 {
   "name": "@gfazioli/mantine-split-pane",
   "version": "4.0.4",
-  "description": "A React component that manages split panes allows users to divide and resize content areas within a layout efficiently.",
+  "description": "A Mantine 9 React component for resizable split pane layouts with 7 resizer variants, context-based prop inheritance, responsive orientation, and dynamic pane generation.",
   "homepage": "https://gfazioli.github.io/mantine-split-pane/",
-  "packageManager": "yarn@4.0.1",
+  "packageManager": "yarn@4.13.0",
   "license": "MIT",
   "author": "Giovambattista Fazioli <giovambattista.fazioli@gmail.com>",
   "keywords": [
-    "extension",
     "mantine",
-    "pane",
+    "mantine-ui",
+    "mantine-v9",
     "react",
     "react-component",
-    "resizer",
+    "typescript",
+    "extension",
+    "component",
     "split",
-    "typescript"
+    "pane",
+    "resizer",
+    "split-pane",
+    "resizable"
   ],
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.mjs",
@@ -35,10 +40,10 @@
   },
   "repository": "https://github.com/gfazioli/mantine-split-pane.git",
   "peerDependencies": {
-    "@mantine/core": ">=7.0.0",
-    "@mantine/hooks": ">=7.0.0",
-    "react": "^18.x || ^19.x",
-    "react-dom": "^18.x || ^19.x"
+    "@mantine/core": ">=9.0.0",
+    "@mantine/hooks": ">=9.0.0",
+    "react": "^19.x",
+    "react-dom": "^19.x"
   },
   "bugs": "https://github.com/gfazioli/mantine-split-pane/issues"
 }
