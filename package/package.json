@@ -40,10 +40,10 @@
   },
   "repository": "https://github.com/gfazioli/mantine-split-pane.git",
   "peerDependencies": {
-    "@mantine/core": ">=9.0.0",
-    "@mantine/hooks": ">=9.0.0",
-    "react": "^19.x",
-    "react-dom": "^19.x"
+    "@mantine/core": ">=7.0.0",
+    "@mantine/hooks": ">=7.0.0",
+    "react": "^18.x || ^19.x",
+    "react-dom": "^18.x || ^19.x"
   },
   "bugs": "https://github.com/gfazioli/mantine-split-pane/issues"
 }
