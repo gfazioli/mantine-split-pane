@@ -23,7 +23,7 @@ It requires **Mantine 9.x** and **React 19**.
 
 [Mantine Split](https://gfazioli.github.io/mantine-split-pane/) extension for building flexible, resizable layouts composed of multiple panes. In v2, the architecture separates pane content (Split.Pane) from the resizing control (Split.Resizer), making the resizer a first-class, customizable element placed between panes. 
 
-Developers can define initial sizes in pixels or percentages, enforce min/max constraints, and use the grow property to let specific panes expand to fill available space. Orientation supports horizontal and vertical layouts, including responsive breakpoints, while the resizer can inherit global props from Split or be configured per instance, including a gradient variant with hover styles. 
+Developers can define initial sizes in pixels or percentages, enforce min/max constraints, and use the grow property to let specific panes expand to fill available space. Orientation supports horizontal and vertical layouts, including responsive breakpoints, while the resizer can inherit global props from Split or be configured per instance, including gradient styling and snap points for common pane sizes.
 
 The component exposes resize lifecycle events on both the pane and resizer—delivering current width/height for one or both adjacent panes—enabling persistence of layouts via localStorage and real‑time UI feedback. Accessibility is built in: the resizer is focusable and supports keyboard resizing with configurable step and shiftStep values. Overall, it offers a clear JSX structure and a robust API for multi‑pane, highly controllable split views in Mantine applications.
 
@@ -107,6 +107,41 @@ function Demo() {
   );
 }
 ```
+
+### Snap Points
+
+Use `snapPoints` and `snapTolerance` to snap a resizer to common pane sizes in pixels while dragging or using the keyboard:
+
+```tsx
+import { Split } from '@gfazioli/mantine-split-pane';
+import { Paper } from '@mantine/core';
+
+function Demo() {
+  return (
+    <Split autoResizers snapPoints={[200, 400, 600]} snapTolerance={20}>
+      <Split.Pane initialWidth={240}>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 1</h1>
+        </Paper>
+      </Split.Pane>
+
+      <Split.Pane initialWidth={320}>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 2</h1>
+        </Paper>
+      </Split.Pane>
+
+      <Split.Pane grow>
+        <Paper withBorder w="100%" mih="100%">
+          <h1>Pane 3</h1>
+        </Paper>
+      </Split.Pane>
+    </Split>
+  );
+}
+```
+
+`snapPoints` and `snapTolerance` are also available on `Split.Resizer` for per-divider overrides. With `autoResizers`, the generated resizers inherit these values from `Split`.
 
 ### Dynamic Panes
 

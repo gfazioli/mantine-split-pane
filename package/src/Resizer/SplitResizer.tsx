@@ -1,4 +1,4 @@
-import React, { CSSProperties, useRef } from 'react';
+import React, { CSSProperties, useMemo, useRef } from 'react';
 import {
   BoxProps,
   createVarsResolver,
@@ -25,6 +25,7 @@ import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { useSplitResizerOrientation } from '../hooks/use-split-resizer-orientation';
 import { SplitPaneHandlers } from '../Pane/SplitPane';
 import { useSplitContext } from '../Split.context';
+import { calculateSnappedPaneSizes, DEFAULT_SNAP_TOLERANCE, normalizeSnapPoints } from './snap';
 import type { ResponsiveValue } from '../types';
 import classes from './SplitResizer.module.css';
 
@@ -110,6 +111,12 @@ export interface SplitResizerContextProps {
 
   /** Keyboard step when shift is pressed, default is 64 */
   shiftStep?: number;
+
+  /** Snap pane size to the nearest listed pixel value during active resizing */
+  snapPoints?: number[];
+
+  /** Maximum distance in pixels from a snap point before snapping is applied */
+  snapTolerance?: number;
 
   /** The CSS cursor property for vertical orientation */
   cursorVertical?: CSSProperties['cursor'];
@@ -306,6 +313,8 @@ export const defaultProps: Partial<SplitResizerContextProps> = {
   spacing: 'xs',
   step: 8,
   shiftStep: 64,
+  snapPoints: [],
+  snapTolerance: DEFAULT_SNAP_TOLERANCE,
   cursorVertical: 'col-resize',
   cursorHorizontal: 'row-resize',
 };
@@ -331,6 +340,8 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
     spacing,
     step,
     shiftStep,
+    snapPoints,
+    snapTolerance,
     cursorVertical,
     cursorHorizontal,
     color,
@@ -363,6 +374,10 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
   const resolvedSize = useResponsiveValue(size) ?? defaultProps.size;
   const resolvedSpacing = useResponsiveValue(spacing) ?? defaultProps.spacing;
   const resolvedKnobSize = useResponsiveValue(knobSize) ?? defaultProps.knobSize;
+  const normalizedSnap = useMemo(
+    () => normalizeSnapPoints({ snapPoints, snapTolerance }),
+    [snapPoints, snapTolerance]
+  );
 
   // Create resolved props for useStyles/varsResolver (needs scalar values)
   const resolvedProps = {
@@ -411,26 +426,30 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
       return;
     }
 
-    let beforeWidth = beforePane!.getBoundingClientRect().width;
-    let afterWidth = afterPane!.getBoundingClientRect().width;
-
-    const isBeforeWidthMaxExceeded = maxBeforeWidth && beforeWidth + deltaX > maxBeforeWidth;
-    const isAfterWidthMaxExceeded = maxAfterWidth && afterWidth - deltaX > maxAfterWidth;
-    const isBeforeWidthMinExceeded = minBeforeWidth && beforeWidth + deltaX < minBeforeWidth;
-    const isAfterWidthMinExceeded = minAfterWidth && afterWidth - deltaX < minAfterWidth;
-    const isBeforeWidthNegative = beforeWidth + deltaX < 0;
-    const isAfterWidthNegative = afterWidth - deltaX < 0;
+    const beforeWidth = beforePane!.getBoundingClientRect().width;
+    const afterWidth = afterPane!.getBoundingClientRect().width;
+    const nextSizes = calculateSnappedPaneSizes({
+      beforeSize: beforeWidth,
+      afterSize: afterWidth,
+      delta: deltaX,
+      minBeforeSize: minBeforeWidth,
+      maxBeforeSize: maxBeforeWidth,
+      minAfterSize: minAfterWidth,
+      maxAfterSize: maxAfterWidth,
+      snapPoints: normalizedSnap.snapPoints,
+      snapTolerance: normalizedSnap.snapTolerance,
+    });
 
     function setVerticalSize() {
-      const beforeWidthString = `${beforeWidth}px`;
-      const afterWidthString = `${afterWidth}px`;
+      const beforeWidthString = `${nextSizes.beforeSize}px`;
+      const afterWidthString = `${nextSizes.afterSize}px`;
 
       const beforePaneSizes = {
-        width: beforeWidth,
+        width: nextSizes.beforeSize,
         height: beforePane!.getBoundingClientRect().height,
       };
       const afterPaneSizes = {
-        width: afterWidth,
+        width: nextSizes.afterSize,
         height: afterPane!.getBoundingClientRect().height,
       };
       beforeRef?.current?.onResizing?.(beforePaneSizes);
@@ -444,58 +463,6 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
       beforePane!.style.width = beforeWidthString;
       afterPane!.style.width = afterWidthString;
     }
-
-    // Before
-    if (!isAfterWidthMaxExceeded && isBeforeWidthMinExceeded) {
-      afterWidth += beforeWidth - minBeforeWidth;
-      beforeWidth = minBeforeWidth;
-      return setVerticalSize();
-    }
-
-    if (!isAfterWidthMaxExceeded && isBeforeWidthNegative) {
-      afterWidth += beforeWidth;
-      beforeWidth = 0;
-      return setVerticalSize();
-    }
-
-    if (!isAfterWidthMinExceeded && !isAfterWidthNegative && isBeforeWidthMaxExceeded) {
-      afterWidth -= maxBeforeWidth - beforeWidth;
-      beforeWidth = maxBeforeWidth;
-      return setVerticalSize();
-    }
-
-    // After
-    if (!isBeforeWidthMaxExceeded && isAfterWidthMinExceeded) {
-      beforeWidth += afterWidth - minAfterWidth;
-      afterWidth = minAfterWidth;
-      return setVerticalSize();
-    }
-
-    if (!isBeforeWidthMaxExceeded && isAfterWidthNegative) {
-      beforeWidth += afterWidth;
-      afterWidth = 0;
-      return setVerticalSize();
-    }
-
-    if (!isBeforeWidthMinExceeded && !isBeforeWidthNegative && isAfterWidthMaxExceeded) {
-      beforeWidth -= maxAfterWidth - afterWidth;
-      afterWidth = maxAfterWidth;
-      return setVerticalSize();
-    }
-
-    if (
-      isBeforeWidthNegative ||
-      isAfterWidthNegative ||
-      isBeforeWidthMaxExceeded ||
-      isAfterWidthMaxExceeded ||
-      isBeforeWidthMinExceeded ||
-      isAfterWidthMinExceeded
-    ) {
-      return;
-    }
-
-    beforeWidth += deltaX;
-    afterWidth -= deltaX;
 
     setVerticalSize();
   };
@@ -524,27 +491,31 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
       return;
     }
 
-    let beforeHeight = beforePane!.getBoundingClientRect().height;
-    let afterHeight = afterPane!.getBoundingClientRect().height;
-
-    const isBeforeHeightMaxExceeded = maxBeforeHeight && beforeHeight + deltaY > maxBeforeHeight;
-    const isAfterHeightMaxExceeded = maxAfterHeight && afterHeight - deltaY > maxAfterHeight;
-    const isBeforeHeightMinExceeded = minBeforeHeight && beforeHeight + deltaY < minBeforeHeight;
-    const isAfterHeightMinExceeded = minAfterHeight && afterHeight - deltaY < minAfterHeight;
-    const isBeforeHeightNegative = beforeHeight + deltaY < 0;
-    const isAfterHeightNegative = afterHeight - deltaY < 0;
+    const beforeHeight = beforePane!.getBoundingClientRect().height;
+    const afterHeight = afterPane!.getBoundingClientRect().height;
+    const nextSizes = calculateSnappedPaneSizes({
+      beforeSize: beforeHeight,
+      afterSize: afterHeight,
+      delta: deltaY,
+      minBeforeSize: minBeforeHeight,
+      maxBeforeSize: maxBeforeHeight,
+      minAfterSize: minAfterHeight,
+      maxAfterSize: maxAfterHeight,
+      snapPoints: normalizedSnap.snapPoints,
+      snapTolerance: normalizedSnap.snapTolerance,
+    });
 
     function setHorizontalSize() {
-      const beforeHeightString = `${beforeHeight}px`;
-      const afterHeightString = `${afterHeight}px`;
+      const beforeHeightString = `${nextSizes.beforeSize}px`;
+      const afterHeightString = `${nextSizes.afterSize}px`;
 
       const beforePaneSizes = {
         width: beforePane!.getBoundingClientRect().width,
-        height: beforeHeight,
+        height: nextSizes.beforeSize,
       };
       const afterPaneSizes = {
         width: afterPane!.getBoundingClientRect().width,
-        height: afterHeight,
+        height: nextSizes.afterSize,
       };
 
       onResizing?.({
@@ -558,57 +529,6 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
       beforePane!.style.height = beforeHeightString;
       afterPane!.style.height = afterHeightString;
     }
-
-    // Before
-    if (!isAfterHeightMaxExceeded && isBeforeHeightMinExceeded) {
-      afterHeight += beforeHeight - minBeforeHeight;
-      beforeHeight = minBeforeHeight;
-      return setHorizontalSize();
-    }
-
-    if (!isAfterHeightMaxExceeded && isBeforeHeightNegative) {
-      afterHeight += beforeHeight;
-      beforeHeight = 0;
-      return setHorizontalSize();
-    }
-
-    if (!isAfterHeightMinExceeded && !isAfterHeightNegative && isBeforeHeightMaxExceeded) {
-      afterHeight -= maxBeforeHeight - beforeHeight;
-      beforeHeight = maxBeforeHeight;
-      return setHorizontalSize();
-    }
-
-    // After
-    if (!isBeforeHeightMaxExceeded && isAfterHeightMinExceeded) {
-      beforeHeight += afterHeight - minAfterHeight;
-      afterHeight = minAfterHeight;
-      return setHorizontalSize();
-    }
-
-    if (!isBeforeHeightMaxExceeded && isAfterHeightNegative) {
-      beforeHeight += afterHeight;
-      afterHeight = 0;
-      return setHorizontalSize();
-    }
-
-    if (!isBeforeHeightMinExceeded && !isBeforeHeightNegative && isAfterHeightMaxExceeded) {
-      beforeHeight -= maxAfterHeight - afterHeight;
-      afterHeight = maxAfterHeight;
-      return setHorizontalSize();
-    }
-
-    if (
-      isBeforeHeightNegative ||
-      isAfterHeightNegative ||
-      isBeforeHeightMaxExceeded ||
-      isAfterHeightMaxExceeded ||
-      isBeforeHeightMinExceeded ||
-      isAfterHeightMinExceeded
-    ) {
-      return;
-    }
-    beforeHeight += deltaY;
-    afterHeight -= deltaY;
 
     setHorizontalSize();
   };
