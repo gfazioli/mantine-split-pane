@@ -36,8 +36,9 @@ export function normalizeSnapPoints({
   snapTolerance,
 }: NormalizeSnapPointsInput): NormalizeSnapPointsResult {
   const normalizedTolerance = Math.max(0, snapTolerance ?? DEFAULT_SNAP_TOLERANCE);
+  const points = Array.isArray(snapPoints) ? snapPoints : [];
   const normalizedPoints = Array.from(
-    new Set((snapPoints ?? []).filter((point) => Number.isFinite(point)))
+    new Set(points.filter((point) => Number.isFinite(point)))
   ).sort((a, b) => a - b);
 
   return {

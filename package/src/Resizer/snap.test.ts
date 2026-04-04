@@ -18,6 +18,18 @@ describe('split resizer snap helpers', () => {
     });
   });
 
+  it('handles non-array snapPoints gracefully', () => {
+    expect(
+      normalizeSnapPoints({
+        snapPoints: 0 as unknown as number[],
+        snapTolerance: 10,
+      })
+    ).toEqual({
+      snapPoints: [],
+      snapTolerance: 10,
+    });
+  });
+
   it('defaults snap tolerance when it is undefined', () => {
     expect(
       normalizeSnapPoints({
