@@ -1,6 +1,6 @@
 {
   "name": "@gfazioli/mantine-split-pane",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "A Mantine 9 React component for resizable split pane layouts with 7 resizer variants, context-based prop inheritance, responsive orientation, and dynamic pane generation.",
   "homepage": "https://gfazioli.github.io/mantine-split-pane/",
   "packageManager": "yarn@4.13.0",
