@@ -17,26 +17,36 @@
 
 ## Overview
 
+A Mantine 9 React component for resizable split pane layouts with 7 resizer variants, context-based prop inheritance, responsive orientation, and dynamic pane generation.
+
 This component is created on top of the [Mantine](https://mantine.dev/) library.
 It requires **Mantine 9.x** and **React 19**.
-
-
-[Mantine Split](https://gfazioli.github.io/mantine-split-pane/) extension for building flexible, resizable layouts composed of multiple panes. In v2, the architecture separates pane content (Split.Pane) from the resizing control (Split.Resizer), making the resizer a first-class, customizable element placed between panes. 
-
-Developers can define initial sizes in pixels or percentages, enforce min/max constraints, and use the grow property to let specific panes expand to fill available space. Orientation supports horizontal and vertical layouts, including responsive breakpoints, while the resizer can inherit global props from Split or be configured per instance, including gradient styling and snap points for common pane sizes.
-
-The component exposes resize lifecycle events on both the pane and resizer—delivering current width/height for one or both adjacent panes—enabling persistence of layouts via localStorage and real‑time UI feedback. Accessibility is built in: the resizer is focusable and supports keyboard resizing with configurable step and shiftStep values. Overall, it offers a clear JSX structure and a robust API for multi‑pane, highly controllable split views in Mantine applications.
-
 > [!note]
 >
 > → [Demo and Documentation](https://gfazioli.github.io/mantine-split-pane/) → [Youtube Video](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4) → [More Mantine Components](https://mantine-extensions.vercel.app/)
+
+## Features
+
+- Separate `Split.Pane` (content) and `Split.Resizer` (drag handle) architecture
+- 7 resizer variants: `default`, `filled`, `outline`, `transparent`, `gradient`, `dotted`, `dashed`
+- Initial sizes in pixels or percentages with min/max constraints
+- `grow` property to let specific panes expand to fill available space
+- Horizontal and vertical orientation, including responsive breakpoints
+- Context-based prop inheritance: resizer props set on `Split` cascade to all children
+- Per-resizer overrides for full control
+- Snap points for common pane sizes during drag and keyboard resizing
+- `autoResizers` mode to automatically insert resizers between panes
+- `Split.Dynamic` helper to generate panes from a configuration array
+- Resize lifecycle events (`onResizeStart`, `onResizing`, `onResizeEnd`) on both pane and resizer
+- Keyboard accessible: focusable resizer with configurable `step` and `shiftStep`
+- Container resize tracking with drag ratio preservation
 
 ## Installation
 
 ```sh
 npm install @gfazioli/mantine-split-pane
 ```
-or 
+or
 
 ```sh
 yarn add @gfazioli/mantine-split-pane
@@ -77,7 +87,7 @@ function Demo() {
 
 ### Auto Resizers
 
-Starting from version 2.6, you can use the `autoResizers` prop to automatically insert resizers between panes:
+Use the `autoResizers` prop to automatically insert resizers between panes:
 
 ```tsx
 import { Split } from '@gfazioli/mantine-split-pane';
@@ -195,14 +205,14 @@ Your support helps me:
 - Keep the project actively maintained with timely bug fixes and security updates	
 - Add new features, improve performance, and refine the developer experience	
 - Expand test coverage and documentation for smoother adoption	
-- Ensure long‑term sustainability without relying on ad hoc free time	
+- Ensure long-term sustainability without relying on ad hoc free time
 - Prioritize community requests and roadmap items that matter most
 
 Open source thrives when those who benefit can give back—even a small monthly contribution makes a real difference. Sponsorships help cover maintenance time, infrastructure, and the countless invisible tasks that keep a project healthy.
 
 Your help truly matters.
 
-💚 [Become a sponsor](https://github.com/sponsors/gfazioli?o=esc) today and help me keep this project reliable, up‑to‑date, and growing for everyone.
+💚 [Become a sponsor](https://github.com/sponsors/gfazioli?o=esc) today and help me keep this project reliable, up-to-date, and growing for everyone.
 
 ---
 https://github.com/user-attachments/assets/2e45af2b-60c7-4cb3-9b9a-6cf0e710af1c

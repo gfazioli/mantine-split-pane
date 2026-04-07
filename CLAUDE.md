@@ -13,7 +13,7 @@
 | `yarn docgen` | Generate component API docs (docgen.json) |
 | `yarn docs:build` | Build the Next.js docs site for production |
 | `yarn docs:deploy` | Build and deploy docs to GitHub Pages |
-| `yarn lint` | Run ESLint |
+| `yarn lint` | Run oxlint + stylelint |
 | `yarn format:write` | Format all files with oxfmt |
 | `yarn storybook` | Start Storybook dev server |
 | `yarn clean` | Remove build artifacts |
@@ -47,6 +47,8 @@ package/src/
 │   ├── SplitResizer.tsx         # Draggable/keyboard-navigable divider (7 variants)
 │   ├── SplitResizer.module.css
 │   ├── SplitResizer.story.tsx
+│   ├── snap.ts                  # Snap point helpers (normalize, snap, calculate)
+│   ├── snap.test.ts             # Snap helper unit tests
 │   └── index.ts
 ├── Dynamic/
 │   ├── SplitDynamic.tsx         # Helper function to generate Pane+Resizer from config

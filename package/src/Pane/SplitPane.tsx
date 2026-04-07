@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useRef } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import {
   Box,
   BoxProps,
@@ -119,6 +119,22 @@ const defaultProps: Partial<SplitPaneProps> = {
   grow: false,
 };
 
+function isPercentageValue(size?: number | string): boolean {
+  return typeof size === 'string' && size.includes('%');
+}
+
+function withPx(value: number | string) {
+  if (typeof value === 'number') {
+    return `${value}px`;
+  }
+
+  if (typeof value === 'string' && value.includes('px')) {
+    return value;
+  }
+
+  return value;
+}
+
 export const SplitPane = factory<SplitPaneFactory>((_props) => {
   const { ref, ...restProps } = _props as typeof _props & { ref?: React.Ref<unknown> };
   const props = useProps('Pane', defaultProps, restProps);
@@ -198,6 +214,79 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
   const initialWidthRef = useRef<number | string | null>(null);
   const initialHeightRef = useRef<number | string | null>(null);
 
+  const getSizeInPixel = useCallback(
+    (size?: number | string): number | undefined => {
+      if (size === undefined || size === null) {
+        return undefined;
+      }
+
+      // Handle percentage values (needs parent element measurement)
+      if (typeof size === 'string' && size.includes('%')) {
+        const value = parseFloat(size);
+        const parentEl = localRef.current?.parentElement;
+
+        if (!parentEl) {
+          return undefined;
+        }
+
+        const dimension = ctx.orientation === 'vertical' ? 'width' : 'height';
+        const parentSize = parentEl.getBoundingClientRect()[dimension];
+        return (parentSize * value) / 100;
+      }
+
+      // Delegate number, px, rem, em to Mantine's px() utility
+      const result = px(size);
+      return typeof result === 'number' && !Number.isNaN(result) ? result : undefined;
+    },
+    [ctx.orientation]
+  );
+
+  const getInitialVerticalSize = useCallback(() => {
+    if (ctx.orientation === 'vertical') {
+      const currentWidth = localRef.current?.getBoundingClientRect().width ?? 0;
+
+      if (!initialWidth && !minWidth) {
+        return currentWidth;
+      }
+
+      if (initialWidth && !minWidth) {
+        return getSizeInPixel(initialWidth);
+      }
+
+      if (!initialWidth && minWidth) {
+        return getSizeInPixel(minWidth!);
+      }
+
+      if (initialWidth && minWidth) {
+        return Math.max(getSizeInPixel(initialWidth) ?? 0, getSizeInPixel(minWidth!) ?? 0);
+      }
+    }
+    return 'auto';
+  }, [ctx.orientation, initialWidth, minWidth, getSizeInPixel]);
+
+  const getInitialHorizontalSize = useCallback(() => {
+    if (ctx.orientation === 'horizontal') {
+      const currentHeight = localRef.current?.getBoundingClientRect().height ?? 0;
+
+      if (!initialHeight && !minHeight) {
+        return currentHeight;
+      }
+
+      if (initialHeight && !minHeight) {
+        return getSizeInPixel(initialHeight);
+      }
+
+      if (!initialHeight && minHeight) {
+        return getSizeInPixel(minHeight!);
+      }
+
+      if (initialHeight && minHeight) {
+        return Math.max(getSizeInPixel(initialHeight) ?? 0, getSizeInPixel(minHeight!) ?? 0);
+      }
+    }
+    return 'auto';
+  }, [ctx.orientation, initialHeight, minHeight, getSizeInPixel]);
+
   // Capture the initial sizes and apply them to the DOM on mount
   useEffect(() => {
     initialWidthRef.current = getInitialVerticalSize() ?? null;
@@ -207,7 +296,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
       localRef.current.style.width = withPx(getInitialVerticalSize() ?? 'auto');
       localRef.current.style.height = withPx(getInitialHorizontalSize() ?? 'auto');
     }
-  }, []);
+  }, [getInitialVerticalSize, getInitialHorizontalSize]);
 
   // Re-apply sizes when orientation or size-related props change
   useEffect(() => {
@@ -225,7 +314,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
       localRef.current.style.width = withPx(newWidth ?? 'auto');
       localRef.current.style.height = withPx(newHeight ?? 'auto');
     }
-  }, [ctx.orientation, initialWidth, initialHeight, minWidth, minHeight]);
+  }, [getInitialVerticalSize, getInitialHorizontalSize]);
 
   // Container resize tracking: recalculate percentage-based sizes
   useEffect(() => {
@@ -323,121 +412,18 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
         }
       }
     }
-  }, [ctx.containerSize?.width, ctx.containerSize?.height]);
-
-  /**
-   * Returns true if the given size value is a percentage string (e.g. "50%").
-   */
-  function isPercentageValue(size?: number | string): boolean {
-    return typeof size === 'string' && size.includes('%');
-  }
-
-  /**
-   * Converts a size value (number, "px" string, "rem" string, "em" string, or "%" string) to pixels.
-   * Percentage values are resolved relative to the parent element's dimensions.
-   * Other units (number, px, rem, em) are delegated to Mantine's `px()` utility.
-   *
-   * @param size - A numeric value or a CSS size string (e.g. "200px", "2rem", "50%")
-   * @returns The size in pixels, or `undefined` if the input is not provided or not convertible
-   */
-  const getSizeInPixel = (size?: number | string): number | undefined => {
-    if (size === undefined || size === null) {
-      return undefined;
-    }
-
-    // Handle percentage values (needs parent element measurement)
-    if (typeof size === 'string' && size.includes('%')) {
-      const value = parseFloat(size);
-      const parentEl = localRef.current?.parentElement;
-
-      if (!parentEl) {
-        return undefined;
-      }
-
-      const dimension = ctx.orientation === 'vertical' ? 'width' : 'height';
-      const parentSize = parentEl.getBoundingClientRect()[dimension];
-      return (parentSize * value) / 100;
-    }
-
-    // Delegate number, px, rem, em to Mantine's px() utility
-    const result = px(size);
-    return typeof result === 'number' && !Number.isNaN(result) ? result : undefined;
-  };
-
-  /**
-   * Ensures a size value is expressed as a CSS-compatible string.
-   * Numbers are suffixed with "px"; strings already containing "px" are returned as-is.
-   *
-   * @param value - A numeric or string size value
-   * @returns A CSS-compatible size string (e.g. "200px", "auto")
-   */
-  function withPx(value: number | string) {
-    if (typeof value === 'number') {
-      return `${value}px`;
-    }
-
-    if (typeof value === 'string' && value.includes('px')) {
-      return value;
-    }
-
-    return value;
-  }
-
-  /**
-   * Computes the initial width for vertical orientation.
-   * Returns the resolved pixel size based on `initialWidth` and `minWidth` props,
-   * falling back to the current rendered width. Returns `'auto'` for horizontal orientation.
-   */
-  function getInitialVerticalSize() {
-    if (ctx.orientation === 'vertical') {
-      const currentWidth = localRef.current?.getBoundingClientRect().width ?? 0;
-
-      if (!initialWidth && !minWidth) {
-        return currentWidth;
-      }
-
-      if (initialWidth && !minWidth) {
-        return getSizeInPixel(initialWidth);
-      }
-
-      if (!initialWidth && minWidth) {
-        return getSizeInPixel(minWidth!);
-      }
-
-      if (initialWidth && minWidth) {
-        return Math.max(getSizeInPixel(initialWidth) ?? 0, getSizeInPixel(minWidth!) ?? 0);
-      }
-    }
-    return 'auto';
-  }
-
-  /**
-   * Computes the initial height for horizontal orientation.
-   * Returns the resolved pixel size based on `initialHeight` and `minHeight` props,
-   * falling back to the current rendered height. Returns `'auto'` for vertical orientation.
-   */
-  function getInitialHorizontalSize() {
-    if (ctx.orientation === 'horizontal') {
-      const currentHeight = localRef.current?.getBoundingClientRect().height ?? 0;
-
-      if (!initialHeight && !minHeight) {
-        return currentHeight;
-      }
-
-      if (initialHeight && !minHeight) {
-        return getSizeInPixel(initialHeight);
-      }
-
-      if (!initialHeight && minHeight) {
-        return getSizeInPixel(minHeight!);
-      }
-
-      if (initialHeight && minHeight) {
-        return Math.max(getSizeInPixel(initialHeight) ?? 0, getSizeInPixel(minHeight!) ?? 0);
-      }
-    }
-    return 'auto';
-  }
+  }, [
+    ctx.containerSize,
+    ctx.orientation,
+    grow,
+    initialWidth,
+    initialHeight,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+    getSizeInPixel,
+  ]);
 
   const getStyles = useStyles<SplitPaneFactory>({
     name: 'SplitPane',
