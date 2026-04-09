@@ -22,7 +22,6 @@ export const ecosystem = [
     title: 'Mantine Depth Select',
     href: 'https://gfazioli.github.io/mantine-depth-select',
     newWindow: true,
-    new: true,
   },
   {
     key: 'mantine-flip',
@@ -41,6 +40,13 @@ export const ecosystem = [
     title: 'Mantine Led',
     href: 'https://gfazioli.github.io/mantine-led',
     newWindow: true,
+  },
+  {
+    key: 'mantine-lens-select',
+    title: 'Mantine Lens Select',
+    href: 'https://gfazioli.github.io/mantine-lens-select',
+    newWindow: true,
+    new: true,
   },
   {
     key: 'mantine-list-view-table',
@@ -83,7 +89,6 @@ export const ecosystem = [
     title: 'Mantine QR Code',
     href: 'https://gfazioli.github.io/mantine-qr-code',
     newWindow: true,
-    new: true,
   },
   {
     key: 'mantine-reflection',
