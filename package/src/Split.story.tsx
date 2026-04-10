@@ -10,6 +10,8 @@ export default {
     inline: false,
     autoResizers: false,
     spacing: 'xs',
+    snapPoints: undefined,
+    snapTolerance: 10,
 
     orientation: 'vertical',
     variant: 'default',
@@ -43,6 +45,8 @@ export default {
     },
     withKnob: { control: { type: 'boolean' } },
     knobAlwaysOn: { control: { type: 'boolean' } },
+    snapPoints: { control: { type: 'object' } },
+    snapTolerance: { control: { type: 'number' } },
 
     size: {
       control: { type: 'inline-radio' },
@@ -1112,6 +1116,31 @@ export function AutoResizersWithCustomProps(p: SplitProps) {
           <Paper withBorder w="100%" h="100%">
             <h1>Info Panel</h1>
             <p>25% width pane</p>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </div>
+  );
+}
+
+export function SnapPoints(p: SplitProps) {
+  return (
+    <div style={{ padding: 40 }}>
+      <Split {...p} autoResizers snapPoints={[200, 400, 600]} snapTolerance={20} w="100%" h={400}>
+        <Split.Pane initialWidth={240}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 1</h1>
+            <p>Drag near 200, 400, or 600px to snap</p>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane initialWidth={320}>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 2</h1>
+          </Paper>
+        </Split.Pane>
+        <Split.Pane grow>
+          <Paper withBorder w="100%" h="100%">
+            <h1>Pane 3</h1>
           </Paper>
         </Split.Pane>
       </Split>

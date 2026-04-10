@@ -21,7 +21,6 @@ A Mantine 9 React component for resizable split pane layouts with 7 resizer vari
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
 It requires **Mantine 9.x** and **React 19**.
-
 > [!note]
 >
 > → [Demo and Documentation](https://gfazioli.github.io/mantine-split-pane/) → [Youtube Video](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4) → [More Mantine Components](https://mantine-extensions.vercel.app/)
@@ -206,7 +205,7 @@ Your support helps me:
 - Keep the project actively maintained with timely bug fixes and security updates	
 - Add new features, improve performance, and refine the developer experience	
 - Expand test coverage and documentation for smoother adoption	
-- Ensure long-term sustainability without relying on ad hoc free time	
+- Ensure long-term sustainability without relying on ad hoc free time
 - Prioritize community requests and roadmap items that matter most
 
 Open source thrives when those who benefit can give back—even a small monthly contribution makes a real difference. Sponsorships help cover maintenance time, infrastructure, and the countless invisible tasks that keep a project healthy.
