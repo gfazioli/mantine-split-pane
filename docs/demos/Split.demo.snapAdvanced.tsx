@@ -43,7 +43,7 @@ function Demo() {
         the right pane, not the left one.
       </Text>
 
-      <Split snapPoints={[200, 400]} snapFrom="after" snapTolerance={20}>
+      <Split autoResizers snapPoints={[200, 400]} snapFrom="after" snapTolerance={20}>
         <Split.Pane initialWidth={300}>
           <Pane title="Before" />
         </Split.Pane>
@@ -57,7 +57,7 @@ function Demo() {
         points kick in.
       </Text>
 
-      <Split snapPoints={{ base: [200, 400], md: [250, 500, 750] }} snapTolerance={20}>
+      <Split autoResizers snapPoints={{ base: [200, 400], md: [250, 500, 750] }} snapTolerance={20}>
         <Split.Pane initialWidth={300}>
           <Pane title="Before" />
         </Split.Pane>
@@ -94,13 +94,13 @@ function Demo() {
       </Split>
 
       {/* Snap relative to the "after" pane */}
-      <Split snapPoints={[200, 400]} snapFrom="after" snapTolerance={20}>
+      <Split autoResizers snapPoints={[200, 400]} snapFrom="after" snapTolerance={20}>
         <Split.Pane initialWidth={300}>Before</Split.Pane>
         <Split.Pane grow>After</Split.Pane>
       </Split>
 
       {/* Responsive snap sets */}
-      <Split snapPoints={{ base: [200, 400], md: [250, 500, 750] }} snapTolerance={20}>
+      <Split autoResizers snapPoints={{ base: [200, 400], md: [250, 500, 750] }} snapTolerance={20}>
         <Split.Pane initialWidth={300}>Before</Split.Pane>
         <Split.Pane grow>After</Split.Pane>
       </Split>
