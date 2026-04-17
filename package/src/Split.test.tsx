@@ -204,4 +204,70 @@ describe('Split', () => {
     expect(pane1.style.width).toBe('500px');
     expect(pane2.style.width).toBe('500px');
   });
+
+  it('resolves percentage snap points against the combined pane size', () => {
+    const { pane1, pane2, resizer } = setupVerticalSplit({
+      snapPoints: ['50%'],
+      snapTolerance: 10,
+      step: 95,
+    });
+
+    resizer.focus();
+    // total = 1000, 50% = 500. Starting at 300, step 95 brings us to 395; next press to 490 -> snap to 500.
+    fireEvent.keyDown(resizer, { key: 'ArrowRight', code: 'ArrowRight' });
+    fireEvent.keyDown(resizer, { key: 'ArrowRight', code: 'ArrowRight' });
+
+    expect(pane1.style.width).toBe('500px');
+    expect(pane2.style.width).toBe('500px');
+  });
+
+  it('snaps relative to the after pane when snapFrom="after"', () => {
+    const { pane1, pane2, resizer } = setupVerticalSplit({
+      // pane2 target size 400 -> pane1 must become 600
+      snapPoints: [400],
+      snapFrom: 'after',
+      snapTolerance: 15,
+      step: 295,
+    });
+
+    resizer.focus();
+    fireEvent.keyDown(resizer, { key: 'ArrowRight', code: 'ArrowRight' });
+
+    expect(pane1.style.width).toBe('600px');
+    expect(pane2.style.width).toBe('400px');
+  });
+
+  it('fires onSnap when entering and leaving a snap zone', () => {
+    const onSnap = jest.fn();
+    const { resizer } = setupVerticalSplit(
+      { snapPoints: [400], snapTolerance: 10, step: 95 },
+      { onSnap }
+    );
+
+    resizer.focus();
+    // 300 -> 395 (snap to 400)
+    fireEvent.keyDown(resizer, { key: 'ArrowRight', code: 'ArrowRight' });
+    // 400 -> 495 (out of snap)
+    fireEvent.keyDown(resizer, { key: 'ArrowRight', code: 'ArrowRight' });
+
+    expect(onSnap).toHaveBeenNthCalledWith(1, 400);
+    expect(onSnap).toHaveBeenNthCalledWith(2, null);
+  });
+
+  it('exposes data-snapping on the resizer while in a snap zone', () => {
+    const { resizer } = setupVerticalSplit({
+      snapPoints: [400],
+      snapTolerance: 10,
+      step: 95,
+    });
+
+    expect(resizer).not.toHaveAttribute('data-snapping');
+
+    resizer.focus();
+    fireEvent.keyDown(resizer, { key: 'ArrowRight', code: 'ArrowRight' });
+    expect(resizer).toHaveAttribute('data-snapping');
+
+    fireEvent.keyDown(resizer, { key: 'ArrowRight', code: 'ArrowRight' });
+    expect(resizer).not.toHaveAttribute('data-snapping');
+  });
 });

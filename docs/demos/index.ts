@@ -26,4 +26,5 @@ export { resizerEvents } from './Split.demo.resizerEvents';
 export { responsive } from './Split.demo.responsive';
 export { responsiveOrientation } from './Split.demo.responsiveOrientation';
 export { snap } from './Split.demo.snap';
+export { snapAdvanced } from './Split.demo.snapAdvanced';
 export { store } from './Split.demo.store';
