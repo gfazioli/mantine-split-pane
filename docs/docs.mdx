@@ -127,14 +127,24 @@ By default, snap points are interpreted as the size in pixels of the pane before
 `snapPoints` accepts **percentage strings** (e.g. `'50%'`, resolved against the combined size of the two adjacent panes) as well as **Mantine breakpoint maps** for responsive snap sets:
 
 ```tsx
-<Split snapPoints={['25%', '50%', '75%']} />
-<Split snapPoints={{ base: [200, 400], md: [300, 500, 700] }} />
+<Split autoResizers snapPoints={['25%', '50%', '75%']}>
+  <Split.Pane initialWidth={300}>Primary content</Split.Pane>
+  <Split.Pane>Secondary content</Split.Pane>
+</Split>
+
+<Split autoResizers snapPoints={{ base: [200, 400], md: [300, 500, 700] }}>
+  <Split.Pane initialWidth={300}>Primary content</Split.Pane>
+  <Split.Pane>Secondary content</Split.Pane>
+</Split>
 ```
 
 Set `snapFrom="after"` to interpret each value as the target size of the pane **after** the resizer (useful when you want a panel to collapse to a fixed width on the right or bottom edge):
 
 ```tsx
-<Split snapPoints={[200, 400]} snapFrom="after" />
+<Split autoResizers snapPoints={[200, 400]} snapFrom="after">
+  <Split.Pane initialWidth={300}>Primary content</Split.Pane>
+  <Split.Pane>Secondary content</Split.Pane>
+</Split>
 ```
 
 The `onSnap` callback on `Split.Resizer` is fired once when the resizer enters a snap zone (with the pixel value of the snap point, expressed in the `snapFrom` reference) and once when it leaves (with `null`). It is not fired on every pointer tick.
