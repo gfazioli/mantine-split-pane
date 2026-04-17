@@ -1,0 +1,161 @@
+## Upgrade guide
+
+This page collects the **breaking changes** and **migration steps** for each major version of `@gfazioli/mantine-split-pane`. If you are starting a new project, you can skip this page — everything here is about updating existing code from an older version.
+
+New features introduced in a release (that do not break anything) are **not** listed here. See the [GitHub Releases](https://github.com/gfazioli/mantine-split-pane/releases) page or the newsletter for the full changelog.
+
+## v3
+
+> **Note well**
+>
+> Version 3 introduces **responsive sizing** for pane and resizer props, enabling breakpoint-driven layouts that adapt to the viewport.
+> It also adds **container resize tracking**, where percentage-based pane sizes automatically recalculate when the parent container changes dimensions.
+> Some prop types have been widened to support responsive values, which may require TypeScript type updates in your code.
+>
+> ↓ Follow the instructions below to update your code ↓
+
+### Breaking changes in v3
+
+- **Pane size props now accept `ResponsiveValue<T>`** — All `Split.Pane` sizing props (`initialWidth`, `initialHeight`, `minWidth`, `minHeight`, `maxWidth`, `maxHeight`) have changed their accepted type from `number | string` to `ResponsiveValue<number | string>`. Plain scalar values still work, but TypeScript consumers that explicitly type these props as `number | string` will need to update their types.
+
+- **Resizer props widened to `ResponsiveValue<T>`** — The `size`, `knobSize`, and `spacing` props on both `Split` and `Split.Resizer` now also accept responsive breakpoint maps instead of only scalar values.
+
+- **Imperative handler return types widened** — `getMinWidth()`, `getMaxWidth()`, `getMinHeight()`, `getMaxHeight()` now return `number | undefined` instead of `number`. Similarly, `getInitialWidth()` and `getInitialHeight()` return `number | string | undefined`. Code that uses these handlers without checking for `undefined` may break.
+
+- **`spacing` removed from `SplitContext` interface** — The redundant `spacing` field was removed from the internal `SplitContext` (it is inherited from `SplitResizerContextProps`). This only affects consumers who directly reference `SplitContext` types or mock the context in tests.
+
+### Migration from v2 to v3
+
+#### Step 1: Update TypeScript types for pane size props
+
+If you have wrapper components or utilities that explicitly type pane size props, update them:
+
+```tsx
+// After (v3)
+import type { ResponsiveValue } from '@gfazioli/mantine-split-pane';
+
+// Before (v2)
+interface MySidebarProps {
+  width: number | string;
+}
+
+interface MySidebarProps {
+  width: ResponsiveValue<number | string>;
+}
+```
+
+Plain `number` and `string` values continue to work without changes — no JSX updates needed unless you use responsive breakpoint maps.
+
+#### Step 2: Handle `undefined` returns from imperative handlers
+
+```tsx
+// Before (v2)
+const min = paneRef.current.getMinWidth(); // number
+
+// After (v3)
+const min = paneRef.current.getMinWidth(); // number | undefined
+if (min !== undefined) {
+  console.log('Min width:', min);
+}
+```
+
+#### Step 3: Use `rem` and `em` units (new in v3)
+
+Starting from v3, all size props (`initialWidth`, `initialHeight`, `minWidth`, `maxWidth`, `minHeight`, `maxHeight`) now support `rem` and `em` units in addition to `px` and `%`:
+
+```tsx
+<Split.Pane initialWidth="20rem" minWidth="10em" />
+```
+
+#### Step 4: Use responsive values (new feature)
+
+You can now pass breakpoint maps to pane size props and resizer props:
+
+```tsx
+<Split
+  size={{ base: 'sm', lg: 'md' }}
+  spacing={{ base: 'xs', md: 'sm' }}
+>
+  <Split.Pane
+    initialWidth={{ base: '100%', md: '30%' }}
+    minWidth={{ base: 100, lg: 200 }}
+  >
+    <Sidebar />
+  </Split.Pane>
+
+  <Split.Resizer />
+
+  <Split.Pane grow>
+    <MainContent />
+  </Split.Pane>
+</Split>
+```
+
+## v2
+
+> **Note well**
+>
+> This version of the package is a complete rewrite of the previous version.
+> We have rewritten the component to address some limitations of the previous version, particularly with **multiple panes**.
+> We have made the `Split.Resizer` component visible and usable so that it can be customized and managed more easily.
+> The API has changed, and some props have been removed or modified.
+>
+> ↓ Follow the instructions below to update your code ↓
+
+### Breaking changes in v2
+
+- Added the new `Split.Resizer` component to manage the resizer between the panes. The `Split.Resizer` component is now a child of the `Split` component and is used to manage the resizing of the panes.
+- The `Split` component structure has changed. The `Split` component now needs the `Split.Pane` component as as well as the `Split.Resizer` component.
+- The `Split.Pane` component props have changed. We have moved the resizer props to the `Split.Resizer` component. The `Split.Pane` component now only accepts props related to the pane itself.
+- The `Split.Pane` `onDoubleClick` prop has been removed. You can now use the `onResetInitialSize` event to manage the double click event. The `onResetInitialSize` event is triggered when the user double clicks on the resizer to reset the initial size of the pane.
+- You can still use the `onDoubleClick` prop to manage the double click event in the `Split.Resizer` component.
+- The `step` and `shiftStep` props are now accessible both for the `Split` and `Split.Resizer` components. Those props are not accessible for the `Split.Pane` component.
+- In the `Split.Pane` component all props related to the resizer have been removed. Now you can use the `Split.Resizer` component to manage the resizer between the panes. Have a look at the [Props](/?t=props) section for more information.
+
+### JSX structure v1
+
+```tsx
+<Split>
+  <Split.Pane>
+    <h1>Pane 1</h1>
+  </Split.Pane>
+
+  <Split.Pane>
+    <h1>Pane 2</h1>
+  </Split.Pane>
+</Split>
+```
+
+### JSX structure v2
+
+```tsx
+<Split>
+  <Split.Pane>
+    <h1>Pane 1</h1>
+  </Split.Pane>
+
+  <Split.Resizer />
+
+  <Split.Pane>
+    <h1>Pane 2</h1>
+  </Split.Pane>
+</Split>
+```
+
+> **Good news!**
+>
+> Starting from version 2.6, you can now use the `autoResizers` prop to automatically insert `Split.Resizer` components between panes, restoring a JSX structure similar to v1 without manually adding resizers. Simply set `autoResizers={true}` on the `Split` component:
+>
+> ```tsx
+> <Split autoResizers>
+>   <Split.Pane>
+>     <h1>Pane 1</h1>
+>   </Split.Pane>
+>
+>   <Split.Pane>
+>     <h1>Pane 2</h1>
+>   </Split.Pane>
+> </Split>
+> ```
+>
+> See the [Auto Resizers](/?t=docs#auto-resizers) section for more details.

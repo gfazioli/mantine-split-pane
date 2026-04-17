@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { IconAdjustments, IconCode, IconFileText } from '@tabler/icons-react';
+import { IconAdjustments, IconArrowBarUp, IconCode, IconFileText } from '@tabler/icons-react';
 import { Container, Tabs } from '@mantine/core';
 import { PropsTablesList } from '../PropsTable';
 import { StylesApiTablesList } from '../StylesApiTable';
@@ -14,6 +14,12 @@ interface DocsTabsProps {
   componentsProps?: string[];
   componentsStyles?: string[];
   componentPrefix?: string;
+  /**
+   * Optional MDX content describing breaking changes and migration steps between major versions.
+   * When provided, renders a dedicated "Upgrade guide" tab next to Documentation / Props / Styles API.
+   * Omit this prop (or pass `undefined`) to hide the tab entirely.
+   */
+  migrations?: React.ReactNode;
 }
 
 export function DocsTabs({
@@ -23,11 +29,13 @@ export function DocsTabs({
   componentsStyles,
   stylesApiData,
   componentPrefix,
+  migrations,
 }: DocsTabsProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('docs');
   const hasProps = Array.isArray(componentsProps);
   const hasStyles = Array.isArray(componentsStyles);
+  const hasMigrations = !!migrations;
 
   useEffect(() => {
     setActiveTab(window.location.search.replace('?t=', '') || 'docs');
@@ -74,6 +82,14 @@ export function DocsTabs({
                 </div>
               </Tabs.Tab>
             )}
+            {hasMigrations && (
+              <Tabs.Tab value="migrations">
+                <div className={classes.tabInner}>
+                  <IconArrowBarUp size={20} stroke={1.5} className={classes.tabIcon} />
+                  Upgrade guide
+                </div>
+              </Tabs.Tab>
+            )}
           </Tabs.List>
         </Container>
       </div>
@@ -112,6 +128,20 @@ export function DocsTabs({
             )}
           </div>
         </Tabs.Panel>
+
+        {hasMigrations && (
+          <Tabs.Panel value="migrations">
+            <div className={classes.tabContent} data-main data-migrations>
+              <div className={classes.main} id="mdx">
+                {migrations}
+              </div>
+
+              <div className={classes.tableOfContents}>
+                <TableOfContents withTabs />
+              </div>
+            </div>
+          </Tabs.Panel>
+        )}
       </Container>
     </Tabs>
   );

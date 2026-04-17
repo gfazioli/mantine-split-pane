@@ -53,6 +53,14 @@
 .main {
   position: relative;
   width: 100%;
+  padding-top: 45px;
+}
+
+/* Match the spacing behavior of data-secondary panels (Props / Styles API):
+   when the first child is an MdxTitle, neutralize its default margin-top so only
+   the container's padding-top contributes to the gap under the tabs bar. */
+.main > [data-heading]:first-child + * {
+  margin-top: 0;
 }
 
 .tableOfContents {
@@ -82,6 +90,19 @@
     @mixin smaller-than $mantine-breakpoint-md {
       max-width: 100%;
     }
+  }
+
+  /* Migrations tab: content is text-only so it would otherwise shrink to its
+     min-content and leave a big gap before the TOC. Remove the artificial
+     max-width and let the main fill the available flex space — matches the
+     Documentation tab visual width when the latter has no wide demo widgets. */
+  &[data-main][data-migrations] {
+    max-width: 100%;
+  }
+
+  &[data-main][data-migrations] .main {
+    flex: 1;
+    min-width: 0;
   }
 
   &[data-secondary] {
