@@ -14,7 +14,8 @@ import type { ResponsiveValue } from '../types';
 export function useResponsiveValue<T>(value: ResponsiveValue<T> | undefined, defaultValue: T): T;
 export function useResponsiveValue<T>(value: ResponsiveValue<T> | undefined): T | undefined;
 export function useResponsiveValue<T>(value: ResponsiveValue<T> | undefined, defaultValue?: T) {
-  const isBreakpointMap = value !== null && value !== undefined && typeof value === 'object';
+  const isBreakpointMap =
+    value !== null && value !== undefined && typeof value === 'object' && !Array.isArray(value);
   const matched = useMatches(isBreakpointMap ? (value as Record<string, T>) : {});
 
   if (value === undefined || value === null) {

@@ -273,9 +273,41 @@ You can make a resizer snap to common pane sizes by setting `snapPoints` and `sn
 - `Split.Resizer` can override those values for a specific divider.
 - When using `autoResizers`, the generated resizers inherit `snapPoints` and `snapTolerance` from `Split`.
 
-Snap points are always interpreted as the size in pixels of the pane before the resizer: the left pane in vertical mode and the top pane in horizontal mode.
+By default, snap points are interpreted as the size in pixels of the pane before the resizer: the left pane in vertical mode and the top pane in horizontal mode.
 
 <Demo data={demos.snap} />
+
+#### Percentages, responsive sets, snap from "after", and onSnap callback
+
+`snapPoints` accepts **percentage strings** (e.g. `'50%'`, resolved against the combined size of the two adjacent panes) as well as **Mantine breakpoint maps** for responsive snap sets:
+
+```tsx
+<Split snapPoints={['25%', '50%', '75%']} />
+<Split snapPoints={{ base: [200, 400], md: [300, 500, 700] }} />
+```
+
+Set `snapFrom="after"` to interpret each value as the target size of the pane **after** the resizer (useful when you want a panel to collapse to a fixed width on the right or bottom edge):
+
+```tsx
+<Split snapPoints={[200, 400]} snapFrom="after" />
+```
+
+The `onSnap` callback on `Split.Resizer` is fired once when the resizer enters a snap zone (with the pixel value of the snap point, expressed in the `snapFrom` reference) and once when it leaves (with `null`). It is not fired on every pointer tick.
+
+```tsx
+<Split.Resizer
+  snapPoints={[200, 400, 600]}
+  onSnap={(point) => {
+    if (point !== null) {
+      console.log('Snapped to', point);
+    }
+  }}
+/>
+```
+
+While the resizer is inside a snap zone, the root element exposes a `data-snapping` attribute. You can target it in CSS to highlight the divider, show a marker, or play a subtle transition.
+
+<Demo data={demos.snapAdvanced} />
 
 ### onResizeStart, onResizing, and onResizeEnd events
 

@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo, useRef } from 'react';
+import React, { CSSProperties, useMemo, useRef, useState } from 'react';
 import {
   BoxProps,
   createVarsResolver,
@@ -25,7 +25,13 @@ import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { useSplitResizerOrientation } from '../hooks/use-split-resizer-orientation';
 import { SplitPaneHandlers } from '../Pane/SplitPane';
 import { useSplitContext } from '../Split.context';
-import { calculateSnappedPaneSizes, DEFAULT_SNAP_TOLERANCE, normalizeSnapPoints } from './snap';
+import {
+  calculateSnappedPaneSizes,
+  DEFAULT_SNAP_TOLERANCE,
+  normalizeSnapPoints,
+  type SnapPointValue,
+  type SnapReference,
+} from './snap';
 import type { ResponsiveValue } from '../types';
 import classes from './SplitResizer.module.css';
 
@@ -112,11 +118,22 @@ export interface SplitResizerContextProps {
   /** Keyboard step when shift is pressed, default is 64 */
   shiftStep?: number;
 
-  /** Snap pane size to the nearest listed pixel value during active resizing */
-  snapPoints?: number[];
+  /**
+   * Snap pane size to the nearest listed value during active resizing.
+   * Accepts numbers (pixels) and percentage strings (e.g. `'50%'`, relative to the combined size
+   * of the two adjacent panes). Supports a Mantine breakpoint map for responsive snap sets.
+   */
+  snapPoints?: ResponsiveValue<SnapPointValue[]>;
 
-  /** Maximum distance in pixels from a snap point before snapping is applied */
+  /** Maximum distance in pixels from a snap point before snapping is applied. Default `10`. */
   snapTolerance?: number;
+
+  /**
+   * Reference pane used to interpret `snapPoints`.
+   * `'before'` (default): each value is the pixel size of the pane that precedes the resizer.
+   * `'after'`: each value is the pixel size of the pane that follows the resizer.
+   */
+  snapFrom?: SnapReference;
 
   /** The CSS cursor property for vertical orientation */
   cursorVertical?: CSSProperties['cursor'];
@@ -157,6 +174,14 @@ export interface SplitResizerBaseProps extends SplitResizerContextProps {
 
   /** Event called when a resize operation ends (mouse up / touch end) */
   onResizeEnd?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
+
+  /**
+   * Event called when the active snap point changes during resizing.
+   * Receives the resolved pixel value of the current snap point (expressed in the
+   * `snapFrom` reference), or `null` when the resizer leaves any snap zone.
+   * Fired once on enter and once on exit, not on every pointer tick.
+   */
+  onSnap?: (point: number | null) => void;
 }
 
 export interface SplitResizerProps
@@ -315,6 +340,7 @@ export const defaultProps: Partial<SplitResizerContextProps> = {
   shiftStep: 64,
   snapPoints: [],
   snapTolerance: DEFAULT_SNAP_TOLERANCE,
+  snapFrom: 'before',
   cursorVertical: 'col-resize',
   cursorHorizontal: 'row-resize',
 };
@@ -342,6 +368,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
     shiftStep,
     snapPoints,
     snapTolerance,
+    snapFrom,
     cursorVertical,
     cursorHorizontal,
     color,
@@ -353,6 +380,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
     onResizeStart,
     onResizing,
     onResizeEnd,
+    onSnap,
     onDoubleClick,
     __beforeRef: beforeRef,
     __afterRef: afterRef,
@@ -374,10 +402,26 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
   const resolvedSize = useResponsiveValue(size) ?? defaultProps.size;
   const resolvedSpacing = useResponsiveValue(spacing) ?? defaultProps.spacing;
   const resolvedKnobSize = useResponsiveValue(knobSize) ?? defaultProps.knobSize;
+  const resolvedSnapPoints = useResponsiveValue<SnapPointValue[]>(snapPoints, []);
   const normalizedSnap = useMemo(
-    () => normalizeSnapPoints({ snapPoints, snapTolerance }),
-    [snapPoints, snapTolerance]
+    () => normalizeSnapPoints({ snapPoints: resolvedSnapPoints, snapTolerance }),
+    [resolvedSnapPoints, snapTolerance]
   );
+  const lastSnappedPointRef = useRef<number | null>(null);
+  const isSnappingRef = useRef(false);
+  const [isSnapping, setIsSnapping] = useState(false);
+
+  const reportSnap = (snappedPoint: number | null) => {
+    if (snappedPoint !== lastSnappedPointRef.current) {
+      lastSnappedPointRef.current = snappedPoint;
+      onSnap?.(snappedPoint);
+    }
+    const nextSnapping = snappedPoint !== null;
+    if (nextSnapping !== isSnappingRef.current) {
+      isSnappingRef.current = nextSnapping;
+      setIsSnapping(nextSnapping);
+    }
+  };
 
   // Create resolved props for useStyles/varsResolver (needs scalar values)
   const resolvedProps = {
@@ -438,7 +482,10 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
       maxAfterSize: maxAfterWidth,
       snapPoints: normalizedSnap.snapPoints,
       snapTolerance: normalizedSnap.snapTolerance,
+      snapFrom,
     });
+
+    reportSnap(nextSizes.snappedPoint);
 
     function setVerticalSize() {
       const beforeWidthString = `${nextSizes.beforeSize}px`;
@@ -503,7 +550,10 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
       maxAfterSize: maxAfterHeight,
       snapPoints: normalizedSnap.snapPoints,
       snapTolerance: normalizedSnap.snapTolerance,
+      snapFrom,
     });
+
+    reportSnap(nextSizes.snappedPoint);
 
     function setHorizontalSize() {
       const beforeHeightString = `${nextSizes.beforeSize}px`;
@@ -739,7 +789,7 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
   return (
     <UnstyledButton
       ref={containerRef}
-      mod={{ orientation }}
+      mod={{ orientation, snapping: isSnapping }}
       onMouseDown={handleStart}
       onKeyDown={handleKeyUp}
       onTouchStart={handleStart}
