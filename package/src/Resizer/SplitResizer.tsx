@@ -180,7 +180,11 @@ export interface SplitResizerBaseProps extends SplitResizerContextProps {
   /** Event called continuously while panes are being resized (mouse move / touch move) */
   onResizing?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
 
-  /** Event called when a resize operation ends (mouse up / touch end) */
+  /**
+   * Event called when a resize operation ends. Fires after mouse up,
+   * touch end, and also after a double-click reset (with the post-reset
+   * pane sizes).
+   */
   onResizeEnd?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
 
   /**
@@ -779,8 +783,15 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
   };
 
   /**
-   * Resets both adjacent panes to their initial sizes and fires the
-   * `onDoubleClick` callback. Triggered by a double-click on the resizer.
+   * Resets both adjacent panes to their initial sizes, fires the
+   * `onDoubleClick` callback, and then emits `onResizeEnd` on the
+   * resizer and on each adjacent pane with the post-reset dimensions.
+   * Triggered by a double-click on the resizer.
+   *
+   * The `onResizeEnd` emission is deferred to the next animation frame:
+   * `resetInitialSize` applies the new dimensions via state, so the
+   * DOM has not yet re-rendered when this handler returns — measuring
+   * synchronously would report the *pre-reset* sizes.
    *
    * @param e - The originating double-click mouse event
    */
@@ -792,6 +803,31 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
     afterRef?.current?.resetInitialSize?.(e);
 
     onDoubleClick?.(e);
+
+    requestAnimationFrame(() => {
+      const beforePane = beforeRef?.current?.splitPane;
+      const afterPane = afterRef?.current?.splitPane;
+      if (!beforePane || !afterPane) {
+        return;
+      }
+
+      const beforePaneSizes = {
+        width: beforePane.getBoundingClientRect().width,
+        height: beforePane.getBoundingClientRect().height,
+      };
+      const afterPaneSizes = {
+        width: afterPane.getBoundingClientRect().width,
+        height: afterPane.getBoundingClientRect().height,
+      };
+
+      onResizeEnd?.({
+        beforePane: beforePaneSizes,
+        afterPane: afterPaneSizes,
+      });
+
+      beforeRef?.current?.onResizeEnd?.(beforePaneSizes);
+      afterRef?.current?.onResizeEnd?.(afterPaneSizes);
+    });
   };
 
   return (

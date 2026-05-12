@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@mantine-tests/core';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Split } from './Split';
 
 type TestSplitProps = Omit<React.ComponentProps<typeof Split>, 'children'>;
@@ -127,6 +127,32 @@ describe('Split', () => {
       </Split>
     );
     expect(container).toBeTruthy();
+  });
+
+  it('fires onResizeEnd after a double-click reset with the post-reset pane sizes', async () => {
+    const onResizeEnd = jest.fn();
+    const { pane1, pane2, resizer } = setupVerticalSplit({}, { onResizeEnd });
+
+    // Drag the resizer to change pane widths away from their initial values
+    fireEvent.mouseDown(resizer);
+    fireEvent.mouseMove(document, { clientX: 500 });
+    fireEvent.mouseUp(document);
+
+    onResizeEnd.mockClear();
+
+    // Double-click triggers `resetInitialSize` on both panes; the handler
+    // measures sizes on the next animation frame and emits `onResizeEnd`.
+    fireEvent.doubleClick(resizer);
+
+    await waitFor(() => {
+      expect(onResizeEnd).toHaveBeenCalledTimes(1);
+    });
+
+    const arg = onResizeEnd.mock.calls[0][0];
+    expect(arg.beforePane.width).toBe(300);
+    expect(arg.afterPane.width).toBe(700);
+    expect(pane1.style.width).toBe('300px');
+    expect(pane2.style.width).toBe('700px');
   });
 
   it('renders custom children passed to Split.Resizer', () => {
