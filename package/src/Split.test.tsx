@@ -129,6 +129,20 @@ describe('Split', () => {
     expect(container).toBeTruthy();
   });
 
+  it('renders custom children passed to Split.Resizer', () => {
+    render(
+      <Split>
+        <Split.Pane>Pane 1</Split.Pane>
+        <Split.Resizer>
+          <span data-testid="resizer-child">grip</span>
+        </Split.Resizer>
+        <Split.Pane>Pane 2</Split.Pane>
+      </Split>
+    );
+
+    expect(screen.getByTestId('resizer-child')).toBeInTheDocument();
+  });
+
   it('snaps vertical drag movements to configured points', () => {
     const { pane1, pane2, resizer } = setupVerticalSplit(
       { snapPoints: [200, 400, 600], snapTolerance: 10 },

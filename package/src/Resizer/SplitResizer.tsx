@@ -163,6 +163,14 @@ export type SPLIT_PANE_RESIZE_SIZES = {
 };
 
 export interface SplitResizerBaseProps extends SplitResizerContextProps {
+  /**
+   * Custom content rendered inside the resizer button. Useful for adding
+   * an icon or a label next to the default knob. Already supported at
+   * runtime via the underlying `UnstyledButton`; this prop just makes it
+   * visible to TypeScript.
+   */
+  children?: React.ReactNode;
+
   /** Event called when resizer is double-clicked */
   onDoubleClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 
