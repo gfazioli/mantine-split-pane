@@ -129,6 +129,37 @@ describe('Split', () => {
     expect(container).toBeTruthy();
   });
 
+  it('fires onResizing and onResizeEnd after a double-click reset with the post-reset pane sizes', () => {
+    const onResizing = jest.fn();
+    const onResizeEnd = jest.fn();
+    const { pane1, pane2, resizer } = setupVerticalSplit({}, { onResizing, onResizeEnd });
+
+    // Drag the resizer to move away from the initial pane widths
+    fireEvent.mouseDown(resizer);
+    fireEvent.mouseMove(document, { clientX: 500 });
+    fireEvent.mouseUp(document);
+
+    onResizing.mockClear();
+    onResizeEnd.mockClear();
+
+    fireEvent.doubleClick(resizer);
+
+    expect(pane1.style.width).toBe('300px');
+    expect(pane2.style.width).toBe('700px');
+
+    expect(onResizing).toHaveBeenCalledTimes(1);
+    expect(onResizing.mock.calls[0][0]).toMatchObject({
+      beforePane: { width: 300 },
+      afterPane: { width: 700 },
+    });
+
+    expect(onResizeEnd).toHaveBeenCalledTimes(1);
+    expect(onResizeEnd.mock.calls[0][0]).toMatchObject({
+      beforePane: { width: 300 },
+      afterPane: { width: 700 },
+    });
+  });
+
   it('renders custom children passed to Split.Resizer', () => {
     render(
       <Split>

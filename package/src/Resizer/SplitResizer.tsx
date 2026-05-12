@@ -177,10 +177,17 @@ export interface SplitResizerBaseProps extends SplitResizerContextProps {
   /** Event called when a resize operation begins (mouse down / touch start) */
   onResizeStart?: () => void;
 
-  /** Event called continuously while panes are being resized (mouse move / touch move) */
+  /**
+   * Event called continuously while panes are being resized (mouse move / touch move).
+   * Also fires once on a double-click reset with the post-reset pane sizes.
+   */
   onResizing?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
 
-  /** Event called when a resize operation ends (mouse up / touch end) */
+  /**
+   * Event called when a resize operation ends. Fires after mouse up,
+   * touch end, and also after a double-click reset with the post-reset
+   * pane sizes.
+   */
   onResizeEnd?: (sizes: SPLIT_PANE_RESIZE_SIZES) => void;
 
   /**
