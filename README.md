@@ -38,7 +38,8 @@ It requires **Mantine 9.x** and **React 19**.
 - Snap points for common pane sizes during drag and keyboard resizing
 - `autoResizers` mode to automatically insert resizers between panes
 - `Split.Dynamic` helper to generate panes from a configuration array
-- Resize lifecycle events (`onResizeStart`, `onResizing`, `onResizeEnd`) on both pane and resizer
+- Resize lifecycle events (`onResizeStart`, `onResizing`, `onResizeEnd`) on both pane and resizer — fired on drag, keyboard resize, and double-click reset
+- Custom content inside `Split.Resizer` for drag-affordance icons, labels, or fully bespoke handles
 - Keyboard accessible: focusable resizer with configurable `step` and `shiftStep`
 - Container resize tracking with drag ratio preservation
 

@@ -168,6 +168,8 @@ While the resizer is inside a snap zone, the root element exposes a `data-snappi
 
 The `Split.Resizer` provides the same events `onResizeStart`, `onResizing`, and `onResizeEnd` that are [available](#onresizestart-onresizing-and-onresizeend-events-1) in the `Split.Pane`. However, pay attention to the difference in the parameter found in `onResizing` and `onResizeEnd`. In the case of the `Split.Resizer`, the parameter is an object with the properties `width` and `height` for both panes; the one on the left (or top) `beforePane` and the one on the right (or bottom) `afterPane`.
 
+> Since `v4.1.2`, `onResizing` and `onResizeEnd` also fire once after a **double-click reset** with the post-reset sizes, so consumers tracking pane dimensions don't need a separate `onDoubleClick` handler to react to the reset.
+
 ```tsx
 export type SPLIT_PANE_RESIZE_SIZES = {
   beforePane: {
@@ -202,6 +204,26 @@ export interface SplitResizerProps {
 ```
 
 <Demo data={demos.resizerEvents} />
+
+### Custom Resizer Content
+
+Starting from `v4.1.1`, `Split.Resizer` accepts arbitrary `children`. The resizer renders an `UnstyledButton` under the hood, so anything you pass as children is rendered inside it — useful for adding a drag-affordance icon, a label, or a custom visual handle next to (or in place of) the default knob.
+
+```tsx
+import { Split } from '@gfazioli/mantine-split-pane';
+import { Center } from '@mantine/core';
+import { IconGripVertical } from '@tabler/icons-react';
+
+<Split.Resizer>
+  <Center h="100%">
+    <IconGripVertical size={14} stroke={1.5} />
+  </Center>
+</Split.Resizer>;
+```
+
+> If you want your custom content to take the place of the default knob entirely, pair it with `withKnob={false}` (or `knobAlwaysOn={false}`) on the parent `Split` or on the individual `Split.Resizer`.
+
+<Demo data={demos.resizerContent} />
 
 ## Split.Pane component
 
@@ -253,6 +275,8 @@ Of course, the grow feature can be use also when the orientation is vertical. In
 
 The `Split.Pane` provides the same events `onResizeStart`, `onResizing`, and `onResizeEnd` that are [available](#onresizestart-onresizing-and-onresizeend-events) in the `Split.Resizer`. However, pay attention to the difference in the parameter found in `onResizing` and `onResizeEnd`. In the case of the `Split.Pane`, the parameter is an object with the properties `width` and `height` of the selected pane.
 
+> Since `v4.1.2`, `onResizing` and `onResizeEnd` also fire once after a **double-click reset** on the adjacent resizer, with the post-reset pane size. The pane's internal drag state is intentionally **not** updated by this emission, so the reset still persists across subsequent container resizes.
+
 ```tsx
 export type SPLIT_PANE_SIZE = {
   width: number;
@@ -290,7 +314,9 @@ You can add as many panes as you want, and you can also set the `minWidth` and `
 
 ## Reset with Double Click
 
-You can reset the size of the panes by double-clicking on the separator.
+You can reset the size of the panes by double-clicking on the separator. The two adjacent panes snap back to their `initialWidth` / `initialHeight` values, and the pane's internal "has been dragged" tracking is cleared so the reset persists across subsequent container resizes.
+
+Starting from `v4.1.2`, the double-click reset also fires the `onResizing` and `onResizeEnd` callbacks — both on the `Split.Resizer` (with `{ beforePane, afterPane }` sizes) and on each adjacent `Split.Pane` (with its own `{ width, height }`) — so consumers tracking pane dimensions can react to the reset without subscribing to `onDoubleClick` separately.
 
 <Demo data={demos.reset} />
 

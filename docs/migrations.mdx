@@ -4,6 +4,38 @@ This page collects the **breaking changes** and **migration steps** for each maj
 
 New features introduced in a release (that do not break anything) are **not** listed here. See the [GitHub Releases](https://github.com/gfazioli/mantine-split-pane/releases) page or the newsletter for the full changelog.
 
+## v4.1.2
+
+v4.1.2 is a patch release with no source-level breaking changes — `Split.Resizer`, `Split.Pane`, and `Split` keep the exact same prop signatures and exports as v4.1.0/v4.1.1. There is **one subtle behavior change** worth knowing about if you handle the lifecycle callbacks.
+
+### Behavior change: onResizing / onResizeEnd now fire on a double-click reset
+
+Before v4.1.2, a double-click on the resizer reset both adjacent panes to their `initialWidth` / `initialHeight` values but **did not fire** the `onResizing` or `onResizeEnd` callbacks. From v4.1.2, both callbacks fire once after the reset:
+
+- On `Split.Resizer`, with `{ beforePane, afterPane }` carrying the post-reset sizes.
+- On each `Split.Pane`, with that pane's own `{ width, height }`.
+
+If your handlers assumed "`onResizeEnd` only fires after a real drag", you will now receive an extra call on every double-click reset. The fix on the consumer side is usually a no-op (the new call carries the correct sizes), but if you keep ratio/state machinery keyed off "drag happened", branch on `onDoubleClick` instead.
+
+The pane's internal drag tracking is intentionally **not** updated by this emission — the `resetInitialSize` is preserved across subsequent container resizes.
+
+### Additive: notifyResizing / notifyResizeEnd on SplitPaneHandlers
+
+Two new imperative methods have been added to `SplitPaneHandlers` (the type exposed by the `Split.Pane` ref):
+
+- `notifyResizing(size)` — forwards to the consumer's `onResizing` prop without touching drag bookkeeping.
+- `notifyResizeEnd(size)` — same, for `onResizeEnd`.
+
+These are used internally by `Split.Resizer` to emit lifecycle events after a double-click reset without re-marking the pane as dragged. They are additive: existing callers of the imperative handle don't need to change.
+
+## v4.1.1
+
+v4.1.1 is a patch release with no behavior changes. The only adjustment surfaces in TypeScript:
+
+### Additive: children typing on Split.Resizer
+
+`Split.Resizer` has always accepted children at runtime (it renders an `UnstyledButton` and spreads the rest of its props through), but the public type omitted `children` from `SplitResizerBaseProps`, causing TypeScript to reject `<Split.Resizer>...</Split.Resizer>`. From v4.1.1 the type declares `children?: React.ReactNode`. No migration needed — code that previously worked at runtime now also type-checks.
+
 ## v3
 
 > **Note well**

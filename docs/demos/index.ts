@@ -22,6 +22,7 @@ export { nestedprops } from './Split.demo.nestedprops';
 export { pane } from './Split.demo.pane';
 export { reset } from './Split.demo.reset';
 export { resizer } from './Split.demo.resizer';
+export { resizerContent } from './Split.demo.resizerContent';
 export { resizerEvents } from './Split.demo.resizerEvents';
 export { responsive } from './Split.demo.responsive';
 export { responsiveOrientation } from './Split.demo.responsiveOrientation';
