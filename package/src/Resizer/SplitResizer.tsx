@@ -791,6 +791,39 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
     beforeRef?.current?.resetInitialSize?.(e);
     afterRef?.current?.resetInitialSize?.(e);
 
+    // Report final sizes after reset
+    if (beforeRef?.current && afterRef?.current) {
+      const beforePane = beforeRef.current.splitPane;
+      const afterPane = afterRef.current.splitPane;
+
+      if (beforePane && afterPane) {
+        const beforePaneSizes = {
+          width: beforePane.getBoundingClientRect().width,
+          height: beforePane.getBoundingClientRect().height,
+        };
+        const afterPaneSizes = {
+          width: afterPane.getBoundingClientRect().width,
+          height: afterPane.getBoundingClientRect().height,
+        };
+
+        onResizing?.({
+          beforePane: beforePaneSizes,
+          afterPane: afterPaneSizes,
+        });
+
+        onResizeEnd?.({
+          beforePane: beforePaneSizes,
+          afterPane: afterPaneSizes,
+        });
+
+        beforeRef.current.onResizing?.(beforePaneSizes);
+        afterRef.current.onResizing?.(afterPaneSizes);
+
+        beforeRef.current.onResizeEnd?.(beforePaneSizes);
+        afterRef.current.onResizeEnd?.(afterPaneSizes);
+      }
+    }
+
     onDoubleClick?.(e);
   };
 
