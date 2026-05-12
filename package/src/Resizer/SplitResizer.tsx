@@ -823,11 +823,16 @@ export const SplitResizer = factory<SplitResizerFactory>((_props) => {
           afterPane: afterPaneSizes,
         });
 
-        beforeRef.current.onResizing?.(beforePaneSizes);
-        afterRef.current.onResizing?.(afterPaneSizes);
+        // Use `notify*` variants here: the pane's `onResizeEnd` imperative
+        // handle re-marks the pane as dragged (storing `dragRatioRef`), which
+        // would immediately undo the `resetInitialSize` we just performed on
+        // the next container resize. `notifyResizing` / `notifyResizeEnd` fire
+        // the user-facing prop callbacks without touching drag bookkeeping.
+        beforeRef.current.notifyResizing?.(beforePaneSizes);
+        afterRef.current.notifyResizing?.(afterPaneSizes);
 
-        beforeRef.current.onResizeEnd?.(beforePaneSizes);
-        afterRef.current.onResizeEnd?.(afterPaneSizes);
+        beforeRef.current.notifyResizeEnd?.(beforePaneSizes);
+        afterRef.current.notifyResizeEnd?.(afterPaneSizes);
       }
     }
 

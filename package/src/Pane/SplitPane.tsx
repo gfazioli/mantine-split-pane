@@ -47,6 +47,21 @@ export interface SplitPaneHandlers {
   onResizing?: (size: SPLIT_PANE_SIZE) => void;
   /** Notify the pane with its final dimensions after resize */
   onResizeEnd?: (size: SPLIT_PANE_SIZE) => void;
+  /**
+   * Like `onResizing`, but skips the internal drag-state bookkeeping.
+   * Used by the resizer when the pane size changes without a real drag
+   * (e.g. after a double-click reset), so the user's `onResizing` prop
+   * still fires while the pane's drag tracking stays cleared.
+   */
+  notifyResizing?: (size: SPLIT_PANE_SIZE) => void;
+  /**
+   * Like `onResizeEnd`, but skips the internal drag-state bookkeeping.
+   * Used by the resizer after a double-click reset so the user's
+   * `onResizeEnd` prop still fires without re-marking the pane as
+   * dragged (which would otherwise cancel the reset on the next
+   * container resize).
+   */
+  notifyResizeEnd?: (size: SPLIT_PANE_SIZE) => void;
   /** Direct reference to the underlying pane DOM element */
   splitPane?: HTMLDivElement;
 }
@@ -209,6 +224,12 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
       }
       onResizeEnd && onResizeEnd(size);
     },
+    // Plain user-callback emitters used after a double-click reset: they
+    // forward to the consumer's `onResizing` / `onResizeEnd` props without
+    // touching `dragRatioRef` / `hasBeenDraggedRef`, so the reset that
+    // `resetInitialSize` just performed is not immediately undone.
+    notifyResizing: (size: SPLIT_PANE_SIZE) => onResizing && onResizing(size),
+    notifyResizeEnd: (size: SPLIT_PANE_SIZE) => onResizeEnd && onResizeEnd(size),
   }));
 
   const initialWidthRef = useRef<number | string | null>(null);

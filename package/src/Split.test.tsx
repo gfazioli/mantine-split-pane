@@ -160,6 +160,58 @@ describe('Split', () => {
     });
   });
 
+  it('forwards onResizing and onResizeEnd to each Split.Pane after a double-click reset', () => {
+    const beforeOnResizing = jest.fn();
+    const beforeOnResizeEnd = jest.fn();
+    const afterOnResizing = jest.fn();
+    const afterOnResizeEnd = jest.fn();
+
+    render(
+      <Split>
+        <Split.Pane
+          initialWidth={300}
+          onResizing={beforeOnResizing}
+          onResizeEnd={beforeOnResizeEnd}
+        >
+          Pane 1
+        </Split.Pane>
+        <Split.Resizer />
+        <Split.Pane initialWidth={700} onResizing={afterOnResizing} onResizeEnd={afterOnResizeEnd}>
+          Pane 2
+        </Split.Pane>
+      </Split>
+    );
+
+    const resizer = screen.getByLabelText('Resize');
+    const pane1 = resizer.previousElementSibling as HTMLDivElement;
+    const pane2 = resizer.nextElementSibling as HTMLDivElement;
+
+    pane1.style.width = '300px';
+    pane1.style.height = '200px';
+    pane2.style.width = '700px';
+    pane2.style.height = '200px';
+    resizer.style.width = '10px';
+    resizer.style.height = '200px';
+
+    mockPaneRect(pane1, 300, 200);
+    mockPaneRect(pane2, 700, 200);
+    mockResizerRect(resizer, () => getNumericStyleSize(pane1.style.width, 300), 10, 200);
+
+    fireEvent.doubleClick(resizer);
+
+    expect(beforeOnResizing).toHaveBeenCalledTimes(1);
+    expect(beforeOnResizing.mock.calls[0][0]).toMatchObject({ width: 300 });
+
+    expect(afterOnResizing).toHaveBeenCalledTimes(1);
+    expect(afterOnResizing.mock.calls[0][0]).toMatchObject({ width: 700 });
+
+    expect(beforeOnResizeEnd).toHaveBeenCalledTimes(1);
+    expect(beforeOnResizeEnd.mock.calls[0][0]).toMatchObject({ width: 300 });
+
+    expect(afterOnResizeEnd).toHaveBeenCalledTimes(1);
+    expect(afterOnResizeEnd.mock.calls[0][0]).toMatchObject({ width: 700 });
+  });
+
   it('renders custom children passed to Split.Resizer', () => {
     render(
       <Split>
