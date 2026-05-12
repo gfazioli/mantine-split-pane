@@ -1,8 +1,6 @@
 import path from 'node:path';
 import chalk from 'chalk';
 import fs from 'fs-extra';
-import githubRelease from 'new-github-release-url';
-import open from 'open';
 import signale from 'signale';
 import SimpleGit from 'simple-git';
 import { getNextVersion, VersionIncrement, VersionStage } from 'version-next';
@@ -11,6 +9,58 @@ import { hideBin } from 'yargs/helpers';
 import { $ } from 'zx';
 import { run } from './run';
 import { updateVersion } from './update-version';
+
+function extractChangelogBody(changelogPath: string): string {
+  if (!fs.existsSync(changelogPath)) {
+    signale.error(
+      `${chalk.cyan('CHANGELOG.md')} not found. Generate it before running the release script.`
+    );
+    process.exit(1);
+  }
+
+  const raw = fs.readFileSync(changelogPath, 'utf8');
+  const cutIdx = raw.search(/^##.*?\bDiscord\s+Summary\b/m);
+  const upToCut = cutIdx >= 0 ? raw.slice(0, cutIdx) : raw;
+
+  const lines = upToCut.split('\n');
+  const firstSectionIdx = lines.findIndex((line) => /^##\s+/.test(line));
+
+  if (firstSectionIdx < 0) {
+    signale.error(
+      `${chalk.cyan('CHANGELOG.md')} has no content sections (\`## …\`) before \`## Discord Summary\`. Regenerate it.`
+    );
+    process.exit(1);
+  }
+
+  let endIdx = lines.length;
+  while (endIdx > firstSectionIdx && /^(\s*|-{3,}\s*)$/.test(lines[endIdx - 1])) {
+    endIdx--;
+  }
+
+  return lines.slice(firstSectionIdx, endIdx).join('\n').trim();
+}
+
+async function generateGitHubAutoNotes(
+  repoSlug: string,
+  tag: string,
+  previousTag: string | undefined
+): Promise<{ name: string; body: string }> {
+  const args = ['-X', 'POST', `repos/${repoSlug}/releases/generate-notes`, '-f', `tag_name=${tag}`];
+
+  if (previousTag) {
+    args.push('-f', `previous_tag_name=${previousTag}`);
+  }
+
+  const result = await $`gh api ${args}`.quiet();
+  return JSON.parse(result.stdout);
+}
+
+function parseRepoSlug(repositoryField: string): string {
+  return repositoryField
+    .replace(/^.*github\.com[/:]/, '')
+    .replace(/\.git$/, '')
+    .replace(/\/$/, '');
+}
 
 const packageJsonPath = path.join(process.cwd(), 'package/package.json');
 const packageJson = fs.readJsonSync(packageJsonPath);
@@ -104,12 +154,24 @@ async function release() {
   await git.commit(`Release ${nextVersion}`);
   await git.push();
 
-  open(
-    githubRelease({
-      repoUrl: (packageJson.repository.url || packageJson.repository).replace('.git', ''),
-      tag: nextVersion,
-      title: nextVersion,
-    })
+  const changelogBody = extractChangelogBody(path.join(process.cwd(), 'CHANGELOG.md'));
+  const repoSlug = parseRepoSlug(packageJson.repository.url || packageJson.repository);
+
+  const tags = await git.tags();
+  const previousTag = tags.all.includes(nextVersion)
+    ? tags.all[tags.all.indexOf(nextVersion) - 1]
+    : tags.latest;
+
+  const autoNotes = await generateGitHubAutoNotes(repoSlug, nextVersion, previousTag);
+  const releaseBody = `${changelogBody}\n\n---\n\n${autoNotes.body}`.trim();
+
+  await run(
+    $`gh release create ${nextVersion} --repo ${repoSlug} --target master --title ${autoNotes.name} --notes ${releaseBody}`,
+    {
+      info: `Creating GitHub release ${chalk.cyan(nextVersion)}`,
+      success: `GitHub release ${chalk.cyan(nextVersion)} created`,
+      error: `Failed to create GitHub release ${chalk.cyan(nextVersion)}`,
+    }
   );
 }
 

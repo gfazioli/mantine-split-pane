@@ -64,7 +64,7 @@ export function Shell({ children }: ShellProps) {
               size={36}
               radius={0}
               component="a"
-              href="https://undolog.com/"
+              href="https://gfazioli.github.io/"
               target="_blank"
               rel="noreferrer"
               aria-label="Undolog"
