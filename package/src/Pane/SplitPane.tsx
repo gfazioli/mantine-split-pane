@@ -1,4 +1,3 @@
-import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import {
   Box,
   BoxProps,
@@ -10,6 +9,7 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
+import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { SplitResizerVariant } from '../Resizer/SplitResizer';
 import { useSplitContext } from '../Split.context';

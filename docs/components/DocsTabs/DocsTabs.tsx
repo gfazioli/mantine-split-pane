@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { IconAdjustments, IconArrowBarUp, IconCode, IconFileText } from '@tabler/icons-react';
 import { Container, Tabs } from '@mantine/core';
+import { IconAdjustments, IconArrowBarUp, IconCode, IconFileText } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import { PropsTablesList } from '../PropsTable';
 import { StylesApiTablesList } from '../StylesApiTable';
 import { TableOfContents } from '../TableOfContents';

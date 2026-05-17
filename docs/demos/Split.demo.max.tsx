@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { Split, SPLIT_PANE_SIZE } from '@gfazioli/mantine-split-pane';
 import { Button, Code, Group, Paper, Stack, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
 function Demo() {
   const [mode, setMode] = useState<'horizontal' | 'vertical'>('vertical');

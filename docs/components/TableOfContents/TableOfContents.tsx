@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router';
 import { Box, ScrollArea, Space, Text } from '@mantine/core';
 import { useScrollSpy } from '@mantine/hooks';
+import { useRouter } from 'next/router';
 import classes from './TableOfContents.module.css';
 
 interface TableOfContentsProps {

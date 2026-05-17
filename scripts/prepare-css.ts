@@ -1,6 +1,6 @@
-import path from 'node:path';
 import fs from 'fs-extra';
 import signale from 'signale';
+import path from 'node:path';
 
 const rollupCssFilePath = path.join(process.cwd(), './package/dist/esm/index.css');
 

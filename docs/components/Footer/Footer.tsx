@@ -1,10 +1,4 @@
 import {
-  IconBrandGithubFilled,
-  IconBrandMantine,
-  IconBrandX,
-  IconMailHeart,
-} from '@tabler/icons-react';
-import {
   ActionIcon,
   Anchor,
   Container,
@@ -16,6 +10,12 @@ import {
   ThemeIcon,
   Title,
 } from '@mantine/core';
+import {
+  IconBrandGithubFilled,
+  IconBrandMantine,
+  IconBrandX,
+  IconMailHeart,
+} from '@tabler/icons-react';
 import packageJson from '../../../package/package.json';
 import { Logo } from '../Shell';
 import { AnimateBadge } from './AnimateBadge';

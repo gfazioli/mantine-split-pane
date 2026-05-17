@@ -4,11 +4,10 @@ import '@mantinex/mantine-logo/styles.css';
 import '@mantinex/mantine-header/styles.css';
 import '@mantinex/demo/styles.css';
 import '@gfazioli/mantine-split-pane/styles.css';
-
-import { AppProps } from 'next/app';
-import Head from 'next/head';
 import { CodeHighlightAdapterProvider, createShikiAdapter } from '@mantine/code-highlight';
 import { MantineProvider } from '@mantine/core';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
 import favicon from '../assets/favicon.svg';
 import { Footer } from '../components/Footer';
 import { theme } from '../theme';

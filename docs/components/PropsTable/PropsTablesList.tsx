@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { IconSearch } from '@tabler/icons-react';
 import { TextInput, Title } from '@mantine/core';
+import { IconSearch } from '@tabler/icons-react';
+import React, { useState } from 'react';
 import { getComponentName } from './getComponentName';
 import { PropsTable } from './PropsTable';
 import classes from './PropsTablesList.module.css';

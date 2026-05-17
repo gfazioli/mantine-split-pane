@@ -1,5 +1,4 @@
 import '@mantine/core/styles.css';
-
 import { MantineProvider } from '@mantine/core';
 
 export const parameters = {

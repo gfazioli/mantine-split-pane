@@ -1,5 +1,5 @@
-import React from 'react';
 import { Table, TableProps, Text } from '@mantine/core';
+import React from 'react';
 import { TableInlineCode } from '../TableInlineCode';
 import type { StylesApiData } from './StylesApiTable';
 

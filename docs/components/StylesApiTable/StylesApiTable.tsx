@@ -1,5 +1,5 @@
-import React from 'react';
 import { Title } from '@mantine/core';
+import React from 'react';
 import { getComponentName } from '../PropsTable';
 import { TableError } from '../TableError';
 import { ModifiersTable } from './ModifiersTable';

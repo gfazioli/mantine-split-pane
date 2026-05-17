@@ -1,5 +1,5 @@
-import path from 'node:path';
 import fs from 'fs-extra';
+import path from 'node:path';
 
 export async function updateVersion(version: string) {
   const packageJsonPath = path.join(process.cwd(), 'package/package.json');

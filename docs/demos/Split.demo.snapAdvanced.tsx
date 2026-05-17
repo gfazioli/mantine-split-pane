@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { Split } from '@gfazioli/mantine-split-pane';
 import { Badge, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
 function Pane({ title }: { title: string }) {
   return (

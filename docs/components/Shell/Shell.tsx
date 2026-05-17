@@ -1,5 +1,3 @@
-import React from 'react';
-import cx from 'clsx';
 import {
   ActionIcon,
   AppShell,
@@ -13,6 +11,8 @@ import { useHotkeys } from '@mantine/hooks';
 import { ColorSchemeControl, HeaderControls } from '@mantinex/mantine-header';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { meta } from '@mantinex/mantine-meta';
+import cx from 'clsx';
+import React from 'react';
 import { PACKAGE_DATA } from '../../data';
 import { Logo } from './Logo';
 import classes from './Shell.module.css';

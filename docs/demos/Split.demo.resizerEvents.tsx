@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { Split, SPLIT_PANE_RESIZE_SIZES, SplitProps } from '@gfazioli/mantine-split-pane';
 import { Code, Paper, Stack, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
 function Demo(props: SplitProps) {
   const [start, setStart] = useState(false);

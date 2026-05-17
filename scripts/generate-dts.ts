@@ -1,7 +1,7 @@
-import path from 'node:path';
 import fs from 'fs-extra';
 import signale from 'signale';
 import { $ } from 'zx';
+import path from 'node:path';
 
 async function generateDts() {
   try {
