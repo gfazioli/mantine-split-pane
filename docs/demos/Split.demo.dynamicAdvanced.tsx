@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { PaneConfig, Split } from '@gfazioli/mantine-split-pane';
 import { Button, Code, Group, Paper, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
 const code = `
 import { useState } from 'react';

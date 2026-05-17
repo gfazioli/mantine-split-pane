@@ -1,4 +1,3 @@
-import React, { cloneElement, isValidElement, useMemo, useState } from 'react';
 import {
   Box,
   BoxProps,
@@ -10,6 +9,7 @@ import {
   useStyles,
 } from '@mantine/core';
 import { useMergedRef, useResizeObserver } from '@mantine/hooks';
+import React, { cloneElement, isValidElement, useMemo, useState } from 'react';
 import { SplitDynamic } from './Dynamic';
 import { useResponsiveValue } from './hooks/use-responsive-value';
 import { useSplitResizerOrientation } from './hooks/use-split-resizer-orientation';

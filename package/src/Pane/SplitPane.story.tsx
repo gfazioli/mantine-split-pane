@@ -1,5 +1,5 @@
-import React from 'react';
 import { Paper } from '@mantine/core';
+import React from 'react';
 import { Split, SplitProps } from '../Split';
 import { type SplitPaneProps } from './SplitPane';
 

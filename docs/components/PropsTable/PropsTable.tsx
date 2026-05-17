@@ -1,5 +1,5 @@
-import React from 'react';
 import { Highlight, Table, Text } from '@mantine/core';
+import React from 'react';
 import { TableError } from '../TableError';
 import { TableInlineCode } from '../TableInlineCode';
 

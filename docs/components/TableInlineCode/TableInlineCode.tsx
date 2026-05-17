@@ -1,6 +1,6 @@
-import React from 'react';
-import cx from 'clsx';
 import { ElementProps, Text, TextProps } from '@mantine/core';
+import cx from 'clsx';
+import React from 'react';
 import classes from './TableInlineCode.module.css';
 
 interface TableInlineCodeProps extends TextProps, ElementProps<'span', 'color'> {}

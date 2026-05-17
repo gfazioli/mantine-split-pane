@@ -1,5 +1,5 @@
-import React, { useMemo, useState, type ReactNode } from 'react';
 import { Box, Button, Code, Group, Paper, Space, Stack, Title } from '@mantine/core';
+import React, { useMemo, useState, type ReactNode } from 'react';
 import type { PaneConfig } from './Dynamic';
 import { SPLIT_PANE_RESIZE_SIZES } from './Resizer/SplitResizer';
 import { Split, type SplitProps } from './Split';

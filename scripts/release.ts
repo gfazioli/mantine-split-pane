@@ -1,4 +1,3 @@
-import path from 'node:path';
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import signale from 'signale';
@@ -9,6 +8,7 @@ import { hideBin } from 'yargs/helpers';
 import { $ } from 'zx';
 import { run } from './run';
 import { updateVersion } from './update-version';
+import path from 'node:path';
 
 function extractChangelogBody(changelogPath: string): string {
   if (!fs.existsSync(changelogPath)) {

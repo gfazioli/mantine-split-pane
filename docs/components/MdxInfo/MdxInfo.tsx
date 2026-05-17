@@ -1,6 +1,6 @@
+import { Blockquote, BlockquoteProps, rgba, useMantineTheme } from '@mantine/core';
 import { IconInfoCircle } from '@tabler/icons-react';
 import cx from 'clsx';
-import { Blockquote, BlockquoteProps, rgba, useMantineTheme } from '@mantine/core';
 import classes from './MdxInfo.module.css';
 
 export function MdxInfo({ className, ...others }: BlockquoteProps) {

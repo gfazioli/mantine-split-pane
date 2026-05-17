@@ -1,4 +1,3 @@
-import React, { CSSProperties, useMemo, useRef, useState } from 'react';
 import {
   BoxProps,
   createVarsResolver,
@@ -21,10 +20,12 @@ import {
   useStyles,
   type MantineBreakpoint,
 } from '@mantine/core';
+import React, { CSSProperties, useMemo, useRef, useState } from 'react';
 import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { useSplitResizerOrientation } from '../hooks/use-split-resizer-orientation';
 import { SplitPaneHandlers } from '../Pane/SplitPane';
 import { useSplitContext } from '../Split.context';
+import type { ResponsiveValue } from '../types';
 import {
   calculateSnappedPaneSizes,
   DEFAULT_SNAP_TOLERANCE,
@@ -32,7 +33,6 @@ import {
   type SnapPointValue,
   type SnapReference,
 } from './snap';
-import type { ResponsiveValue } from '../types';
 import classes from './SplitResizer.module.css';
 
 export type SplitResizerStylesNames = 'root';

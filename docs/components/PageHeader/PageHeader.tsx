@@ -1,3 +1,5 @@
+import { Badge, Container, Text, Title } from '@mantine/core';
+import { GithubIcon, NpmIcon } from '@mantinex/dev-icons';
 import {
   IconEdit,
   IconHeartFilled,
@@ -6,8 +8,6 @@ import {
   IconUserCode,
   IconVersions,
 } from '@tabler/icons-react';
-import { Badge, Container, Text, Title } from '@mantine/core';
-import { GithubIcon, NpmIcon } from '@mantinex/dev-icons';
 import pack from '../../../package/package.json';
 import type { PackageData } from '../../data';
 import { PageHeaderLink } from './PageHeaderLink/PageHeaderLink';
