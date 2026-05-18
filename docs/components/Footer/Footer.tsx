@@ -19,7 +19,7 @@ import {
 import packageJson from '../../../package/package.json';
 import { Logo } from '../Shell';
 import { AnimateBadge } from './AnimateBadge';
-import { ecosystem, highlights, resources } from './links';
+import { apps, highlights, mantineComponentCategories, resources } from './links';
 import classes from './Footer.module.css';
 
 type FooterProps = {};
@@ -32,18 +32,19 @@ type VerticalLink = {
   new?: boolean;
 };
 
-const VerticalLinks = ({ list }: { list: VerticalLink[] }) => {
+const VerticalLinks = ({ list, fz }: { list: VerticalLink[]; fz?: number }) => {
   return (
     <>
       {list
         .filter((item) => !packageJson.homepage.includes(item.href))
         .map((item) => (
-          <Group key={item.key}>
+          <Group key={item.key} gap={6} wrap="nowrap">
             <Anchor
               className={classes.columnAnchor}
               href={item.href}
               target={item.newWindow ? '_blank' : undefined}
               rel={item.newWindow ? 'noopener noreferrer' : undefined}
+              fz={fz}
             >
               {item.title}
             </Anchor>
@@ -54,10 +55,23 @@ const VerticalLinks = ({ list }: { list: VerticalLink[] }) => {
   );
 };
 
+const ColumnTitle = ({ children }: { children: React.ReactNode }) => (
+  <Title className={classes.title} order={6}>
+    {children}
+  </Title>
+);
+
+const SubTitle = ({ children }: { children: React.ReactNode }) => (
+  <Text className={classes.subTitle} fz={11} fw={600} c="dimmed" tt="uppercase" lts={0.5}>
+    {children}
+  </Text>
+);
+
 export const Footer: React.FC<FooterProps> = () => {
   return (
     <div className={classes.contentFooter}>
       <Container className={classes.footer} size="lg">
+        {/* Top tier — About + 4 link columns */}
         <Grid grow>
           <Grid.Col span={{ base: 12, sm: 4 }}>
             <Stack gap="xs">
@@ -97,31 +111,45 @@ export const Footer: React.FC<FooterProps> = () => {
               </Group>
             </Stack>
           </Grid.Col>
-          <Grid.Col className={classes.column} span={2}>
+
+          <Grid.Col className={classes.column} span={{ base: 6, sm: 2 }}>
             <Stack gap="xs">
-              <Title className={classes.title} order={6}>
-                HIGHLIGHTS
-              </Title>
+              <ColumnTitle>HIGHLIGHTS</ColumnTitle>
               <VerticalLinks list={highlights} />
             </Stack>
           </Grid.Col>
-          <Grid.Col className={classes.column} span={2}>
+
+          <Grid.Col className={classes.column} span={{ base: 6, sm: 2 }}>
             <Stack gap="xs">
-              <Title className={classes.title} order={6}>
-                RESOURCES
-              </Title>
+              <ColumnTitle>MANTINE</ColumnTitle>
               <VerticalLinks list={resources} />
             </Stack>
           </Grid.Col>
-          <Grid.Col className={classes.column} span={2}>
+
+          <Grid.Col className={classes.column} span={{ base: 6, sm: 2 }}>
             <Stack gap="xs">
-              <Title className={classes.title} order={6}>
-                ECOSYSTEM
-              </Title>
-              <VerticalLinks list={ecosystem} />
+              <ColumnTitle>APPS</ColumnTitle>
+              <VerticalLinks list={apps} />
             </Stack>
           </Grid.Col>
         </Grid>
+
+        <Divider my="xl" className={classes.lastDivider} />
+
+        {/* Second tier — Mantine Components grouped by category */}
+        <Stack gap="md">
+          <ColumnTitle>OTHER MANTINE EXTENSIONS</ColumnTitle>
+          <Grid grow>
+            {mantineComponentCategories.map((cat) => (
+              <Grid.Col key={cat.key} className={classes.column} span={{ base: 6, sm: 3 }}>
+                <Stack gap="xs">
+                  <SubTitle>{cat.title}</SubTitle>
+                  <VerticalLinks list={[...cat.links]} />
+                </Stack>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Stack>
 
         <Divider my={16} className={classes.lastDivider} />
 
