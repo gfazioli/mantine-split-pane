@@ -19,6 +19,7 @@ export const mantineComponentsLayout: MantineComponentLink[] = [
 ];
 
 export const mantineComponentsDataDisplay: MantineComponentLink[] = [
+  { key: 'audio', title: 'Audio', href: 'https://gfazioli.github.io/mantine-audio', newWindow: true, new: true },
   { key: 'clock', title: 'Clock', href: 'https://gfazioli.github.io/mantine-clock', newWindow: true },
   { key: 'compare', title: 'Compare', href: 'https://gfazioli.github.io/mantine-compare', newWindow: true },
   { key: 'json-tree', title: 'JSON Tree', href: 'https://gfazioli.github.io/mantine-json-tree', newWindow: true },
@@ -26,7 +27,7 @@ export const mantineComponentsDataDisplay: MantineComponentLink[] = [
   { key: 'list-view-table', title: 'List View Table', href: 'https://gfazioli.github.io/mantine-list-view-table', newWindow: true },
   { key: 'qr-code', title: 'QR Code', href: 'https://gfazioli.github.io/mantine-qr-code', newWindow: true },
   { key: 'rings-progress', title: 'Rings Progress', href: 'https://gfazioli.github.io/mantine-rings-progress', newWindow: true },
-  { key: 'video', title: 'Video', href: 'https://gfazioli.github.io/mantine-video', newWindow: true, new: true },
+  { key: 'video', title: 'Video', href: 'https://gfazioli.github.io/mantine-video', newWindow: true },
 ];
 
 export const mantineComponentsInputsNavigation: MantineComponentLink[] = [
