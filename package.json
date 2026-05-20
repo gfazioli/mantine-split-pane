@@ -24,7 +24,7 @@
     "release:major": "tsx scripts/release major && npm run docs:deploy",
     "docgen": "tsx scripts/docgen",
     "dev": "cd docs && npm run dev",
-    "docs:build": "npm run docgen && cd docs && npm run build",
+    "docs:build": "npm run docgen && tsx scripts/copy-social-image && cd docs && npm run build",
     "docs:deploy": "npm run docs:build && tsx scripts/nojekyll && gh-pages -d docs/out -t",
     "storybook": "storybook dev -p 8271",
     "syncpack": "syncpack list-mismatches",

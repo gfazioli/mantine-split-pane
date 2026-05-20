@@ -18,12 +18,19 @@ try {
   process.exit(1);
 }
 
+const HOMEPAGE = `https://gfazioli.github.io/${repository}/`;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
   basePath: process.env.NODE_ENV === 'production' ? `/${repository}` : undefined,
   pageExtensions: ['ts', 'tsx', 'mdx'],
+  env: {
+    // Absolute URL of the deployed docs site — used by _app.tsx to build
+    // og:url / og:image absolute URLs (social crawlers don't resolve basePath).
+    DOCS_HOMEPAGE: HOMEPAGE,
+  },
 };
 
 export default withMDX(nextConfig);
