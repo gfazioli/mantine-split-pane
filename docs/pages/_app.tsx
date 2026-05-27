@@ -18,7 +18,7 @@ import { theme } from '../theme';
 // Absolute URL of the deployed docs site (e.g. https://gfazioli.github.io/mantine-led/).
 // Set at build time by docs/next.config.mjs from the package.json `repository` field.
 // Falls back to the homepage in PACKAGE_DATA so dev-mode SSR doesn't render an empty URL.
-const HOMEPAGE = (process.env.DOCS_HOMEPAGE || PACKAGE_DATA.repositoryUrl + '/').replace(
+const HOMEPAGE = (process.env.DOCS_HOMEPAGE || `${PACKAGE_DATA.repositoryUrl}/`).replace(
   /\/+$/,
   '/'
 );
