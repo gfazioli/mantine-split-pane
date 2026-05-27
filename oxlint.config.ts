@@ -11,7 +11,7 @@ export default {
     'no-var': 'error',
     'no-self-compare': 'error',
     'no-template-curly-in-string': 'error',
-    curly: 'error',
+    curly: ['error', 'multi-line'],
     'default-case': 'off',
     'default-case-last': 'error',
     'no-alert': 'error',
