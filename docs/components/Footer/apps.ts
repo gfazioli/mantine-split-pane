@@ -9,6 +9,11 @@ export const apps = [
     href: 'https://www.findergit.app/',
   },
   {
+    key: 'netfox',
+    title: 'Netfox',
+    href: 'https://netfox.app',
+  },
+  {
     key: 'octoscope',
     title: 'Octoscope',
     href: 'https://gfazioli.github.io/octoscope/',
