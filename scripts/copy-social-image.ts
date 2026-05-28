@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
-import path from 'path';
 import signale from 'signale';
+import path from 'path';
 
 /**
  * Copies the repo-root `social.jpeg` (used by GitHub for the repository social
