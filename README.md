@@ -43,6 +43,17 @@ It requires **Mantine 9.x** and **React 19**.
 - Keyboard accessible: focusable resizer with configurable `step` and `shiftStep`
 - Container resize tracking with drag ratio preservation
 
+## Split vs Mantine core Splitter
+
+Since v9.3, Mantine core ships its own [Splitter](https://mantine.dev/core/splitter/) component. The basics overlap, but the two make different trade-offs:
+
+- **Fully customizable resizer** — `Split.Resizer` is a standalone component with 7 variants, gradients, hover states, knob, custom cursors and custom content; core's Splitter renders a separator line with a grip icon
+- **Snap points** — panes snap to predefined sizes while dragging or resizing with the keyboard (`snapPoints`, `onSnap`); not available in core
+- **CSS-unit sizing** — pane sizes and constraints accept px, %, rem (`initialWidth`, `minWidth`, ...), while core works with percentages that must sum to 100
+- **Config-driven layouts** — `Split.Dynamic` generates panes and resizers from a `PaneConfig[]` array
+
+Core's Splitter shines for simple proportional layouts and ships collapsible panes plus the headless `use-splitter` hook. See the full comparison in the [documentation](https://gfazioli.github.io/mantine-split-pane/).
+
 ## Installation
 
 ```sh
