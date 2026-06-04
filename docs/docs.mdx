@@ -1,4 +1,4 @@
-import { Kbd } from '@mantine/core';
+import { Kbd, Table } from '@mantine/core';
 import { InstallScript } from './components/InstallScript/InstallScript';
 import * as demos from './demos';
 
@@ -29,6 +29,84 @@ The main component for creating a Split pane is `Split`, which accepts two or mo
 > **Note well**
 >
 > In the example above, the `Paper` component's width and height are set to `100%` to fill the available space. Below are examples without this setting.
+
+## Comparison with Mantine core Splitter
+
+Since version 9.3, Mantine core ships a first-party [Splitter](https://mantine.dev/core/splitter/) component, built on the headless [use-splitter](https://mantine.dev/hooks/use-splitter/) hook. The two components overlap on the basics — resizable panes, keyboard resizing, full Styles API — but they make different trade-offs.
+
+<Table striped withTableBorder my="md">
+  <Table.Thead>
+    <Table.Tr>
+      <Table.Th>Capability</Table.Th>
+      <Table.Th>Split (this package)</Table.Th>
+      <Table.Th>Mantine core Splitter</Table.Th>
+    </Table.Tr>
+  </Table.Thead>
+  <Table.Tbody>
+    <Table.Tr>
+      <Table.Td>Sizing model</Table.Td>
+      <Table.Td>Any CSS size (px, %, rem) via initialWidth / initialHeight, plus grow</Table.Td>
+      <Table.Td>Percentages only, all panes must sum to 100 (defaultSize)</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Min / max constraints</Table.Td>
+      <Table.Td>minWidth, maxWidth, minHeight, maxHeight in any CSS unit</Table.Td>
+      <Table.Td>min / max percentages</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Resizer customization</Table.Td>
+      <Table.Td>Standalone Split.Resizer: 7 variants, colors, gradients, hover states, knob, custom cursors and custom content</Table.Td>
+      <Table.Td>Separator line with grip icon (lineSize, handleColor, handleIcon)</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Snap points</Table.Td>
+      <Table.Td>snapPoints, snapTolerance, snapFrom and onSnap callback</Table.Td>
+      <Table.Td>—</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Double-click reset</Table.Td>
+      <Table.Td>Resets the pane to its initial size (onResetInitialSize)</Table.Td>
+      <Table.Td>—</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Config-driven layouts</Table.Td>
+      <Table.Td>Split.Dynamic generates panes and resizers from a PaneConfig array</Table.Td>
+      <Table.Td>—</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Collapsible panes</Table.Td>
+      <Table.Td>—</Table.Td>
+      <Table.Td>collapsible, collapseThreshold, imperative collapse / expand</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Space redistribution</Table.Td>
+      <Table.Td>Adjacent panes</Table.Td>
+      <Table.Td>redistribute: nearest, equal or a custom function across non-adjacent panes</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Keyboard resizing</Table.Td>
+      <Table.Td>Focusable resizer with step / shiftStep</Table.Td>
+      <Table.Td>step / shiftStep with the full WAI-ARIA separator pattern</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Headless hook</Table.Td>
+      <Table.Td>—</Table.Td>
+      <Table.Td>use-splitter for fully custom UIs</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Imperative API</Table.Td>
+      <Table.Td>Per-pane and per-resizer lifecycle events</Table.Td>
+      <Table.Td>splitterRef exposing sizes, collapse and expand</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Container resize tracking</Table.Td>
+      <Table.Td>Drag-ratio preservation when the container resizes</Table.Td>
+      <Table.Td>—</Table.Td>
+    </Table.Tr>
+  </Table.Tbody>
+</Table>
+
+**When to use which.** Reach for the core `Splitter` when you need a simple proportional layout with first-party support — especially if collapsible panes, space redistribution strategies or a headless hook matter to you. Reach for `Split` when the resizer look and feel is part of your design (variants, gradients, knobs, custom content), when you need snap points or pixel-based constraints, or when layouts are generated dynamically from configuration.
 
 ## Inline
 
