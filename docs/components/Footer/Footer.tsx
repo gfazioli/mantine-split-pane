@@ -109,7 +109,7 @@ export const Footer: React.FC<FooterProps> = () => {
                 <ActionIcon variant="subtle" component="a" href="https://twitter.com/gfazioli">
                   <IconBrandX size={24} />
                 </ActionIcon>
-                <ActionIcon variant="subtle" component="a" href="https://undolog.substack.com/">
+                <ActionIcon variant="subtle" component="a" href="https://undolog.com/">
                   <IconMailHeart size={24} />
                 </ActionIcon>
               </Group>
