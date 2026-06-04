@@ -9,8 +9,24 @@ interface PageHeaderLinkProps {
 }
 
 export function PageHeaderLink({ label, icon, children, link }: PageHeaderLinkProps) {
+  const isAnchor = link?.startsWith('#') ?? false;
+
+  const handleAnchorClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!link) {
+      return;
+    }
+    event.preventDefault();
+    document.querySelector(link)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const content = link ? (
-    <a href={link} target="_blank" className={classes.body} rel="noreferrer">
+    <a
+      href={link}
+      target={isAnchor ? undefined : '_blank'}
+      rel={isAnchor ? undefined : 'noreferrer'}
+      onClick={isAnchor ? handleAnchorClick : undefined}
+      className={classes.body}
+    >
       <div className={classes.icon}>{icon}</div>
       <div className={classes.content}>{children}</div>
     </a>

@@ -80,7 +80,7 @@ export function PageHeader({ data }: PageHeaderProps) {
           <PageHeaderLink
             label="Support"
             icon={<IconHeartFilled color="red" size={18} stroke={1.5} />}
-            link="https://github.com/sponsors/gfazioli?o=esb"
+            link="#sponsors"
           >
             Become a sponsor
           </PageHeaderLink>

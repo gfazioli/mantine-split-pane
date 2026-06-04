@@ -61,3 +61,13 @@
     background-image: url('https://github.com/shuding/nextra/blob/main/docs/public/favicon-dark.svg?raw=true');
   }
 }
+
+.sponsorSlot {
+  border: 1px dashed var(--mantine-color-default-border);
+  background-color: transparent;
+  color: var(--mantine-color-dimmed);
+}
+
+.sponsorsSection {
+  scroll-margin-top: rem(90px);
+}

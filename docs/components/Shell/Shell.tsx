@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   AppShell,
+  Button,
   Container,
   Group,
   RemoveScroll,
@@ -11,6 +12,7 @@ import { useHotkeys } from '@mantine/hooks';
 import { ColorSchemeControl, HeaderControls } from '@mantinex/mantine-header';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { meta } from '@mantinex/mantine-meta';
+import { IconHeartFilled } from '@tabler/icons-react';
 import cx from 'clsx';
 import React from 'react';
 import { PACKAGE_DATA } from '../../data';
@@ -49,15 +51,18 @@ export function Shell({ children }: ShellProps) {
             <Title order={2}>{packageName}</Title>
           </Group>
           <Group gap={10}>
-            <iframe
-              src="https://github.com/sponsors/gfazioli/button"
-              title="Sponsor gfazioli"
-              height="32"
-              width="114"
-              style={{ border: 0 }}
-              sandbox="allow-popups allow-forms allow-scripts"
+            <Button
+              component="a"
+              href="#sponsors"
+              size="sm"
+              radius="xl"
+              variant="gradient"
+              gradient={{ from: 'pink', to: 'grape' }}
+              leftSection={<IconHeartFilled size={14} />}
               className={classes.sponsor}
-            />
+            >
+              Sponsor
+            </Button>
 
             <ActionIcon
               visibleFrom="sm"
