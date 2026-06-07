@@ -39,6 +39,12 @@ export const mantineComponentsDataDisplay: MantineComponentLink[] = [
     title: 'Audio',
     href: 'https://gfazioli.github.io/mantine-audio',
     newWindow: true,
+  },
+  {
+    key: 'book',
+    title: 'Book',
+    href: 'https://gfazioli.github.io/mantine-book',
+    newWindow: true,
     new: true,
   },
   {
