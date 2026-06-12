@@ -1,18 +1,18 @@
 import {
   ActionIcon,
   AppShell,
-  Button,
   Container,
   Group,
   RemoveScroll,
   Title,
+  Tooltip,
   useMantineColorScheme,
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { ColorSchemeControl, HeaderControls } from '@mantinex/mantine-header';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { meta } from '@mantinex/mantine-meta';
-import { IconHeartFilled } from '@tabler/icons-react';
+import { IconCoffee, IconHeartFilled } from '@tabler/icons-react';
 import cx from 'clsx';
 import React from 'react';
 import { PACKAGE_DATA } from '../../data';
@@ -51,18 +51,37 @@ export function Shell({ children }: ShellProps) {
             <Title order={2}>{packageName}</Title>
           </Group>
           <Group gap={10}>
-            <Button
-              component="a"
-              href="#sponsors"
-              size="sm"
-              radius="xl"
-              variant="gradient"
-              gradient={{ from: 'pink', to: 'grape' }}
-              leftSection={<IconHeartFilled size={14} />}
-              className={classes.sponsor}
-            >
-              Sponsor
-            </Button>
+            <Tooltip label="Sponsor" withArrow>
+              <ActionIcon
+                component="a"
+                href="#sponsors"
+                size="lg"
+                radius="xl"
+                variant="gradient"
+                gradient={{ from: 'pink', to: 'grape' }}
+                aria-label="Sponsor"
+                className={classes.sponsor}
+              >
+                <IconHeartFilled size={16} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Buy me a coffee" withArrow>
+              <ActionIcon
+                component="a"
+                href="https://donate.stripe.com/fZu4gy4Tn3b1dgudGx0co00"
+                target="_blank"
+                rel="noopener noreferrer"
+                size="lg"
+                radius="xl"
+                variant="filled"
+                color="yellow"
+                aria-label="Buy me a coffee"
+                className={classes.sponsor}
+                styles={{ root: { color: 'var(--mantine-color-white)' } }}
+              >
+                <IconCoffee size={16} />
+              </ActionIcon>
+            </Tooltip>
 
             <ActionIcon
               visibleFrom="sm"

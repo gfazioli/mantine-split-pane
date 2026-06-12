@@ -16,6 +16,7 @@ import {
   IconBrandGithubFilled,
   IconBrandMantine,
   IconBrandX,
+  IconCoffee,
   IconHeartFilled,
   IconMailHeart,
   IconPlus,
@@ -212,19 +213,36 @@ export const Footer: React.FC<FooterProps> = () => {
               </Stack>
             </Anchor>
           </Group>
-          <Button
-            mb="xl"
-            component="a"
-            href="https://github.com/sponsors/gfazioli"
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="gradient"
-            gradient={{ from: 'pink', to: 'grape' }}
-            leftSection={<IconHeartFilled size={16} />}
-            radius="xl"
-          >
-            Become a sponsor
-          </Button>
+          <Group mb="xl" gap="sm" justify="center">
+            <Button
+              component="a"
+              href="https://github.com/sponsors/gfazioli"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="gradient"
+              gradient={{ from: 'pink', to: 'grape' }}
+              leftSection={<IconHeartFilled size={16} />}
+              radius="xl"
+            >
+              Become a sponsor
+            </Button>
+            <Button
+              component="a"
+              href="https://donate.stripe.com/fZu4gy4Tn3b1dgudGx0co00"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="filled"
+              color="yellow"
+              leftSection={<IconCoffee size={16} />}
+              radius="xl"
+              styles={{
+                label: { color: 'var(--mantine-color-white)' },
+                section: { color: 'var(--mantine-color-white)' },
+              }}
+            >
+              Buy me a coffee
+            </Button>
+          </Group>
         </Stack>
 
         <Divider my={16} className={classes.lastDivider} />
