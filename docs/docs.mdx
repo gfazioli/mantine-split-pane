@@ -56,9 +56,9 @@ export const Cap = ({ title, note }) => (
       <Table.Td ta="center"><No /></Table.Td>
     </Table.Tr>
     <Table.Tr>
-      <Table.Td><Cap title="Double-click reset" note="Restores a pane to its initial size" /></Table.Td>
+      <Table.Td><Cap title="Double-click reset" note="Both restore panes by double-clicking the resizer — Split to each pane's initialWidth / initialHeight, core to its default ratio (on by default since Mantine 9.3.2, toggle via resetOnDoubleClick)" /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
-      <Table.Td ta="center"><No /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
     <Table.Tr>
       <Table.Td><Cap title="Sizing in any CSS unit" note="px, %, rem for sizes and min/max constraints — core uses percentages summing to 100 (proportional by design)" /></Table.Td>
@@ -91,7 +91,7 @@ export const Cap = ({ title, note }) => (
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
     <Table.Tr>
-      <Table.Td><Cap title="Resize lifecycle events" note="Split: per pane and per resizer, fired on drag, keyboard and double-click — core: handleIndex and sizes, on pointer drag only" /></Table.Td>
+      <Table.Td><Cap title="Resize lifecycle events" note="Split: per pane and per resizer, fired on drag, keyboard and double-click — core: onResizeStart / onResizeEnd (handleIndex, sizes) on pointer drag only, while onSizeChange fires on any size change (drag, keyboard, double-click reset, collapse)" /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
