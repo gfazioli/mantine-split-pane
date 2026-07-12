@@ -11,11 +11,14 @@ import { updateVersion } from './update-version';
 import path from 'node:path';
 
 function extractChangelogBody(changelogPath: string): string {
+  // CHANGELOG.md is optional: release announcements live in Notion, and the GitHub release notes
+  // fall back to GitHub's auto-generated notes when the file is absent. When present, its curated
+  // sections are prepended to those auto-notes.
   if (!fs.existsSync(changelogPath)) {
-    signale.error(
-      `${chalk.cyan('CHANGELOG.md')} not found. Generate it before running the release script.`
+    signale.info(
+      `${chalk.cyan('CHANGELOG.md')} not found — using GitHub auto-generated notes only.`
     );
-    process.exit(1);
+    return '';
   }
 
   const raw = fs.readFileSync(changelogPath, 'utf8');
@@ -26,10 +29,10 @@ function extractChangelogBody(changelogPath: string): string {
   const firstSectionIdx = lines.findIndex((line) => /^##\s+/.test(line));
 
   if (firstSectionIdx < 0) {
-    signale.error(
-      `${chalk.cyan('CHANGELOG.md')} has no content sections (\`## …\`) before \`## Discord Summary\`. Regenerate it.`
+    signale.warn(
+      `${chalk.cyan('CHANGELOG.md')} has no content sections — using GitHub auto-generated notes only.`
     );
-    process.exit(1);
+    return '';
   }
 
   let endIdx = lines.length;
@@ -163,7 +166,9 @@ async function release() {
     : tags.latest;
 
   const autoNotes = await generateGitHubAutoNotes(repoSlug, nextVersion, previousTag);
-  const releaseBody = `${changelogBody}\n\n---\n\n${autoNotes.body}`.trim();
+  const releaseBody = (
+    changelogBody ? `${changelogBody}\n\n---\n\n${autoNotes.body}` : autoNotes.body
+  ).trim();
 
   await run(
     $`gh release create ${nextVersion} --repo ${repoSlug} --target master --title ${autoNotes.name} --notes ${releaseBody}`,
