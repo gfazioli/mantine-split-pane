@@ -65,6 +65,32 @@ function parseRepoSlug(repositoryField: string): string {
     .replace(/\/$/, '');
 }
 
+/**
+ * Resolves the `owner/repo` slug the GitHub release should target.
+ *
+ * Derived from the `origin` remote rather than from `package/package.json` → `repository`, because
+ * in the template (`mantine-base-component`) that field still points at `gfazioli/mantine-led` by
+ * design — `rename-mantine-component` rewrites it only when a real component is bootstrapped. Read
+ * from package.json, every template release aimed at the LED repo and died with
+ * `HTTP 422 … Release.tag_name already exists`, since the LED's own history owns those low version
+ * numbers. That also aborted `release:patch` before `docs:deploy` could run.
+ *
+ * Falls back to the package.json field if there is no `origin` remote.
+ */
+async function resolveRepoSlug(): Promise<string> {
+  const remotes = await git.getRemotes(true);
+  const originUrl = remotes.find((remote) => remote.name === 'origin')?.refs?.push;
+
+  if (originUrl) {
+    return parseRepoSlug(originUrl);
+  }
+
+  signale.warn(
+    `No ${chalk.cyan('origin')} remote found — falling back to ${chalk.cyan('package/package.json')} repository field.`
+  );
+  return parseRepoSlug(packageJson.repository.url || packageJson.repository);
+}
+
 const packageJsonPath = path.join(process.cwd(), 'package/package.json');
 const packageJson = fs.readJsonSync(packageJsonPath);
 const { argv } = yargs(hideBin(process.argv)) as any;
@@ -158,7 +184,7 @@ async function release() {
   await git.push();
 
   const changelogBody = extractChangelogBody(path.join(process.cwd(), 'CHANGELOG.md'));
-  const repoSlug = parseRepoSlug(packageJson.repository.url || packageJson.repository);
+  const repoSlug = await resolveRepoSlug();
 
   const tags = await git.tags();
   const previousTag = tags.all.includes(nextVersion)
