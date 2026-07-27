@@ -9049,6 +9049,7 @@ __metadata:
     jest-axe: "npm:^11.0.0"
     jest-environment-jsdom: "npm:^29.7.0"
     mantine-docgen-script: "npm:^1.6.0"
+    oxc-config-mantine: "npm:^1.0.0"
     oxfmt: "npm:^0.60.0"
     oxlint: "npm:^1.75.0"
     postcss: "npm:^8.5.23"
@@ -10325,6 +10326,16 @@ __metadata:
     string-width: "npm:^7.2.0"
     strip-ansi: "npm:^7.1.0"
   checksum: 10c0/7d9291255db22e293ea164f520b6042a3e906576ab06c9cf408bf9ef5664ba0a9f3bd258baa4ada058cfcc2163ef9b6696d51237a866682ce33295349ba02c3a
+  languageName: node
+  linkType: hard
+
+"oxc-config-mantine@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "oxc-config-mantine@npm:1.0.0"
+  peerDependencies:
+    oxfmt: ^0.55.0
+    oxlint: ^1.70.0
+  checksum: 10c0/0adcb4872a889984b2f8f3cd60a105c23d3902a50ba9545a35c312de02b2768fefe9a2cd245134b4efb5442a63848299607d537912feff9844450c6c7c0ba9a8
   languageName: node
   linkType: hard
 
