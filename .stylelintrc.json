@@ -1,5 +1,7 @@
 {
-  "extends": ["stylelint-config-standard-scss"],
+  "extends": [
+    "stylelint-config-standard-scss"
+  ],
   "rules": {
     "custom-property-pattern": null,
     "selector-class-pattern": null,
@@ -10,6 +12,7 @@
     "custom-property-empty-line-before": null,
     "property-no-vendor-prefix": null,
     "color-function-notation": null,
+    "color-function-alias-notation": null,
     "length-zero-no-unit": null,
     "selector-not-notation": null,
     "no-descending-specificity": null,
@@ -21,7 +24,9 @@
     "selector-pseudo-class-no-unknown": [
       true,
       {
-        "ignorePseudoClasses": ["global"]
+        "ignorePseudoClasses": [
+          "global"
+        ]
       }
     ]
   }
