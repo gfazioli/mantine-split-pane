@@ -1,3 +1,16 @@
+# PR gate: install, build the package, build the docs, run the suite.
+#
+# The `uses:` refs are pinned to commit SHAs with a trailing version comment,
+# not to floating major tags: a tag is mutable, so `@v7` would silently follow
+# whatever that tag points at if an action's repo were ever compromised. The
+# cost of pinning is going stale, which `.github/dependabot.yml` pays — it
+# opens one grouped PR when a new release ships.
+#
+# `permissions: contents: read` is stated even though it is the account-wide
+# default, so the job keeps the narrow token if that default ever changes, and
+# `persist-credentials: false` keeps the token out of the runner's git config:
+# nothing here pushes, so nothing here needs to be able to.
+
 name: npm test
 
 on:
@@ -9,12 +22,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   test_pull_request:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'

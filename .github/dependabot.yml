@@ -1,0 +1,18 @@
+# Keep the SHA-pinned GitHub Actions current. The workflow `uses:` refs are
+# pinned to commit SHAs (with a trailing version comment) for supply-chain
+# safety; Dependabot opens a PR to bump the SHA + comment when a new release
+# of an action ships, so pinning doesn't freeze us on a stale, unpatched
+# action. Scoped to github-actions only — the npm dependency bumps of this
+# repo are driven by `scripts/update-repo.sh` in the workspace, not here.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "ci"
