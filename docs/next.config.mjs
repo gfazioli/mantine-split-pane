@@ -23,6 +23,12 @@ const HOMEPAGE = `https://gfazioli.github.io/${repository}/`;
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // `next dev` scaffolds AGENTS.md + CLAUDE.md in this directory whenever it detects an
+  // AI coding agent (CLAUDECODE / AI_AGENT / CURSOR_AGENT / … — see
+  // next/dist/compiled/@vercel/detect-agent). The files are untracked, so they dirty the
+  // working tree and `release.ts` then aborts with "Working directory is not clean".
+  // Gated on this flag in next/dist/server/lib/start-server.js.
+  agentRules: false,
   output: 'export',
   basePath: process.env.NODE_ENV === 'production' ? `/${repository}` : undefined,
   pageExtensions: ['ts', 'tsx', 'mdx'],
