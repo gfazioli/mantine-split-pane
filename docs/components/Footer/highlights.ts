@@ -10,6 +10,11 @@ export const highlights = [
     href: 'https://github.com/gfazioli/next-app-nextra-template',
   },
   {
+    key: 'mantine-fumadocs-template',
+    title: 'Mantine Fumadocs template',
+    href: 'https://github.com/gfazioli/next-app-fumadocs-template',
+  },
+  {
     key: 'mantine-extension-template',
     title: 'Extension Template',
     href: 'https://github.com/mantinedev/extension-template',
