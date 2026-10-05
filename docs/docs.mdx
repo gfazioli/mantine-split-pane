@@ -61,7 +61,7 @@ export const Cap = ({ title, note }) => (
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
     <Table.Tr>
-      <Table.Td><Cap title="Sizing in CSS units" note="Split: px, %, rem and em for sizes and min/max constraints — core since 9.4: a number or % is a flexible share, px or rem a fixed size" /></Table.Td>
+      <Table.Td><Cap title="Sizing in CSS units" note="Split: px, %, rem and em for sizes and min/max constraints — core: percentages summing to 100, plus fixed px / rem panes since 9.4, which turn numbers and % into shares of the leftover space" /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
@@ -81,7 +81,7 @@ export const Cap = ({ title, note }) => (
       <Table.Td ta="center"><No /></Table.Td>
     </Table.Tr>
     <Table.Tr>
-      <Table.Td><Cap title="Container resize tracking" note="Split preserves pane ratios when the container resizes — core: flexible panes keep their share, px / rem panes keep their size" /></Table.Td>
+      <Table.Td><Cap title="Container resize tracking" note="Split: % panes and dragged panes keep their ratio, undragged fixed-unit panes keep their size, grow panes flex — core: flexible panes keep their share, px / rem panes keep their size until the container is smaller than their sum, then shrink proportionally" /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
