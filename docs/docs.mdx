@@ -61,9 +61,9 @@ export const Cap = ({ title, note }) => (
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
     <Table.Tr>
-      <Table.Td><Cap title="Sizing in any CSS unit" note="px, %, rem for sizes and min/max constraints — core uses percentages summing to 100 (proportional by design)" /></Table.Td>
+      <Table.Td><Cap title="Sizing in CSS units" note="Split: px, %, rem and em for sizes and min/max constraints — core since 9.4: a number or % is a flexible share, px or rem a fixed size" /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
-      <Table.Td ta="center"><No /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
     <Table.Tr>
       <Table.Td><Cap title="Responsive orientation" note="orientation accepts Mantine breakpoint maps, e.g. base horizontal, md vertical" /></Table.Td>
@@ -81,9 +81,9 @@ export const Cap = ({ title, note }) => (
       <Table.Td ta="center"><No /></Table.Td>
     </Table.Tr>
     <Table.Tr>
-      <Table.Td><Cap title="Container resize tracking" note="Pane ratios are preserved when the container resizes" /></Table.Td>
+      <Table.Td><Cap title="Container resize tracking" note="Split preserves pane ratios when the container resizes — core: flexible panes keep their share, px / rem panes keep their size" /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
-      <Table.Td ta="center"><No /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
     <Table.Tr>
       <Table.Td><Cap title="Keyboard resizing" note="Both: arrows with step and shiftStep — core also supports Home / End and Enter to collapse; Split adds Escape to cancel" /></Table.Td>
