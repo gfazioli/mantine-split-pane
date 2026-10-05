@@ -81,7 +81,7 @@ export const Cap = ({ title, note }) => (
       <Table.Td ta="center"><No /></Table.Td>
     </Table.Tr>
     <Table.Tr>
-      <Table.Td><Cap title="Container resize tracking" note="Split: % panes and dragged panes keep their ratio, undragged fixed-unit panes keep their size, grow panes flex — core: flexible panes keep their share, px / rem panes keep their size until the container is smaller than their sum, then shrink proportionally" /></Table.Td>
+      <Table.Td><Cap title="Container resize tracking" note="Split: % panes and dragged panes keep their ratio, grow panes flex — core: flexible panes keep their share. In both, fixed-size panes keep their size until the container is too small for them, and min / max still clamp" /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
