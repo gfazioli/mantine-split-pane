@@ -68,16 +68,16 @@ Rollup bundles to dual ESM (`dist/esm/`) and CJS (`dist/cjs/`) with `'use client
 ### Components
 
 - **Split** (`Split.tsx`) — Factory component that manages orientation (vertical/horizontal, supports responsive breakpoints). Provides `SplitContextProvider` to cascade resizer props to all child resizers.
-- **Split.Pane** (`Pane/SplitPane.tsx`) — Pane with sizing constraints (`initialWidth/Height`, `min/max`, `grow`). Exposes imperative handlers via ref (`resetInitialSize`, `getMinWidth`, etc.).
-- **Split.Resizer** (`Resizer/SplitResizer.tsx`) — Draggable/keyboard-navigable divider with 7 variants: `default`, `filled`, `outline`, `transparent`, `gradient`, `dotted`, `dashed`. Inherits props from parent Split context but can override per-instance.
-- **Split.Dynamic** (`Dynamic/SplitDynamic.tsx`) — Helper function (not a component) that generates Pane+Resizer arrays from a `PaneConfig[]` array.
+- **Split.Pane** (`package/src/Pane/SplitPane.tsx`) — Pane with sizing constraints (`initialWidth/Height`, `min/max`, `grow`). Exposes imperative handlers via ref (`resetInitialSize`, `getMinWidth`, etc.); the ref type is `HTMLDivElement & SplitPaneHandlers`.
+- **Split.Resizer** (`package/src/Resizer/SplitResizer.tsx`) — Draggable/keyboard-navigable divider with 7 variants: `default`, `filled`, `outline`, `transparent`, `gradient`, `dotted`, `dashed`. Inherits props from parent Split context but can override per-instance. Keyboard: arrows move by `step` (default 8), Shift+arrows by `shiftStep` (default 64); a double-click fires `onDoubleClick`.
+- **Split.Dynamic** (`package/src/Dynamic/SplitDynamic.tsx`) — Helper function (not a component) that generates Pane+Resizer arrays from a `PaneConfig[]` array.
 
 ### Key Patterns
 
 1. **Mantine Factory Pattern** — All components use `factory<T>()` with `XFactory` types defining `props`, `ref`, `stylesNames`, `vars`. CSS variables use `varsResolver`.
 2. **Context-based Prop Inheritance** (`Split.context.ts`) — Resizer props set on `<Split>` cascade to all `<Split.Resizer>` children; individual resizers can override.
-3. **Responsive Orientation** (`hooks/use-split-resizer-orientation.ts`) — `orientation` accepts a string or Mantine breakpoint object: `{ base: 'horizontal', sm: 'vertical' }`.
-4. **Dynamic Panes** — When conditionally rendering panes, always use unique `key` props on both Pane and Resizer elements.
+3. **Responsive Orientation** (`package/src/hooks/use-split-resizer-orientation.ts`) — `orientation` accepts a string or Mantine breakpoint object: `{ base: 'horizontal', sm: 'vertical' }`; the default is `'vertical'`.
+4. **Dynamic Panes** — When conditionally rendering panes, always use unique `key` props on both Pane and Resizer elements: build the element array (or `flatMap`) with a key on every element, or generate it with `Split.Dynamic`. `AnotherConditionalRender` and `ImprovedConditionalRender` in `package/src/Split.story.tsx` are the worked examples.
 5. **CSS Variables** — Follow the pattern `--split-{component}-{property}` (e.g., `--split-resizer-size`).
 
 ### Resizer Variants
