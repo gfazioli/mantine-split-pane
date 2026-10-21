@@ -76,7 +76,7 @@
     "rollup-plugin-node-externals": "^8.1.2",
     "rollup-plugin-postcss": "^4.0.2",
     "signale": "^1.4.0",
-    "simple-git": "^3.36.0",
+    "simple-git": "^4.0.2",
     "storybook": "^10.6.2",
     "stylelint": "^17",
     "stylelint-config-standard-scss": "^17",
@@ -98,7 +98,7 @@
     "form-data": "^4.0.6",
     "postcss": "^8.5.23",
     "rollup": "^4.62.3",
-    "sharp": "^0.35.0",
+    "sharp": "^0.35.5",
     "tar": "^7.5.19",
     "ws": "^8.21.1"
   }

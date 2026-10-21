@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import signale from 'signale';
-import SimpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 import { getNextVersion, VersionIncrement, VersionStage } from 'version-next';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
@@ -94,7 +94,7 @@ async function resolveRepoSlug(): Promise<string> {
 const packageJsonPath = path.join(process.cwd(), 'package/package.json');
 const packageJson = fs.readJsonSync(packageJsonPath);
 const { argv } = yargs(hideBin(process.argv)) as any;
-const git = SimpleGit();
+const git = simpleGit();
 
 const versionIncrement: VersionIncrement = argv._[0] || 'patch';
 const versionStage: VersionStage | undefined = argv.stage;
