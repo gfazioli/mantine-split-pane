@@ -91,14 +91,18 @@
   "resolutions": {
     "@babel/core": "^7.29.6",
     "@babel/traverse": "^7.28.0",
+    "@joshwooding/vite-plugin-react-docgen-typescript/glob": "^14.0.4",
     "@tootallnate/once": "^2.0.1",
+    "cacache/glob": "^14.0.4",
     "effect": "^3.20.0",
     "esbuild": "^0.28.1",
     "flatted": "^3.4.2",
     "form-data": "^4.0.6",
+    "node-gyp/glob": "^14.0.4",
     "postcss": "^8.5.23",
     "rollup": "^4.62.3",
     "sharp": "^0.35.5",
+    "syncpack/minimatch": "^11.0.5",
     "tar": "^7.5.19",
     "ws": "^8.21.1"
   }
