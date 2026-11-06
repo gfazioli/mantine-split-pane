@@ -95,7 +95,6 @@
     "@tootallnate/once": "^2.0.1",
     "cacache/glob": "^14.0.4",
     "effect": "^3.20.0",
-    "esbuild": "^0.28.1",
     "flatted": "^3.4.2",
     "form-data": "^4.0.6",
     "node-gyp/glob": "^14.0.4",
