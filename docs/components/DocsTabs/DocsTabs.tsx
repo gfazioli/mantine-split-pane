@@ -22,6 +22,8 @@ interface DocsTabsProps {
   migrations?: React.ReactNode;
 }
 
+const DOCS_TABS = ['docs', 'props', 'styles-api', 'migrations'];
+
 export function DocsTabs({
   children,
   docgen,
@@ -38,7 +40,11 @@ export function DocsTabs({
   const hasMigrations = !!migrations;
 
   useEffect(() => {
-    setActiveTab(window.location.search.replace('?t=', '') || 'docs');
+    // Read the `t` parameter alone: stripping '?t=' off the whole query string turned any other
+    // parameter (a shared link's `?utm_source=…`) into a tab value no panel matched, and the page
+    // rendered its header with no content.
+    const tab = new URLSearchParams(window.location.search).get('t');
+    setActiveTab(tab && DOCS_TABS.includes(tab) ? tab : 'docs');
   }, []);
 
   if (!hasProps && !hasStyles) {
