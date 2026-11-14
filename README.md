@@ -31,6 +31,12 @@ It requires **Mantine 9.x** and **React 19**.
 >
 > → [Demo and Documentation](https://gfazioli.github.io/mantine-split-pane/) → [Youtube Video](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4) → [More Mantine Components](https://mantine-extensions.vercel.app/)
 
+## Video tutorial
+
+[![Build a resizable split layout | Mantine Extensions Tutorial 02](https://i.ytimg.com/vi/mRwKh7Q8foo/maxresdefault.jpg)](https://www.youtube.com/watch?v=mRwKh7Q8foo)
+
+**Build a resizable split layout** (1:55): install SplitPane, split a layout into two panes with a draggable divider, limit how far it moves, restyle it, snap it to the widths you choose and reset it with a double click. More in the [Mantine Extensions Tutorials](https://www.youtube.com/playlist?list=PLdYqZHmBU1Bk) playlist.
+
 ## Features
 
 - Separate `Split.Pane` (content) and `Split.Resizer` (drag handle) architecture
