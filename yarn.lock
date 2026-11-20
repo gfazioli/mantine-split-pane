@@ -5614,12 +5614,12 @@ __metadata:
   linkType: hard
 
 "effect@npm:^3.20.0":
-  version: 3.22.0
-  resolution: "effect@npm:3.22.0"
+  version: 3.22.5
+  resolution: "effect@npm:3.22.5"
   dependencies:
     "@standard-schema/spec": "npm:^1.0.0"
     fast-check: "npm:^3.23.1"
-  checksum: 10c0/3a9fe54271eef30e03b018592de66afaec2a0fec3351cf526569e919257702ce58e97375def2ab95946ad0e1f30c4b41fae7a08e4210976e8e1a43628505ac4c
+  checksum: 10c0/afa7bcf16087e50bdec37334376a396f6515ab4a5045841f88bd16fec5848de8e531f83d91dc3282fb109419660b40e50cacfbe3f06d6e449c02182f7f1f9578
   languageName: node
   linkType: hard
 
