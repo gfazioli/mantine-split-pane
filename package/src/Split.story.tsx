@@ -1299,7 +1299,7 @@ export function DynamicAdvanced(p: SplitProps) {
 }
 
 export function PaneRef(p: SplitProps) {
-  const paneRef = useRef<HTMLDivElement & SplitPaneHandlers>(null);
+  const paneRef = useRef<SplitPaneHandlers>(null);
   const [log, setLog] = useState('');
 
   return (

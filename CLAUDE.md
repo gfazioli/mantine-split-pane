@@ -68,7 +68,7 @@ Rollup bundles to dual ESM (`dist/esm/`) and CJS (`dist/cjs/`) with `'use client
 ### Components
 
 - **Split** (`Split.tsx`) — Factory component that manages orientation (vertical/horizontal, supports responsive breakpoints). Provides `SplitContextProvider` to cascade resizer props to all child resizers.
-- **Split.Pane** (`package/src/Pane/SplitPane.tsx`) — Pane with sizing constraints (`initialWidth/Height`, `min/max`, `grow`). Exposes imperative handlers via ref (`resetInitialSize`, `getMinWidth`, etc.); the ref type is `HTMLDivElement & SplitPaneHandlers`.
+- **Split.Pane** (`package/src/Pane/SplitPane.tsx`) — Pane with sizing constraints (`initialWidth/Height`, `min/max`, `grow`). Exposes imperative handlers via ref (`resetInitialSize`, `getMinWidth`, etc.): the ref receives one `SplitPaneHandlers` object for the pane's lifetime, not the DOM element, which is its `splitPane`. `Split` reaches the pane through the private `__splitRef` prop, never `ref`, so the consumer's ref survives.
 - **Split.Resizer** (`package/src/Resizer/SplitResizer.tsx`) — Draggable/keyboard-navigable divider with 7 variants: `default`, `filled`, `outline`, `transparent`, `gradient`, `dotted`, `dashed`. Inherits props from parent Split context but can override per-instance. Keyboard: arrows move by `step` (default 8), Shift+arrows by `shiftStep` (default 64); a double-click fires `onDoubleClick`.
 - **Split.Dynamic** (`package/src/Dynamic/SplitDynamic.tsx`) — Helper function (not a component) that generates Pane+Resizer arrays from a `PaneConfig[]` array.
 

@@ -4,7 +4,7 @@ import { MantineDemo } from '@mantinex/demo';
 import { useRef, useState } from 'react';
 
 function Demo() {
-  const paneRef = useRef<HTMLDivElement & SplitPaneHandlers>(null);
+  const paneRef = useRef<SplitPaneHandlers>(null);
   const [width, setWidth] = useState<number | null>(null);
 
   return (
@@ -48,7 +48,7 @@ import { Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { useRef, useState } from 'react';
 
 function Demo() {
-  const paneRef = useRef<HTMLDivElement & SplitPaneHandlers>(null);
+  const paneRef = useRef<SplitPaneHandlers>(null);
   const [width, setWidth] = useState<number | null>(null);
 
   return (
