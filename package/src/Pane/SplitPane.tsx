@@ -9,8 +9,8 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import { useMergedRef } from '@mantine/hooks';
-import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import { useIsomorphicEffect, useMergedRef } from '@mantine/hooks';
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { SplitResizerVariant } from '../Resizer/SplitResizer';
 import { useSplitContext } from '../Split.context';
@@ -112,6 +112,9 @@ export interface SplitPaneProps
   /** Split pane content */
   children: React.ReactNode;
 
+  /** Receives the pane's imperative handlers; `splitPane` on them is the DOM element */
+  ref?: React.Ref<SplitPaneHandlers>;
+
   /**
    * The ref `Split` uses to reach the pane from its resizers, kept apart from `ref` so the
    * consumer's ref is not replaced
@@ -206,11 +209,9 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
   // Store the previous container size to detect changes
   const prevContainerSizeRef = useRef<{ width: number; height: number } | null>(null);
 
-  // The latest handlers, read through a ref so the handle below can stay one object for the
-  // pane's lifetime: a new handle on every commit would loop a callback ref that stores it in
-  // state (`ref={setPane}`).
-  const handlersRef = useRef<SplitPaneHandlers>({});
-  handlersRef.current = {
+  // This render's handlers. They reach the handle only once React commits them (below), so a
+  // render that is thrown away (a suspended transition) never feeds a resizer its props.
+  const handlers: SplitPaneHandlers = {
     resetInitialSize: (e: React.MouseEvent<HTMLButtonElement>) => resetInitialSize(e),
     getMinWidth: () => getSizeInPixel(minWidth),
     getMinHeight: () => getSizeInPixel(minHeight),
@@ -241,34 +242,38 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
     notifyResizing: (size: SPLIT_PANE_SIZE) => onResizing && onResizing(size),
     notifyResizeEnd: (size: SPLIT_PANE_SIZE) => onResizeEnd && onResizeEnd(size),
   };
+  const handlersRef = useRef(handlers);
+  useIsomorphicEffect(() => {
+    handlersRef.current = handlers;
+  });
 
-  // One handle, two receivers: the consumer's ref and the one Split's resizers read.
+  // One handle object for the pane's lifetime, whatever ref receives it and however often that
+  // ref changes: a callback ref that stores it in state (even an inline one) gets the same object
+  // back and settles, as it would with a DOM node.
+  const [handle] = useState((): SplitPaneHandlers => ({
+    get splitPane() {
+      return localRef.current ?? undefined;
+    },
+    resetInitialSize: (e) => handlersRef.current.resetInitialSize?.(e),
+    getMinWidth: () => handlersRef.current.getMinWidth?.(),
+    getMinHeight: () => handlersRef.current.getMinHeight?.(),
+    getMaxWidth: () => handlersRef.current.getMaxWidth?.(),
+    getMaxHeight: () => handlersRef.current.getMaxHeight?.(),
+    getInitialWidth: () => handlersRef.current.getInitialWidth?.(),
+    getInitialHeight: () => handlersRef.current.getInitialHeight?.(),
+    onResizeStart: () => handlersRef.current.onResizeStart?.(),
+    onResizing: (size) => handlersRef.current.onResizing?.(size),
+    onResizeEnd: (size) => handlersRef.current.onResizeEnd?.(size),
+    notifyResizing: (size) => handlersRef.current.notifyResizing?.(size),
+    notifyResizeEnd: (size) => handlersRef.current.notifyResizeEnd?.(size),
+  }));
+
+  // Two receivers: the consumer's ref and the one Split's resizers read.
   const handleRef = useMergedRef<SplitPaneHandlers>(
     ref as React.Ref<SplitPaneHandlers> | undefined,
     __splitRef
   );
-
-  useImperativeHandle(
-    handleRef,
-    (): SplitPaneHandlers => ({
-      get splitPane() {
-        return localRef.current ?? undefined;
-      },
-      resetInitialSize: (e) => handlersRef.current.resetInitialSize?.(e),
-      getMinWidth: () => handlersRef.current.getMinWidth?.(),
-      getMinHeight: () => handlersRef.current.getMinHeight?.(),
-      getMaxWidth: () => handlersRef.current.getMaxWidth?.(),
-      getMaxHeight: () => handlersRef.current.getMaxHeight?.(),
-      getInitialWidth: () => handlersRef.current.getInitialWidth?.(),
-      getInitialHeight: () => handlersRef.current.getInitialHeight?.(),
-      onResizeStart: () => handlersRef.current.onResizeStart?.(),
-      onResizing: (size) => handlersRef.current.onResizing?.(size),
-      onResizeEnd: (size) => handlersRef.current.onResizeEnd?.(size),
-      notifyResizing: (size) => handlersRef.current.notifyResizing?.(size),
-      notifyResizeEnd: (size) => handlersRef.current.notifyResizeEnd?.(size),
-    }),
-    [handleRef]
-  );
+  useImperativeHandle(handleRef, () => handle, [handle]);
 
   const initialWidthRef = useRef<number | string | null>(null);
   const initialHeightRef = useRef<number | string | null>(null);

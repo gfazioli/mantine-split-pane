@@ -456,6 +456,39 @@ describe('Split', () => {
       expect(latest!.getMinWidth?.()).toBe(150);
     });
 
+    it('settles an inline callback ref that stores the handle, and keeps it when a pane is added', () => {
+      let latest: SplitPaneHandlers | null = null;
+      let addPane: () => void = () => {};
+      const seen = new Set<SplitPaneHandlers>();
+
+      function Harness() {
+        const [pane, setPane] = React.useState<SplitPaneHandlers | null>(null);
+        const [extra, setExtra] = React.useState(false);
+        addPane = () => setExtra(true);
+        latest = pane;
+        if (pane) {
+          seen.add(pane);
+        }
+        return (
+          <Split>
+            <Split.Pane ref={(handle) => setPane(handle)}>Pane 1</Split.Pane>
+            <Split.Resizer />
+            <Split.Pane>Pane 2</Split.Pane>
+            {extra && <Split.Resizer key="extra-resizer" />}
+            {extra && <Split.Pane key="extra-pane">Pane 3</Split.Pane>}
+          </Split>
+        );
+      }
+
+      render(<Harness />);
+      expect(latest).not.toBeNull();
+
+      act(() => addPane());
+      expect(screen.getAllByLabelText('Resize')).toHaveLength(2);
+      expect(seen.size).toBe(1);
+      expect(latest!.splitPane).toBe(screen.getAllByLabelText('Resize')[0].previousElementSibling);
+    });
+
     it('keeps the resizer working when the panes carry refs of their own', () => {
       const firstRef = React.createRef<SplitPaneHandlers>();
       const secondRef = React.createRef<SplitPaneHandlers>();
