@@ -1,5 +1,5 @@
 import { render } from '@mantine-tests/core';
-import { fireEvent, screen } from '@testing-library/react';
+import { act, fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 import type { SplitPaneHandlers } from './Pane/SplitPane';
 import { Split } from './Split';
@@ -371,7 +371,7 @@ describe('Split', () => {
 
   describe('a ref on Split.Pane (#95)', () => {
     it('receives the pane handlers with manual resizers, as an object ref and as a callback ref', () => {
-      const objectRef = React.createRef<HTMLDivElement & SplitPaneHandlers>();
+      const objectRef = React.createRef<SplitPaneHandlers>();
       const callbackRef = jest.fn();
 
       render(
@@ -392,7 +392,7 @@ describe('Split', () => {
     });
 
     it('receives the pane handlers with autoResizers', () => {
-      const objectRef = React.createRef<HTMLDivElement & SplitPaneHandlers>();
+      const objectRef = React.createRef<SplitPaneHandlers>();
 
       render(
         <Split autoResizers>
@@ -411,7 +411,8 @@ describe('Split', () => {
 
       const { unmount } = render(
         <Split>
-          <Split.Pane ref={callbackRef}>Pane 1</Split.Pane>
+          {/* inline, so the handle's type comes from the pane's ref prop */}
+          <Split.Pane ref={(handle) => callbackRef(handle?.splitPane ?? null)}>Pane 1</Split.Pane>
           <Split.Resizer />
           <Split.Pane>Pane 2</Split.Pane>
         </Split>
@@ -421,9 +422,43 @@ describe('Split', () => {
       expect(callbackRef).toHaveBeenLastCalledWith(null);
     });
 
+    it('keeps one handle across renders, so a state setter can be the ref', () => {
+      let latest: SplitPaneHandlers | null = null;
+      let setMin: (value: number) => void = () => {};
+      const seen = new Set<SplitPaneHandlers>();
+
+      // Re-renders from its own state: the rerender of the test helper remounts the tree
+      function Harness() {
+        const [pane, setPane] = React.useState<SplitPaneHandlers | null>(null);
+        const [minWidth, setMinWidth] = React.useState(100);
+        setMin = setMinWidth;
+        latest = pane;
+        if (pane) {
+          seen.add(pane);
+        }
+        return (
+          <Split>
+            <Split.Pane ref={setPane} minWidth={minWidth}>
+              Pane 1
+            </Split.Pane>
+            <Split.Resizer />
+            <Split.Pane>Pane 2</Split.Pane>
+          </Split>
+        );
+      }
+
+      render(<Harness />);
+      expect(latest).not.toBeNull();
+      expect(latest!.getMinWidth?.()).toBe(100);
+
+      act(() => setMin(150));
+      expect(seen.size).toBe(1);
+      expect(latest!.getMinWidth?.()).toBe(150);
+    });
+
     it('keeps the resizer working when the panes carry refs of their own', () => {
-      const firstRef = React.createRef<HTMLDivElement & SplitPaneHandlers>();
-      const secondRef = React.createRef<HTMLDivElement & SplitPaneHandlers>();
+      const firstRef = React.createRef<SplitPaneHandlers>();
+      const secondRef = React.createRef<SplitPaneHandlers>();
 
       render(
         <Split step={10}>
