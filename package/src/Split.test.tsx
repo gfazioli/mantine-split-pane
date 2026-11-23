@@ -471,11 +471,21 @@ describe('Split', () => {
         }
         return (
           <Split>
-            <Split.Pane ref={(handle) => setPane(handle)}>Pane 1</Split.Pane>
-            <Split.Resizer />
-            <Split.Pane>Pane 2</Split.Pane>
-            {extra && <Split.Resizer key="extra-resizer" />}
-            {extra && <Split.Pane key="extra-pane">Pane 3</Split.Pane>}
+            {[
+              <Split.Pane key="one" ref={(handle) => setPane(handle)}>
+                Pane 1
+              </Split.Pane>,
+
+              <Split.Resizer key="r1" />,
+
+              <Split.Pane key="two">Pane 2</Split.Pane>,
+
+              // An array, not `extra && …`: React.Children.count must change for Split to rebuild its refs
+
+              ...(extra
+                ? [<Split.Resizer key="r2" />, <Split.Pane key="three">Pane 3</Split.Pane>]
+                : []),
+            ]}
           </Split>
         );
       }
@@ -487,6 +497,70 @@ describe('Split', () => {
       expect(screen.getAllByLabelText('Resize')).toHaveLength(2);
       expect(seen.size).toBe(1);
       expect(latest!.splitPane).toBe(screen.getAllByLabelText('Resize')[0].previousElementSibling);
+    });
+
+    it('does not detach a consumer callback ref when a sibling pane is added', () => {
+      const callbackRef = jest.fn();
+      let addPane: () => void = () => {};
+
+      function Harness() {
+        const [extra, setExtra] = React.useState(false);
+        addPane = () => setExtra(true);
+        return (
+          <Split>
+            {[
+              <Split.Pane key="one" ref={callbackRef}>
+                Pane 1
+              </Split.Pane>,
+
+              <Split.Resizer key="r1" />,
+
+              <Split.Pane key="two">Pane 2</Split.Pane>,
+
+              // An array, not `extra && …`: React.Children.count must change for Split to rebuild its refs
+
+              ...(extra
+                ? [<Split.Resizer key="r2" />, <Split.Pane key="three">Pane 3</Split.Pane>]
+                : []),
+            ]}
+          </Split>
+        );
+      }
+
+      render(<Harness />);
+      const callsBefore = callbackRef.mock.calls.length;
+      act(() => addPane());
+      expect(callbackRef.mock.calls.length).toBe(callsBefore);
+    });
+
+    it('takes a percentage limit of the dimension its getter names', () => {
+      const paneRef = React.createRef<SplitPaneHandlers>();
+      render(
+        <Split orientation="horizontal">
+          <Split.Pane ref={paneRef} minWidth="25%" minHeight="25%">
+            Pane 1
+          </Split.Pane>
+          <Split.Resizer />
+          <Split.Pane>Pane 2</Split.Pane>
+        </Split>
+      );
+      const container = paneRef.current!.splitPane!.parentElement as HTMLElement;
+      jest.spyOn(container, 'getBoundingClientRect').mockImplementation(
+        () =>
+          ({
+            width: 800,
+            height: 400,
+            top: 0,
+            left: 0,
+            right: 800,
+            bottom: 400,
+            x: 0,
+            y: 0,
+            toJSON: () => ({}),
+          }) as DOMRect
+      );
+      expect(paneRef.current!.getMinWidth?.()).toBe(200);
+      expect(paneRef.current!.getMinHeight?.()).toBe(100);
     });
 
     it('keeps the resizer working when the panes carry refs of their own', () => {

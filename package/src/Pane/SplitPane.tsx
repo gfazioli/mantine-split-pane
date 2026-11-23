@@ -9,7 +9,7 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import { useIsomorphicEffect, useMergedRef } from '@mantine/hooks';
+import { useIsomorphicEffect } from '@mantine/hooks';
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { SplitResizerVariant } from '../Resizer/SplitResizer';
@@ -213,10 +213,10 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
   // render that is thrown away (a suspended transition) never feeds a resizer its props.
   const handlers: SplitPaneHandlers = {
     resetInitialSize: (e: React.MouseEvent<HTMLButtonElement>) => resetInitialSize(e),
-    getMinWidth: () => getSizeInPixel(minWidth),
-    getMinHeight: () => getSizeInPixel(minHeight),
-    getMaxWidth: () => getSizeInPixel(maxWidth),
-    getMaxHeight: () => getSizeInPixel(maxHeight),
+    getMinWidth: () => getSizeInPixel(minWidth, 'width'),
+    getMinHeight: () => getSizeInPixel(minHeight, 'height'),
+    getMaxWidth: () => getSizeInPixel(maxWidth, 'width'),
+    getMaxHeight: () => getSizeInPixel(maxHeight, 'height'),
     getInitialWidth: () => initialWidth,
     getInitialHeight: () => initialHeight,
     onResizeStart: () => onResizeStart && onResizeStart(),
@@ -268,18 +268,17 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
     notifyResizeEnd: (size) => handlersRef.current.notifyResizeEnd?.(size),
   }));
 
-  // Two receivers: the consumer's ref and the one Split's resizers read.
-  const handleRef = useMergedRef<SplitPaneHandlers>(
-    ref as React.Ref<SplitPaneHandlers> | undefined,
-    __splitRef
-  );
-  useImperativeHandle(handleRef, () => handle, [handle]);
+  // Two receivers, attached separately: Split's ref changes when a sibling pane comes or goes,
+  // and that must not detach and re-attach the consumer's.
+  useImperativeHandle(ref as React.Ref<SplitPaneHandlers> | undefined, () => handle, [handle]);
+  useImperativeHandle(__splitRef, () => handle, [handle]);
 
   const initialWidthRef = useRef<number | string | null>(null);
   const initialHeightRef = useRef<number | string | null>(null);
 
   const getSizeInPixel = useCallback(
-    (size?: number | string): number | undefined => {
+    // `axis` picks the parent dimension a percentage is taken of; it defaults to the split's
+    (size?: number | string, axis?: 'width' | 'height'): number | undefined => {
       if (size === undefined || size === null) {
         return undefined;
       }
@@ -293,7 +292,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
           return undefined;
         }
 
-        const dimension = ctx.orientation === 'vertical' ? 'width' : 'height';
+        const dimension = axis ?? (ctx.orientation === 'vertical' ? 'width' : 'height');
         const parentSize = parentEl.getBoundingClientRect()[dimension];
         return (parentSize * value) / 100;
       }
