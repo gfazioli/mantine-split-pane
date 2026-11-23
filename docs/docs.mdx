@@ -435,6 +435,8 @@ export interface SplitPaneProps {
 
 A `ref` on `Split.Pane` receives the pane's `SplitPaneHandlers`, one object for the pane's lifetime (not the DOM element): `resetInitialSize(event)` puts the pane back to its `initialWidth` / `initialHeight`, as a double-click on the resizer does; `getMinWidth`, `getMaxWidth`, `getInitialWidth` and their height twins return the pane's resolved limits; and `splitPane` is the pane's DOM element. Object refs and callback refs both work, with explicit resizers and with `autoResizers`.
 
+`resetInitialSize` resets this pane only, and fires `onResetInitialSize` but not `onResizing` / `onResizeEnd`, where a double-click on the resizer resets both neighbours and fires all three. Next to a `grow` pane, as in the demo, the pane lands on its initial size; between two fixed panes the neighbour keeps its size, so reach for the double-click there.
+
 > Up to `v4.1.22`, `Split` replaced this ref with one of its own, so it stayed `null` inside a `Split`.
 
 <Demo data={demos.paneRef} />
