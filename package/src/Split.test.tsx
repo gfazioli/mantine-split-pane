@@ -1,6 +1,7 @@
 import { render } from '@mantine-tests/core';
 import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
+import type { SplitPaneHandlers } from './Pane/SplitPane';
 import { Split } from './Split';
 
 type TestSplitProps = Omit<React.ComponentProps<typeof Split>, 'children'>;
@@ -366,5 +367,91 @@ describe('Split', () => {
 
     fireEvent.keyDown(resizer, { key: 'ArrowRight', code: 'ArrowRight' });
     expect(resizer).not.toHaveAttribute('data-snapping');
+  });
+
+  describe('a ref on Split.Pane (#95)', () => {
+    it('receives the pane handlers with manual resizers, as an object ref and as a callback ref', () => {
+      const objectRef = React.createRef<HTMLDivElement & SplitPaneHandlers>();
+      const callbackRef = jest.fn();
+
+      render(
+        <Split>
+          <Split.Pane ref={objectRef}>Pane 1</Split.Pane>
+          <Split.Resizer />
+          <Split.Pane ref={callbackRef}>Pane 2</Split.Pane>
+        </Split>
+      );
+
+      const resizer = screen.getByLabelText('Resize');
+      expect(objectRef.current?.splitPane).toBe(resizer.previousElementSibling);
+      expect(typeof objectRef.current?.resetInitialSize).toBe('function');
+
+      const handles = callbackRef.mock.calls.map(([handle]) => handle).filter(Boolean);
+      expect(handles.length).toBeGreaterThan(0);
+      expect(handles[handles.length - 1].splitPane).toBe(resizer.nextElementSibling);
+    });
+
+    it('receives the pane handlers with autoResizers', () => {
+      const objectRef = React.createRef<HTMLDivElement & SplitPaneHandlers>();
+
+      render(
+        <Split autoResizers>
+          <Split.Pane>Pane 1</Split.Pane>
+          <Split.Pane ref={objectRef}>Pane 2</Split.Pane>
+        </Split>
+      );
+
+      const resizer = screen.getByLabelText('Resize');
+      expect(objectRef.current?.splitPane).toBe(resizer.nextElementSibling);
+      expect(typeof objectRef.current?.getMinWidth).toBe('function');
+    });
+
+    it('releases a callback ref on unmount', () => {
+      const callbackRef = jest.fn();
+
+      const { unmount } = render(
+        <Split>
+          <Split.Pane ref={callbackRef}>Pane 1</Split.Pane>
+          <Split.Resizer />
+          <Split.Pane>Pane 2</Split.Pane>
+        </Split>
+      );
+
+      unmount();
+      expect(callbackRef).toHaveBeenLastCalledWith(null);
+    });
+
+    it('keeps the resizer working when the panes carry refs of their own', () => {
+      const firstRef = React.createRef<HTMLDivElement & SplitPaneHandlers>();
+      const secondRef = React.createRef<HTMLDivElement & SplitPaneHandlers>();
+
+      render(
+        <Split step={10}>
+          <Split.Pane ref={firstRef} initialWidth={300}>
+            Pane 1
+          </Split.Pane>
+          <Split.Resizer />
+          <Split.Pane ref={secondRef} initialWidth={700}>
+            Pane 2
+          </Split.Pane>
+        </Split>
+      );
+
+      const resizer = screen.getByLabelText('Resize');
+      const pane1 = resizer.previousElementSibling as HTMLDivElement;
+      const pane2 = resizer.nextElementSibling as HTMLDivElement;
+      pane1.style.width = '300px';
+      pane2.style.width = '700px';
+      mockPaneRect(pane1, 300, 200);
+      mockPaneRect(pane2, 700, 200);
+
+      resizer.focus();
+      fireEvent.keyDown(resizer, { key: 'ArrowRight', code: 'ArrowRight' });
+
+      expect(pane1.style.width).toBe('310px');
+      expect(pane2.style.width).toBe('690px');
+      expect(firstRef.current?.splitPane).toBe(pane1);
+      expect(secondRef.current?.splitPane).toBe(pane2);
+    });
   });
 });

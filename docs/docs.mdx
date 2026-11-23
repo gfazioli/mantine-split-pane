@@ -431,6 +431,14 @@ export interface SplitPaneProps {
 
 <Demo data={demos.events} />
 
+### Imperative handle
+
+A `ref` on `Split.Pane` receives the pane's `SplitPaneHandlers`: `resetInitialSize(event)` puts the pane back to its `initialWidth` / `initialHeight`, as a double-click on the resizer does; `getMinWidth`, `getMaxWidth`, `getInitialWidth` and their height twins return the pane's resolved limits; and `splitPane` is the pane's DOM element. Object refs and callback refs both work, with explicit resizers and with `autoResizers`.
+
+> Up to `v4.1.22`, `Split` replaced this ref with one of its own, so it stayed `null` inside a `Split`.
+
+<Demo data={demos.paneRef} />
+
 ## Multiple Panes
 
 You can add as many panes as you want, and you can also set the `minWidth` and `maxWidth` props for each pane along with other props.

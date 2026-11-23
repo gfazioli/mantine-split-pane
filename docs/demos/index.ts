@@ -20,6 +20,7 @@ export { multiple } from './Split.demo.multiple';
 export { nested } from './Split.demo.nested';
 export { nestedprops } from './Split.demo.nestedprops';
 export { pane } from './Split.demo.pane';
+export { paneRef } from './Split.demo.paneRef';
 export { reset } from './Split.demo.reset';
 export { resizer } from './Split.demo.resizer';
 export { resizerContent } from './Split.demo.resizerContent';

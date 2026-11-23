@@ -188,7 +188,7 @@ export const Split = factory<SplitFactory>((_props) => {
         elementsWithResizers.push(
           cloneElement(child as React.ReactElement<any>, {
             key: child.key ?? `pane-${paneIndex}`,
-            ref,
+            __splitRef: ref,
           })
         );
 
@@ -230,8 +230,9 @@ export const Split = factory<SplitFactory>((_props) => {
             __afterRef: afterRef,
           });
         } else if (child.type === SplitPane) {
+          // `__splitRef`, not `ref`: a `ref` here would replace the one the consumer set on the pane
           return cloneElement(child as React.ReactElement<any>, {
-            ref: childRefs[index],
+            __splitRef: childRefs[index],
           });
         }
         return child;
