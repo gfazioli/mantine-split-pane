@@ -101,7 +101,7 @@ export const Cap = ({ title, note }) => (
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
     <Table.Tr>
-      <Table.Td><Cap title="Per-handle settings" note="Split: every Split.Resizer is its own element, so its variant, size, knob, step, snap points and events apply to that resizer alone — core: getHandleProps(index) since 9.8.2, which sets withHandle and element props per handle" /></Table.Td>
+      <Table.Td><Cap title="Per-handle settings" note="Split: each Split.Resizer you write takes its own variant, size, knob, step, snap points and events, overriding what Split cascades (with autoResizers, every resizer shares the Split settings) — core: getHandleProps(index) since 9.8.2, which sets withHandle and element props per handle" /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
@@ -111,7 +111,7 @@ export const Cap = ({ title, note }) => (
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
     <Table.Tr>
-      <Table.Td><Cap title="Disabled handles" note="disabled on a single handle turns off its dragging, keyboard resizing and double-click reset, through getHandleProps or use-splitter (since 9.8.2)" /></Table.Td>
+      <Table.Td><Cap title="Disabled handles" note="Since 9.8.2, a disabled handle ignores dragging, keyboard resizing and double-click reset: getHandleProps(index) returns disabled: true on Splitter, use-splitter takes getHandleProps({ index, disabled: true })" /></Table.Td>
       <Table.Td ta="center"><No /></Table.Td>
       <Table.Td ta="center"><Yes /></Table.Td>
     </Table.Tr>
@@ -143,7 +143,7 @@ export const Cap = ({ title, note }) => (
   </Table.Tbody>
 </Table>
 
-**When to use which.** Reach for the core `Splitter` when you need a simple proportional layout with first-party support — especially if collapsible panes, controlled sizes, space redistribution, disabled handles or a headless hook matter to you. Reach for `Split` when the resizer look and feel is part of your design (variants, gradients, knobs, custom content), when you need snap points, pixel-based constraints or responsive breakpoint-driven layouts, or when panes are generated dynamically from configuration.
+**When to use which.** Reach for the core `Splitter` when you need a simple proportional layout with first-party support — especially if collapsible panes, controlled sizes, space redistribution, disabled handles or a headless hook matter to you. Reach for `Split` when the resizer look and feel is part of your design (variants, gradients, knobs, custom content), when you need snap points or responsive breakpoint-driven layouts, or when panes are generated dynamically from configuration.
 
 ## Usage
 
