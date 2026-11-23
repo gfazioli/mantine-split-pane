@@ -1,6 +1,7 @@
 import { Box, Button, Code, Group, Paper, Space, Stack, Title } from '@mantine/core';
-import React, { useMemo, useState, type ReactNode } from 'react';
+import React, { useMemo, useRef, useState, type ReactNode } from 'react';
 import type { PaneConfig } from './Dynamic';
+import type { SplitPaneHandlers } from './Pane/SplitPane';
 import { SPLIT_PANE_RESIZE_SIZES } from './Resizer/SplitResizer';
 import { Split, type SplitProps } from './Split';
 
@@ -1294,5 +1295,44 @@ export function DynamicAdvanced(p: SplitProps) {
         </Button>
       </Group>
     </>
+  );
+}
+
+export function PaneRef(p: SplitProps) {
+  const paneRef = useRef<HTMLDivElement & SplitPaneHandlers>(null);
+  const [log, setLog] = useState('');
+
+  return (
+    <Stack>
+      <Group>
+        <Button onClick={(event) => paneRef.current?.resetInitialSize?.(event)}>
+          Reset Pane 1
+        </Button>
+        <Button
+          variant="default"
+          onClick={() =>
+            setLog(
+              `width ${Math.round(paneRef.current?.splitPane?.getBoundingClientRect().width ?? 0)}px, min ${paneRef.current?.getMinWidth?.()}px`
+            )
+          }
+        >
+          Read Pane 1
+        </Button>
+        <Code>{log}</Code>
+      </Group>
+      <Split {...p}>
+        <Split.Pane ref={paneRef} initialWidth={200} minWidth={120}>
+          <Paper withBorder>
+            <Title order={4}>Pane 1</Title>
+          </Paper>
+        </Split.Pane>
+        <Split.Resizer />
+        <Split.Pane grow>
+          <Paper withBorder>
+            <Title order={4}>Pane 2</Title>
+          </Paper>
+        </Split.Pane>
+      </Split>
+    </Stack>
   );
 }

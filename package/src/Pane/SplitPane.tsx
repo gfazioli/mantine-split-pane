@@ -9,6 +9,7 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
+import { useMergedRef } from '@mantine/hooks';
 import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { useResponsiveValue } from '../hooks/use-responsive-value';
 import { SplitResizerVariant } from '../Resizer/SplitResizer';
@@ -111,7 +112,15 @@ export interface SplitPaneProps
   /** Split pane content */
   children: React.ReactNode;
 
-  ref?: React.RefObject<HTMLDivElement & SplitPaneHandlers>;
+  /** Receives the pane's imperative handlers (`SplitPaneHandlers`); an object or a callback ref */
+  ref?: React.Ref<HTMLDivElement & SplitPaneHandlers>;
+
+  /**
+   * The ref `Split` uses to reach the pane from its resizers, kept apart from `ref` so the
+   * consumer's ref is not replaced
+   * @access private
+   * */
+  __splitRef?: React.Ref<HTMLDivElement & SplitPaneHandlers>;
 }
 
 export type SplitPaneFactory = Factory<{
@@ -170,6 +179,7 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
     onResizing,
     onResizeEnd,
     onResetInitialSize,
+    __splitRef,
 
     className,
     style,
@@ -198,7 +208,10 @@ export const SplitPane = factory<SplitPaneFactory>((_props) => {
   // Store the previous container size to detect changes
   const prevContainerSizeRef = useRef<{ width: number; height: number } | null>(null);
 
-  useImperativeHandle(ref, () => ({
+  // One handle, two receivers: the consumer's ref and the one Split's resizers read.
+  const handleRef = useMergedRef<unknown>(ref, __splitRef);
+
+  useImperativeHandle(handleRef, () => ({
     ...localRef.current,
     splitPane: localRef.current,
     resetInitialSize,

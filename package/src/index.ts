@@ -2,7 +2,12 @@ export { Split } from './Split';
 export type { SplitCssVariables, SplitFactory, SplitProps } from './Split';
 
 export { SplitPane } from './Pane/SplitPane';
-export type { SPLIT_PANE_SIZE, SplitPaneFactory, SplitPaneProps } from './Pane/SplitPane';
+export type {
+  SPLIT_PANE_SIZE,
+  SplitPaneFactory,
+  SplitPaneHandlers,
+  SplitPaneProps,
+} from './Pane/SplitPane';
 
 export { SplitResizer } from './Resizer/SplitResizer';
 export type {
